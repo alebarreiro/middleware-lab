@@ -17,7 +17,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk version
 ```
 
-- Instalar Grandle
+- Instalar Gradle
 
 ```{bash}
 sdk install gradle 3.0
@@ -26,7 +26,7 @@ sdk install gradle 3.0
 ## Run
 
 ```{bash}
-grandle build
+gradle build
 java -jar build/libs/gs-integration-0.1.0.jar
 ```
 
