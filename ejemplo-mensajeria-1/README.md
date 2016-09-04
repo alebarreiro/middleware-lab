@@ -1,10 +1,10 @@
 ### Spring integration example
 
-## Run
+## Instalar
 
-0. Instalar java sdk 1.8
+- Instalar java sdk 1.8
 
-1. Instalar sdkman
+- Instalar sdkman
 
 ```{bash}
 curl -s https://get.sdkman.io | bash
@@ -17,17 +17,19 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk version
 ```
 
-2. Instalar Grandle
+- Instalar Grandle
 
 ```{bash}
 sdk install gradle 3.0
 ```
 
-3.
+## Run
 
 ```{bash}
 grandle build
 java -jar build/libs/gs-integration-0.1.0.jar
 ```
 
+## Fuente
 
+https://spring.io/guides/gs/integration/#scratch
