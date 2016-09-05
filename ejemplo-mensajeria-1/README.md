@@ -4,7 +4,7 @@
 
 - Instalar java sdk 1.8
 
-- Instalar sdkman
+- Instalar [sdkman](http://sdkman.io/install.html)
 
 ```{bash}
 curl -s https://get.sdkman.io | bash
@@ -17,19 +17,16 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk version
 ```
 
-- Instalar Gradle
+- Instalar Gradle con sdkman
 
 ```{bash}
 sdk install gradle 3.0
 ```
 
-## Run
+## Build & Run
 
 ```{bash}
 gradle build
-java -jar build/libs/gs-integration-0.1.0.jar
+java -jar build/libs/middleware-0.0.1-SNAPSHOT.jar
 ```
 
-## Fuente
-
-https://spring.io/guides/gs/integration/#scratch
