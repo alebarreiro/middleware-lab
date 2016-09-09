@@ -1,4 +1,4 @@
-### Spring integration example
+# Middleware
 
 ## Instalar
 
@@ -29,4 +29,3 @@ sdk install gradle 3.0
 gradle build
 java -jar build/libs/middleware-0.0.1-SNAPSHOT.jar
 ```
-
