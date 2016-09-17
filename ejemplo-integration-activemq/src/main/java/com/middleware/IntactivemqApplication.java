@@ -13,6 +13,12 @@ import javax.jms.*;
 public class IntactivemqApplication {
 
 	public static void main(String[] args) throws JMSException {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("/META-INF/spring/integration/si-config.xml");
 
+		MessageChannel inputChannel = ctx.getBean("inputChannel", MessageChannel.class);
+		PollableChannel outputChannel = ctx.getBean("outputChannel", PollableChannel.class);
+
+		inputChannel.send(new GenericMessage<String>("World"));
+		System.out.println(outputChannel.receive().getPayload());
 	}
 }
