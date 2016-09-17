@@ -2,19 +2,36 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/jms
+        http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd"
+>
 
-    <int:channel id="inputChannel" />
+    <!-- ActiveMQ connection factory bean -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://mbpro-toni.local:61616" />
+    </bean>
 
-    <int:channel id="outputChannel">
-        <int:queue capacity="10" />
-    </int:channel>
+    <!-- Define a channel to communicate out to a JMS Destination -->
+    <int:channel id="inbound" />
+    <int:channel id="outbound" />
 
-    <int:service-activator input-channel="inputChannel"
-                           output-channel="outputChannel" ref="helloService" method="greet" />
+    <int:service-activator input-channel="inbound"
+                           output-channel="outbound" ref="simpleMessageListener" method="onMessage" />
 
-    <bean id="helloService"
-          class="com.middleware.HelloWorld" />
+    <int-jms:outbound-channel-adapter id="jmsOut"
+                                      channel="outbound" connection-factory="connectionFactory"
+                                      destination-name="sampleQueue" />
+
+    <int-jms:inbound-channel-adapter
+            channel="inbound" connection-factory="connectionFactory"
+            destination-name="testQueue" acknowledge="auto">
+        <int:poller fixed-delay="5000" />
+    </int-jms:inbound-channel-adapter>
+
+    <bean id="simpleMessageListener" class="com.middleware.SimpleMessageListener" />
 </beans>

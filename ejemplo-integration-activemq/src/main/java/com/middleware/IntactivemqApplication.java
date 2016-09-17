@@ -8,17 +8,15 @@ import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 
 import javax.jms.*;
+import java.io.IOException;
 
 @SpringBootApplication
 public class IntactivemqApplication {
 
-	public static void main(String[] args) throws JMSException {
+	public static void main(String[] args) {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("/META-INF/spring/integration/si-config.xml");
 
-		MessageChannel inputChannel = ctx.getBean("inputChannel", MessageChannel.class);
-		PollableChannel outputChannel = ctx.getBean("outputChannel", PollableChannel.class);
-
-		inputChannel.send(new GenericMessage<String>("World"));
-		System.out.println(outputChannel.receive().getPayload());
+		MessageChannel inputChannel = ctx.getBean("inbound", MessageChannel.class);
+		inputChannel.send(new GenericMessage<String>("pipu"));
 	}
 }
