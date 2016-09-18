@@ -2,6 +2,8 @@ package com.middleware;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +14,8 @@ public class MiddlewareApplication {
 
 	public static void main(String[] args) {
 		logger.error("Test");
-		
-		SpringApplication.run(MiddlewareApplication.class, args);
+
+		ApplicationContext context =
+				new ClassPathXmlApplicationContext("/META-INF/spring/integration/si-config.xml");
 	}
 }
