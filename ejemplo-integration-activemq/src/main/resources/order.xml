@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<order id="5">
+  <fecha-creacion>2002-10-10T12:00:00-05:00</fecha-creacion>
+  <id-cliente>1</id-cliente>
+  <forma-pago>E</forma-pago>
+
+  <facturacion>
+    <monto>1020</monto>
+    <moneda>858</moneda>
+    <cuotas>1</cuotas>
+  </facturacion>
+
+  <items>
+    <item id="2">
+      <id-producto>8</id-producto>
+      <categoria>1</categoria>
+      <descripcion-producto>Buen producto</descripcion-producto>
+      <cantidad>100</cantidad>
+      <precio>25.3</precio>
+    </item>
+    <item id="7">
+      <id-producto>2</id-producto>
+      <categoria>2</categoria>
+      <descripcion-producto>Mal producto</descripcion-producto>
+      <cantidad>1</cantidad>
+      <precio>2.8</precio>
+    </item>
+  </items>
+</order>

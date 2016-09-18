@@ -11,10 +11,9 @@
         http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd"
 >
 
-    <int:poller default="true" fixed-rate="10000"/>
     <int:channel id="jsonNewOrders"/>
     <int:channel id="unused"/>
-    <bean id="simpleMessageListener" class="com.middleware.SimpleMessageListener" />
+    <bean id="xmlTransformer" class="com.middleware.XmlTransformer" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -33,9 +32,12 @@
     </bean>
 
     <!-- lee de la cola de activeMQ y deposita en canal -->
-    <int-jms:inbound-channel-adapter id="newOrdersInChannelAdapter" destination="cafeOrdersQueue" channel="jsonNewOrders" />
+    <int-jms:inbound-channel-adapter id="newOrdersInChannelAdapter" destination="cafeOrdersQueue" channel="jsonNewOrders">
+        <int:poller fixed-rate="10000" />
+    </int-jms:inbound-channel-adapter>
 
-    <!-- Ejemplo de procesado de lo obtenido del canal conectado a AMQ -->
-    <int:service-activator input-channel="jsonNewOrders"
-                           output-channel="unused" ref="simpleMessageListener" method="onMessage" />
+    <!-- transforma xml a pojo orden -->
+    <int:transformer ref="xmlTransformer" output-channel="unused"
+                     input-channel="jsonNewOrders" method="trasform">
+    </int:transformer>
 </beans>
