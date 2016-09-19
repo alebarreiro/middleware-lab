@@ -17,11 +17,13 @@
     <int:channel id="invalidOrders"/>
     <int:channel id="validOrders"/>
     <int:channel id="items"/>
+    <int:channel id="itemsXml"/>
 
     <!-- Definicion de componentes de integracion -->
     <bean id="xmlToOrder" class="com.middleware.integracion.XmlTransformerOrder" />
     <bean id="validateOrder" class="com.middleware.integracion.ValidateRouter" />
     <bean id="itemSplitter" class="com.middleware.integracion.ItemSplitter" />
+    <bean id="itemToXml" class="com.middleware.integracion.ItemTransformerXml" />
     <bean id="loggerEndpoint" class="com.middleware.integracion.LoggerEndpoint" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
@@ -55,6 +57,15 @@
 
     <int:splitter input-channel="validOrders" ref="itemSplitter" method="split" output-channel="items"/>
 
+    <!-- transforma items pojo a xmlo -->
+    <int:transformer ref="itemToXml" output-channel="itemsXml"
+                     input-channel="items" method="transform">
+    </int:transformer>
+
+
+
+
+
     <!-- Solo para testing mientras no terminemos el flujo -->
-    <int:service-activator input-channel="items" ref="loggerEndpoint" method="logMessage"/>
+    <int:service-activator input-channel="itemsXml" ref="loggerEndpoint" method="logMessage"/>
 </beans>
