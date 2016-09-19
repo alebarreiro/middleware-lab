@@ -16,10 +16,13 @@
     <int:channel id="newOrders"/>
     <int:channel id="invalidOrders"/>
     <int:channel id="validOrders"/>
+    <int:channel id="items"/>
 
     <!-- Definicion de componentes de integracion -->
     <bean id="xmlToOrder" class="com.middleware.integracion.XmlTransformerOrder" />
     <bean id="validateOrder" class="com.middleware.integracion.ValidateRouter" />
+    <bean id="itemSplitter" class="com.middleware.integracion.ItemSplitter" />
+    <bean id="loggerEndpoint" class="com.middleware.integracion.LoggerEndpoint" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -47,5 +50,11 @@
                      input-channel="rawOrders" method="transform">
     </int:transformer>
 
+    <!-- Rutea a invalidOrders aquellas ordenes invalidas -->
     <int:router input-channel="newOrders" ref="validateOrder" method="routeValid"/>
+
+    <int:splitter input-channel="validOrders" ref="itemSplitter" method="split" output-channel="items"/>
+
+    <!-- Solo para testing mientras no terminemos el flujo -->
+    <int:service-activator input-channel="items" ref="loggerEndpoint" method="logMessage"/>
 </beans>
