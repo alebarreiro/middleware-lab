@@ -38,6 +38,9 @@ dependencies {
 	compile group: 'org.springframework.integration', name: 'spring-integration-xml', version: '4.3.1.RELEASE'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.6.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '3.2.12.RELEASE'
+	compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1205-jdbc42'
+	compile group: 'org.springframework.integration', name: 'spring-integration-jdbc', version: '4.3.1.RELEASE'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile("junit:junit")
 }
