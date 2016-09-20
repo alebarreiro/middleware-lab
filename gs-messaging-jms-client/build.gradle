@@ -25,8 +25,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-activemq")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-devtools")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
     compile("org.apache.activemq:activemq-broker")
     compile("com.fasterxml.jackson.core:jackson-databind")
+    compile 'org.springframework:spring-context:4.3.2.RELEASE'
 }
 
