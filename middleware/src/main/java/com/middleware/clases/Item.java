@@ -76,4 +76,8 @@ public class Item {
                 ", precio=" + precio +
                 '}';
     }
+
+    public Double getPrecioTotal() {
+        return this.getCantidad() * this.getPrecio();
+    }
 }

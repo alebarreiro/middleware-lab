@@ -5,7 +5,7 @@
   <forma-pago>E</forma-pago>
 
   <facturacion>
-    <monto>1020</monto>
+    <monto>255</monto>
     <moneda>858</moneda>
     <cuotas>1</cuotas>
   </facturacion>
@@ -15,7 +15,7 @@
       <id-producto>8</id-producto>
       <categoria>1</categoria>
       <descripcion-producto>Buen producto</descripcion-producto>
-      <cantidad>100</cantidad>
+      <cantidad>10</cantidad>
       <precio>25.3</precio>
     </item>
     <item id="7">
@@ -23,7 +23,7 @@
       <categoria>2</categoria>
       <descripcion-producto>Mal producto</descripcion-producto>
       <cantidad>1</cantidad>
-      <precio>2.8</precio>
+      <precio>2</precio>
     </item>
   </items>
 </order>

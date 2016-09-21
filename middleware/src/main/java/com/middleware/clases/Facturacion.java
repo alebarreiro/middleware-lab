@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlElement;
  * Created by acabrera on 9/18/16.
  */
 public class Facturacion {
-    private int monto;
+    private Double monto;
     private int moneda;
     private int cuotas;
 
-    public int getMonto() {
+    public Double getMonto() {
         return monto;
     }
 
     @XmlElement
-    public void setMonto(int monto) {
+    public void setMonto(Double monto) {
         this.monto = monto;
     }
 
@@ -44,5 +44,18 @@ public class Facturacion {
                 ", moneda=" + moneda +
                 ", cuotas=" + cuotas +
                 '}';
+    }
+
+    public boolean monedaSoportada() {
+        boolean esSoportada = false;
+        int moneda = this.getMoneda();
+
+        String monedaSoportada = Constantes.tipoMoneda.get(moneda);
+
+        if (monedaSoportada != null) {
+            esSoportada = true;
+        }
+
+        return esSoportada;
     }
 }

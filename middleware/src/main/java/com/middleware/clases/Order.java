@@ -85,4 +85,46 @@ public class Order {
                 ", items=" + items.toString() +
                 '}';
     }
+
+    public boolean esValida() {
+        boolean monedaSoporta = this.monedaSoportada();
+        boolean montoValido = this.montoValido();
+
+        return monedaSoporta && montoValido;
+    }
+
+    public void validar() throws Exception {
+        if (!this.monedaSoportada()) {
+            throw new Exception("La moneda no es soportada.");
+        }
+
+        if (!this.montoValido()) {
+            throw new Exception("El monto no es valido.");
+        }
+    }
+
+    public boolean monedaSoportada() {
+        return this.getFacturacion().monedaSoportada();
+    }
+
+    public boolean montoValido() {
+        Double costoItems = this.costoItems();
+        Double montoOrden = this.getMontoOrden();
+
+        return Double.compare(costoItems, montoOrden) == 0;
+    }
+
+    public Double costoItems() {
+        Double costo = 0.;
+
+        for (Item item: this.getItems()) {
+            costo += item.getPrecioTotal();
+        }
+
+        return costo;
+    }
+
+    public Double getMontoOrden() {
+        return this.getFacturacion().getMonto();
+    }
 }

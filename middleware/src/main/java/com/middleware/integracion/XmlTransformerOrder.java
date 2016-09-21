@@ -1,6 +1,7 @@
 package com.middleware.integracion;
 
 import com.middleware.clases.Order;
+import com.middleware.clases.OrderMessage;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -9,17 +10,34 @@ import java.io.StringReader;
 
 public class XmlTransformerOrder {
 
-    public Order transform(String xml) throws JAXBException {
+    public OrderMessage transform(String xml) {
+        OrderMessage orderMessage = new OrderMessage();
+        Order order = null;
+
+        try {
+            order = jaxCast(xml);
+        } catch (JAXBException e) {
+            orderMessage.setEsValida(false);
+            orderMessage.setRazonInvalida("Error de sintaxis del XML");
+        }
+
+        if (order != null) {
+            orderMessage.setEsValida(true);
+            orderMessage.setOrder(order);
+        }
+
+        System.out.println(orderMessage);
+
+        return orderMessage;
+    }
+
+    private Order jaxCast(String xml) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(Order.class);
 
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
         StringReader stringReader = new StringReader(xml);
 
-        Order order = (Order) jaxbUnmarshaller.unmarshal(stringReader);
-
-        System.out.println(order.toString());
-
-        return order;
+        return (Order) jaxbUnmarshaller.unmarshal(stringReader);
     }
 }
