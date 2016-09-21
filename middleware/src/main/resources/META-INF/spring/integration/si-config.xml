@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration
 		http://www.springframework.org/schema/integration/spring-integration.xsd
         http://www.springframework.org/schema/integration/jms
-        http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd"
+        http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+        http://www.springframework.org/schema/integration/xml
+        http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd"
 >
 
     <!-- Definicion de canales -->
@@ -17,11 +20,16 @@
     <int:channel id="invalidOrders"/>
     <int:channel id="validOrders"/>
     <int:channel id="items"/>
+    <int:channel id="itemsXml"/>
+    <int:channel id="datos"/>
+    <int:channel id="telefonia"/>
+    <int:channel id="strawberry"/>
 
     <!-- Definicion de componentes de integracion -->
     <bean id="xmlToOrder" class="com.middleware.integracion.XmlTransformerOrder" />
     <bean id="validateOrder" class="com.middleware.integracion.ValidateRouter" />
     <bean id="itemSplitter" class="com.middleware.integracion.ItemSplitter" />
+    <bean id="itemToXml" class="com.middleware.integracion.ItemTransformerXml" />
     <bean id="loggerEndpoint" class="com.middleware.integracion.LoggerEndpoint" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
@@ -55,6 +63,20 @@
 
     <int:splitter input-channel="validOrders" ref="itemSplitter" method="split" output-channel="items"/>
 
+    <!-- transforma items pojo a xmlo -->
+    <int:transformer ref="itemToXml" output-channel="itemsXml"
+                     input-channel="items" method="transform">
+    </int:transformer>
+
+    <int-xml:xpath-router id="categoryRouter" input-channel="itemsXml">
+        <int-xml:xpath-expression expression="/item/categoria/text()"/>
+        <int-xml:mapping value="1" channel="datos"/>
+        <int-xml:mapping value="2" channel="telefonia"/>
+        <int-xml:mapping value="3" channel="strawberry"/>
+    </int-xml:xpath-router>
+
     <!-- Solo para testing mientras no terminemos el flujo -->
-    <int:service-activator input-channel="items" ref="loggerEndpoint" method="logMessage"/>
+    <int:service-activator input-channel="datos" ref="loggerEndpoint" method="logMessage"/>
+    <int:service-activator input-channel="telefonia" ref="loggerEndpoint" method="logMessage"/>
+    <int:service-activator input-channel="strawberry" ref="loggerEndpoint" method="logMessage"/>
 </beans>

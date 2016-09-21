@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 public class LoggerEndpoint {
     private static final Logger logger = LogManager.getLogger("LoggerEndpoint");
 
-    public void logMessage(ItemMessage itemMessage) {
-        logger.debug(itemMessage);
+    public void logMessage(Object object) {
+        logger.debug(object);
     }
 }
 
