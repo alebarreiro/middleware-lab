@@ -16,7 +16,7 @@ public class ItemSplitter {
         List<ItemMessage> itemMessages = new ArrayList<>();
         Order order = orderMessage.getOrder();
         long idCliente = order.getIdCliente();
-        long idOrden = order.getIdCliente();
+        long idOrden = order.getId();
 
         for (Item item: orderMessage.getOrder().getItems()) {
             ItemMessage itemMessage = new ItemMessage();

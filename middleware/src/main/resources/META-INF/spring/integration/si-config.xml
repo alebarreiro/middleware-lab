@@ -4,14 +4,13 @@
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
        xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/integration
-		http://www.springframework.org/schema/integration/spring-integration.xsd
-        http://www.springframework.org/schema/integration/jms
-        http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
-        http://www.springframework.org/schema/integration/xml
-        http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd"
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+        http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
+        http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd"
 >
 
     <!-- Definicion de canales -->
@@ -68,6 +67,7 @@
                      input-channel="items" method="transform">
     </int:transformer>
 
+    <!-- routea dependiendo de la categoria -->
     <int-xml:xpath-router id="categoryRouter" input-channel="itemsXml">
         <int-xml:xpath-expression expression="/item/categoria/text()"/>
         <int-xml:mapping value="1" channel="datos"/>
@@ -75,8 +75,29 @@
         <int-xml:mapping value="3" channel="strawberry"/>
     </int-xml:xpath-router>
 
-    <!-- Solo para testing mientras no terminemos el flujo -->
-    <int:service-activator input-channel="datos" ref="loggerEndpoint" method="logMessage"/>
+    <!-- guarda en la base de datos utillizando xpath para obtener los valores de los xml del canal datos -->
+    <int-jdbc:outbound-channel-adapter
+            query="insert into public.orders (clientId, productId, quantity, orderId, itemId)
+                values (:clientId, :productId, :quantity, :orderId, :itemId)"
+            data-source="postgresDs"
+            channel="datos"
+            sql-parameter-source-factory="spelXpath"/>
+
+    <!-- se utiliza xpath para obtener los valores de los item xml a insertar en la base -->
+    <bean id="spelXpath"
+          class="org.springframework.integration.jdbc.ExpressionEvaluatingSqlParameterSourceFactory">
+        <property name="parameterExpressions">
+            <map>
+                <entry key="clientId" value="#xpath(payload, '/item/id-cliente/text()', 'number')" />
+                <entry key="productId" value="#xpath(payload, '/item/id-producto/text()', 'number')" />
+                <entry key="quantity" value="#xpath(payload, '/item/cantidad/text()', 'number')" />
+                <entry key="orderId" value="#xpath(payload, '/item/id-orden/text()', 'number')" />
+                <entry key="itemId" value="#xpath(payload, 'string(/item/@id)', 'number')" />
+            </map>
+        </property>
+    </bean>
+
+    <!-- Solo para testing mientras no terminemos el flujo, Borrar al usar alguno de estos canales!-->
     <int:service-activator input-channel="telefonia" ref="loggerEndpoint" method="logMessage"/>
     <int:service-activator input-channel="strawberry" ref="loggerEndpoint" method="logMessage"/>
 </beans>

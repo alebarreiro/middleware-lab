@@ -16,6 +16,9 @@ public class MiddlewareApplication {
 		logger.error("Test");
 
 		ApplicationContext context =
-				new ClassPathXmlApplicationContext("/META-INF/spring/integration/si-config.xml");
+				new ClassPathXmlApplicationContext(
+						"/META-INF/spring/integration/si-config.xml",
+						"/META-INF/spring/integration/datasource.xml"
+				);
 	}
 }
