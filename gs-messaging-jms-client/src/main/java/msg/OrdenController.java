@@ -18,20 +18,15 @@ public class OrdenController {
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public void test (@RequestBody Item item) {
 
-
-        System.out.println(item.getNombre());
-        System.out.println(item.getCategoria());
-
-
     }
 
     @RequestMapping(value = "/items", method = RequestMethod.GET, produces = "application/json")
     public List<Item> items () {
         List<Item> items = new ArrayList<>();
 
-        items.add(new Item(1, "cat 1"));
-        items.add(new Item(2, "cat 2"));
-        items.add(new Item(3, "cat 3"));
+        items.add(new Item(1,1,0,20, "Item de categoria 1"));
+        items.add(new Item(2,2,0,50, "Item de categoria 2"));
+        items.add(new Item(3,3,0,100, "Item de categoria 3"));
 
         return items;
     }

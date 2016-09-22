@@ -7,7 +7,7 @@ public class Item {
 
     private long id;
     private int categoria;
-    private int catnidad;
+    private int cantidad;
     private double precio;
     private String descripcion;
 
@@ -15,10 +15,10 @@ public class Item {
     public Item() {}
 
 
-    public Item(long id, int categoria, int catnidad, double precio, String descripcion) {
+    public Item(long id, int categoria, int cantidad, double precio, String descripcion) {
         this.id = id;
         this.categoria = categoria;
-        this.catnidad = catnidad;
+        this.cantidad = cantidad;
         this.precio = precio;
         this.descripcion = descripcion;
     }
@@ -39,12 +39,12 @@ public class Item {
         this.categoria = categoria;
     }
 
-    public int getCatnidad() {
-        return catnidad;
+    public int getcantidad() {
+        return cantidad;
     }
 
-    public void setCatnidad(int catnidad) {
-        this.catnidad = catnidad;
+    public void setcantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public double getPrecio() {

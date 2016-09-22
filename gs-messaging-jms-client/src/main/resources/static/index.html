@@ -10,9 +10,96 @@
     <script src="app.js"></script>
 </head>
 <body>
+
+<div class="container">
+
+    <h1> INCO Telecomunications  </h1>
+
+    <div class="input-group" style="margin-left: 40px">
+        <label>User ID: </label>
+        <input type="text" class="form-control" id="user-id" >
+    </div>
+
     <div id="item-list-container" class="row">
 
     </div>
+
+    <div id="order-list-container" class="row">
+
+    </div>
+
+</div>
+
+    <!-- Order list template -->
+    <script id="order-list" type="text/x-template">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <th>Item id</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </thead>
+                <tbody>
+                    {{#orderItems}}
+                    {{>orderItem}}
+                    {{/orderItems}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h2> Confirmar orden de compra </h2>
+            <form>
+
+                <select class="form-control" id="formaPago">
+                    <option value="-1">Seleccione forma de pago</option>
+                    <option value="E">Efectivo</option>
+                    <option value="C">Cheque</option>
+                    <option value="D">Debito</option>
+                    <option value="X">Credito</option>
+                </select>
+
+                <select class="form-control" id="payments">
+                    <option value="-1">Seleccione cuotas</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="7">6</option>
+                    <option value="8">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+
+                <select class="form-control" id="moneda">
+                    <option value="-1">Seleccione moneda</option>
+                    <option value="858">Pesos</option>
+                    <option value="840">Dolares</option>
+                </select>
+
+                <div class="form-group">
+                    <label class="sr-only" for="precioTotal">Precio</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="text" class="form-control" id="precioTotal" placeholder="Amount">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirmar orden</button>
+            </form>
+        </div>
+    </script>
+
+    <!-- Item table template -->
+    <script id="item-table-row" type="text/x-template" >
+        <tr>
+            <th> {{id}}       </th>
+            <th> {{precio}}   </th>
+            <th> {{cantidad}} </th>
+        </tr>
+    </script>
+
 
     <!-- Item list template -->
     <script id="item-list" type="text/x-template">
@@ -24,15 +111,16 @@
     <!-- Item template -->
     <script id="item" type="text/x-template" >
         <div class="col-md-3 well" style="margin: 20px">
-            <h2>{{nombre}}</h2>
+            <h2>{{descripcion}}</h2>
             <p> Categoría: {{categoria}}</p>
+            <p> Precio: {{precio}} </p>
+            <p> Id producto: {{id}} </p>
             <div class="input-group">
                 <label>Cantidad: </label>
-                <input type="text" class="form-control" >
+                <input type="text" class="form-control" id="cantidad-prod-{{id}}">
             </div>
-            <button class="btn"> Agregar al carrito </button>
+            <button class="btn btn-info" onclick="agregarCarrito({{id}})"> Agregar al carrito </button>
         </div>
     </script>
-
 </body>
 </html>
