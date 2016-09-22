@@ -1,4 +1,4 @@
-package msg;
+package msg.dto;
 
 /**
  * Created by alejandrobarreiro on 21/9/16.

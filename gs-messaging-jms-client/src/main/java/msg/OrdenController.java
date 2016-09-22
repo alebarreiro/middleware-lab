@@ -1,16 +1,13 @@
 package msg;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import msg.dto.Item;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
 
-import javax.jms.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class OrdenController {
@@ -28,10 +25,15 @@ public class OrdenController {
 
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
-    public String testGet () {
-        System.out.println("TEST GET");
-        return new String("texto");
+    @RequestMapping(value = "/items", method = RequestMethod.GET, produces = "application/json")
+    public List<Item> items () {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new Item(1, "cat 1"));
+        items.add(new Item(2, "cat 2"));
+        items.add(new Item(3, "cat 3"));
+
+        return items;
     }
 
 }

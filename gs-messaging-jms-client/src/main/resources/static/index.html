@@ -4,37 +4,28 @@
     <title>Middleware</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="mustache.min.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
-<a href="/items">See items</a>
+    <div id="item-list-container">
+
+    </div>
+
+    <!-- Item list template -->
+    <script id="item-list" type="text/x-template">
+        {{#items}}
+        {{>item}}
+        {{/items}}
+    </script>
+
+    <!-- Item template -->
+    <script id="item" type="text/x-template">
+        <div class="item">
+            <p> Categoría: {{categoria}}</p>
+            <p> Nombre: {{nombre}} </p>
+        </div>
+    </script>
+
 </body>
 </html>
-
-
-<script>
-
-    console.log('HOLA MUNOD');
-
-    $.get("/test", function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-
-    var dataj = {
-        categoria: 1,
-        nombre: "test"
-    };
-
-    $.ajax({
-        url:'test',
-        type:"POST",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(dataj), //Stringified Json Object
-        async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
-        cache: false,    //This will force requested pages not to be cached by the browser
-        processData:false, //To avoid making query String instead of JSON
-        success: function(resposeJsonObject){
-            console.log(resposeJsonObject)
-        }
-    });
-
-</script>
