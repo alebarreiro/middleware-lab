@@ -5,22 +5,30 @@ package msg.dto;
  */
 public class Item {
 
-    public String nombre;
-    public int categoria;
+    private long id;
+    private int categoria;
+    private int catnidad;
+    private double precio;
+    private String descripcion;
+
 
     public Item() {}
 
-    public Item(int categoria, String nombre) {
+
+    public Item(long id, int categoria, int catnidad, double precio, String descripcion) {
+        this.id = id;
         this.categoria = categoria;
-        this.nombre = nombre;
+        this.catnidad = catnidad;
+        this.precio = precio;
+        this.descripcion = descripcion;
     }
 
-    public String getNombre() {
-        return nombre;
+    public long getId() {
+        return id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getCategoria() {
@@ -29,5 +37,29 @@ public class Item {
 
     public void setCategoria(int categoria) {
         this.categoria = categoria;
+    }
+
+    public int getCatnidad() {
+        return catnidad;
+    }
+
+    public void setCatnidad(int catnidad) {
+        this.catnidad = catnidad;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
