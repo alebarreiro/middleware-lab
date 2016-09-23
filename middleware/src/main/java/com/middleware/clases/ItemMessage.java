@@ -1,12 +1,15 @@
 package com.middleware.clases;
 
+import java.util.Date;
+
 /**
  * Created by acabrera on 9/19/16.
  */
 public class ItemMessage {
     private Item item;
-    private Long idCliente;
-    private Long idOrden;
+    private long idCliente;
+    private long idOrden;
+    private Date fechaCreaction;
 
     public Item getItem() {
         return item;
@@ -16,20 +19,28 @@ public class ItemMessage {
         this.item = item;
     }
 
-    public Long getIdCliente() {
+    public long getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(long idCliente) {
         this.idCliente = idCliente;
     }
 
-    public Long getIdOrden() {
+    public long getIdOrden() {
         return idOrden;
     }
 
-    public void setIdOrden(Long idOrden) {
+    public void setIdOrden(long idOrden) {
         this.idOrden = idOrden;
+    }
+
+    public Date getFechaCreaction() {
+        return fechaCreaction;
+    }
+
+    public void setFechaCreaction(Date fechaCreaction) {
+        this.fechaCreaction = fechaCreaction;
     }
 
     @Override
@@ -38,6 +49,7 @@ public class ItemMessage {
                 "item=" + item +
                 ", idCliente=" + idCliente +
                 ", idOrden=" + idOrden +
+                ", fechaCreaction=" + fechaCreaction +
                 '}';
     }
 }

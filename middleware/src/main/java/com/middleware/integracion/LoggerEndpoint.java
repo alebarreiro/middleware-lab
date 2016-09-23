@@ -1,6 +1,5 @@
 package com.middleware.integracion;
 
-import com.middleware.clases.ItemMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

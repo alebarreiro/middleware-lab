@@ -4,28 +4,28 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Item {
-    private Long id;
-    private Long idProducto;
+    private long id;
+    private long idProducto;
     private int categoria;
     private String descripcionProducto;
-    private Integer cantidad;
-    private Double precio;
+    private int cantidad;
+    private double precio;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
     @XmlAttribute
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getIdProducto() {
+    public long getIdProducto() {
         return idProducto;
     }
 
     @XmlElement(name = "id-producto")
-    public void setIdProducto(Long idProducto) {
+    public void setIdProducto(long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -47,21 +47,21 @@ public class Item {
         this.descripcionProducto = descripcionProducto;
     }
 
-    public Integer getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
     @XmlElement
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Double getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
     @XmlElement
-    public void setPrecio(Double precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
@@ -77,7 +77,7 @@ public class Item {
                 '}';
     }
 
-    public Double getPrecioTotal() {
+    public double getPrecioTotal() {
         return this.getCantidad() * this.getPrecio();
     }
 }
