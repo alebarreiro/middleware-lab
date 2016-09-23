@@ -49,9 +49,9 @@ function agregarCarrito(prodId) {
     if (!item) {
         alert('item no encontrado')
     } else {
+        //No contempla items repetidos (ya agregados)
         item.cantidad = cantProd;
         app.order.items.push(item);
-        alert('item ' + prodId + ' agregado al carrito con cantidad ' + cantProd);
     }
 
     console.log(app.order);
@@ -84,3 +84,29 @@ function calcularTotal() {
     $('#precioTotal').val(total)
     return total;
 }
+
+function confirmarOrden() {
+
+    app.order.numero = Date.now();
+    app.order.fecha = new Date();
+    app.order.clientId = parseInt($('#user-id').val());
+    app.order.formaPago = $("#formaPago").val()
+    app.order.moneda = parseInt($("#moneda").val());
+    app.order.cuotas = parseInt($("#payments").val());
+
+    console.log('SUBMIT ORDER', app.order);
+
+    $.ajax({
+        url:'orden',
+        type:"POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(app.order),
+        async: false,
+        cache: false,
+        processData:false,
+        success: function(resposeJsonObject){
+            alert('ORDER CREADA!');
+            console.log(resposeJsonObject)
+        }
+    });
+};

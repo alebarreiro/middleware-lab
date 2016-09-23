@@ -1,12 +1,14 @@
 package msg;
 
 import msg.dto.Item;
+import msg.dto.Order;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,8 +17,10 @@ public class OrdenController {
     public OrdenController() {
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public void test (@RequestBody Item item) {
+    @RequestMapping(value = "/orden", method = RequestMethod.POST)
+    public void test (@RequestBody Order order) {
+
+        order.printOrder();
 
     }
 

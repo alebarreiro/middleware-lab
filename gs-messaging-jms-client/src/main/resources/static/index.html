@@ -49,7 +49,7 @@
 
         <div class="col-md-6">
             <h2> Confirmar orden de compra </h2>
-            <form>
+            <form id="orderForm" action="">
 
                 <select class="form-control" id="formaPago">
                     <option value="-1">Seleccione forma de pago</option>
@@ -86,7 +86,7 @@
                         <input type="text" class="form-control" id="precioTotal" placeholder="Amount">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Confirmar orden</button>
+                <button onclick="confirmarOrden()" class="btn btn-primary">Confirmar orden</button>
             </form>
         </div>
     </script>
