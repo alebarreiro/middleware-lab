@@ -1,96 +1,107 @@
 package msg.dto;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+
+@XmlRootElement
 public class Order {
+    private long id;
+    private Date fechaCreacion;
+    private long idCliente;
+    private String formaPago;
 
-    //Orden
-    private long numero;
-    private Date fecha;
-    private long clientId;
-    private String formaPago; //E = Efectivo, C = Cheque, D = Debito, X = Crédito
+    private Facturacion facturacion;
 
-    //Facturacion
-    private int moneda; //858 = pesos, 840 = dolares
-    private int cuotas; //1 efectivo, cheque o debito, N para credito
+    private List<Item> items = new ArrayList<>();
 
-    //Items*
-    private List<Item> Items;
+    public Order () {}
 
-    public void Order () {}
-
-
-    public long getNumero() {
-        return numero;
+    public long getId() {
+        return id;
     }
 
-    public void setNumero(long numero) {
-        this.numero = numero;
+    @XmlAttribute
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    @XmlElement(name = "fecha-creacion")
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public long getClientId() {
-        return clientId;
+    public long getIdCliente() {
+        return idCliente;
     }
 
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
+    @XmlElement(name = "id-cliente")
+    public void setIdCliente(long idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getFormaPago() {
         return formaPago;
     }
 
+    @XmlElement(name = "forma-pago")
     public void setFormaPago(String formaPago) {
         this.formaPago = formaPago;
     }
 
-    public int getMoneda() {
-        return moneda;
+    public Facturacion getFacturacion() {
+        return facturacion;
     }
 
-    public void setMoneda(int moneda) {
-        this.moneda = moneda;
-    }
-
-    public int getCuotas() {
-        return cuotas;
-    }
-
-    public void setCuotas(int cuotas) {
-        this.cuotas = cuotas;
+    @XmlElement
+    public void setFacturacion(Facturacion facturacion) {
+        this.facturacion = facturacion;
     }
 
     public List<Item> getItems() {
-        return Items;
+        return items;
     }
 
+    @XmlElementWrapper(name = "items")
+    @XmlElement(name = "item")
     public void setItems(List<Item> items) {
-        Items = items;
+        this.items = items;
     }
 
-    public void printOrder() {
-        System.out.println("Moneda: " + this.moneda);
-        System.out.println("Forma de pago: " + this.formaPago);
-        System.out.println("Cuotas: " + this.cuotas);
-        System.out.println("Client ID: " + this.clientId);
-        System.out.println("Fecha: " + this.fecha);
-        System.out.println("Numero de orden: " + this.numero);
 
-        System.out.println("Items: ");
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", fechaCreacion=" + fechaCreacion +
+                ", idCliente=" + idCliente +
+                ", formaPago='" + formaPago + '\'' +
+                ", facturacion=" + facturacion.toString() +
+                ", items=" + items.toString() +
+                '}';
+    }
 
 
-        for (int i = 0; i < this.Items.size(); i++) {
-            Item item = this.Items.get(i);
-            item.printItem();
+    public Double costoItems() {
+        Double costo = 0.;
+
+        for (Item item: this.getItems()) {
+            costo += item.getPrecioTotal();
         }
+
+        return costo;
+    }
+
+    public Double getMontoOrden() {
+        return this.getFacturacion().getMonto();
     }
 }
