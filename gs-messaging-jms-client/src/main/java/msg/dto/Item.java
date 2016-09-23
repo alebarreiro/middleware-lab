@@ -62,4 +62,10 @@ public class Item {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public void printItem() {
+        System.out.println("Id: " + this.id);
+        System.out.println("Categoria: " + this.categoria);
+        System.out.println("Descripcion: " + this.descripcion);
+    }
 }
