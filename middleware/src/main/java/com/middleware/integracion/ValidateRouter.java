@@ -28,10 +28,10 @@ public class ValidateRouter {
     }
 
     private String routeToInvalid() {
-        return "invalidOrders";
+        return "invalidOrdersChannel";
     }
 
     private String routeToValid() {
-        return "validOrders";
+        return "validOrdersChannel";
     }
 }

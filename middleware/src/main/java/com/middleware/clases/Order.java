@@ -11,19 +11,19 @@ import java.util.List;
 
 @XmlRootElement
 public class Order {
-    private Long id;
+    private long id;
     private Date fechaCreacion;
-    private Long idCliente;
+    private long idCliente;
     private String formaPago;
     private Facturacion facturacion;
     private List<Item> items = new ArrayList<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
     @XmlAttribute
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -36,12 +36,12 @@ public class Order {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Long getIdCliente() {
+    public long getIdCliente() {
         return idCliente;
     }
 
     @XmlElement(name = "id-cliente")
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -108,14 +108,14 @@ public class Order {
     }
 
     public boolean montoValido() {
-        Double costoItems = this.costoItems();
-        Double montoOrden = this.getMontoOrden();
+        double costoItems = this.costoItems();
+        double montoOrden = this.getMontoOrden();
 
         return Double.compare(costoItems, montoOrden) == 0;
     }
 
-    public Double costoItems() {
-        Double costo = 0.;
+    public double costoItems() {
+        double costo = 0.;
 
         for (Item item: this.getItems()) {
             costo += item.getPrecioTotal();
@@ -124,7 +124,7 @@ public class Order {
         return costo;
     }
 
-    public Double getMontoOrden() {
+    public double getMontoOrden() {
         return this.getFacturacion().getMonto();
     }
 }

@@ -3,23 +3,26 @@ package com.middleware.clases;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 @XmlRootElement(name = "item")
 public class ProcessableItem {
-    private Long id;
+    private long id;
     private int categoria;
-    private Long idProducto;
+    private long idProducto;
     private String descripcionProducto;
-    private Integer cantidad;
-    private Long idCliente;
-    private Long idOrden;
+    private int cantidad;
+    private long idCliente;
+    private long idOrden;
+    private Date fechaCreacion;
 
     public ProcessableItem() {}
 
-    public ProcessableItem(Item item, Long idCliente, Long idOrden) {
+    public ProcessableItem(Item item, long idCliente, long idOrden, Date fechaCreacion) {
         fillFromItem(item);
         this.idCliente = idCliente;
         this.idOrden = idOrden;
+        this.fechaCreacion = fechaCreacion;
     }
 
     private void fillFromItem(Item item) {
@@ -30,21 +33,21 @@ public class ProcessableItem {
         this.categoria = item.getCategoria();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
     @XmlAttribute
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getIdProducto() {
+    public long getIdProducto() {
         return idProducto;
     }
 
     @XmlElement(name = "id-producto")
-    public void setIdProducto(Long idProducto) {
+    public void setIdProducto(long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -57,30 +60,30 @@ public class ProcessableItem {
         this.descripcionProducto = descripcionProducto;
     }
 
-    public Integer getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
     @XmlElement
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Long getIdCliente() {
+    public long getIdCliente() {
         return idCliente;
     }
 
     @XmlElement(name = "id-cliente")
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(long idCliente) {
         this.idCliente = idCliente;
     }
 
-    public Long getIdOrden() {
+    public long getIdOrden() {
         return idOrden;
     }
 
     @XmlElement(name = "id-orden")
-    public void setIdOrden(Long idOrden) {
+    public void setIdOrden(long idOrden) {
         this.idOrden = idOrden;
     }
 
@@ -93,15 +96,26 @@ public class ProcessableItem {
         this.categoria = categoria;
     }
 
+    @XmlElement(name = "fecha-creacion")
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
     @Override
     public String toString() {
         return "ProcessableItem{" +
                 "id=" + id +
+                ", categoria=" + categoria +
                 ", idProducto=" + idProducto +
                 ", descripcionProducto='" + descripcionProducto + '\'' +
                 ", cantidad=" + cantidad +
                 ", idCliente=" + idCliente +
                 ", idOrden=" + idOrden +
+                ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
 }

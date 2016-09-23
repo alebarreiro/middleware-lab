@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlElement;
  * Created by acabrera on 9/18/16.
  */
 public class Facturacion {
-    private Double monto;
+    private double monto;
     private int moneda;
     private int cuotas;
 
-    public Double getMonto() {
+    public double getMonto() {
         return monto;
     }
 
     @XmlElement
-    public void setMonto(Double monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 

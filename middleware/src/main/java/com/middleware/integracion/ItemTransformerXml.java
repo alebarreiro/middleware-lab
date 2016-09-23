@@ -1,8 +1,6 @@
 package com.middleware.integracion;
 
-import com.middleware.clases.Item;
 import com.middleware.clases.ItemMessage;
-import com.middleware.clases.OrderMessage;
 import com.middleware.clases.ProcessableItem;
 import com.middleware.util.JaxbContext;
 
@@ -14,7 +12,6 @@ import java.io.StringWriter;
 public class ItemTransformerXml {
 
     public String transform(ItemMessage itemMessage) {
-        OrderMessage orderMessage = new OrderMessage();
         String itemXml = null;
 
         try {
@@ -36,7 +33,8 @@ public class ItemTransformerXml {
         ProcessableItem processableItem = new ProcessableItem(
                 itemMessage.getItem(),
                 itemMessage.getIdCliente(),
-                itemMessage.getIdOrden()
+                itemMessage.getIdOrden(),
+                itemMessage.getFechaCreaction()
         );
 
         jaxbUnmarshaller.marshal(processableItem, stringWriter);
