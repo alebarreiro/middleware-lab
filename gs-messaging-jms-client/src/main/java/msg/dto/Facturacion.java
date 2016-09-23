@@ -3,18 +3,18 @@ package msg.dto;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Facturacion {
-    private Double monto;
+    private double monto;
     private int moneda;
     private int cuotas;
 
     public Facturacion() {}
 
-    public Double getMonto() {
+    public double getMonto() {
         return monto;
     }
 
     @XmlElement
-    public void setMonto(Double monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 
