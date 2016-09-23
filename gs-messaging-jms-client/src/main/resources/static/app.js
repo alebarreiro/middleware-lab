@@ -93,7 +93,8 @@ function confirmarOrden() {
     app.order.formaPago = $("#formaPago").val();
     app.order.facturacion = {
         moneda : parseInt($("#moneda").val()),
-        cuotas : parseInt($("#payments").val())
+        cuotas : parseInt($("#payments").val()),
+        monto  : $('#precioTotal').val()
     };
 
 
