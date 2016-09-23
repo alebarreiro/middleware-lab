@@ -1,4 +1,4 @@
-package msg;
+package msg.util;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -9,7 +9,7 @@ public class JmsController {
 
     public void JmsController() {}
 
-    public void sendMsg () {
+    public void sendMsg (String orderXml) {
 
         try {
             // Create a ConnectionFactory
@@ -23,18 +23,17 @@ public class JmsController {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             // Create the destination (Topic or Queue)
-            Destination destination = session.createQueue("TEST.FOO");
+            Destination destination = session.createQueue("orders");
 
             // Create a MessageProducer from the Session to the Topic or Queue
             MessageProducer producer = session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // Create a messages
-            String text = "TEST MANDAR MSJ CON WEB";
-            TextMessage message = session.createTextMessage(text);
+            TextMessage message = session.createTextMessage(orderXml);
 
             // Tell the producer to send the message
-            System.out.println("Sent message: " + text);
+            System.out.println("Sent message: " + orderXml);
             producer.send(message);
 
             // Clean up
