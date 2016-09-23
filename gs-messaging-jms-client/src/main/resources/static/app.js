@@ -87,12 +87,15 @@ function calcularTotal() {
 
 function confirmarOrden() {
 
-    app.order.numero = Date.now();
-    app.order.fecha = new Date();
-    app.order.clientId = parseInt($('#user-id').val());
-    app.order.formaPago = $("#formaPago").val()
-    app.order.moneda = parseInt($("#moneda").val());
-    app.order.cuotas = parseInt($("#payments").val());
+    app.order.id = Date.now();
+    app.order.fechaCreacion = new Date();
+    app.order.idCliente = parseInt($('#user-id').val());
+    app.order.formaPago = $("#formaPago").val();
+    app.order.facturacion = {
+        moneda : parseInt($("#moneda").val()),
+        cuotas : parseInt($("#payments").val())
+    };
+
 
     console.log('SUBMIT ORDER', app.order);
 

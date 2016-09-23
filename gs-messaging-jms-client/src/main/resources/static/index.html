@@ -94,7 +94,7 @@
     <!-- Item table template -->
     <script id="item-table-row" type="text/x-template" >
         <tr>
-            <th> {{id}}       </th>
+            <th> {{idProducto}}       </th>
             <th> {{precio}}   </th>
             <th> {{cantidad}} </th>
         </tr>
@@ -111,15 +111,15 @@
     <!-- Item template -->
     <script id="item" type="text/x-template" >
         <div class="col-md-3 well" style="margin: 20px">
-            <h2>{{descripcion}}</h2>
+            <h2>{{descripcionProducto}}</h2>
             <p> Categoría: {{categoria}}</p>
             <p> Precio: {{precio}} </p>
-            <p> Id producto: {{id}} </p>
+            <p> Id producto: {{idProducto}} </p>
             <div class="input-group">
                 <label>Cantidad: </label>
-                <input type="text" class="form-control" id="cantidad-prod-{{id}}">
+                <input type="text" class="form-control" id="cantidad-prod-{{idProducto}}">
             </div>
-            <button class="btn btn-info" onclick="agregarCarrito({{id}})"> Agregar al carrito </button>
+            <button class="btn btn-info" onclick="agregarCarrito({{idProducto}})"> Agregar al carrito </button>
         </div>
     </script>
 </body>
