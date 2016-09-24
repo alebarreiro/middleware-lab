@@ -26,9 +26,12 @@
     <jms:listener-container
             container-type="default"
             connection-factory="connectionFactory"
-            acknowledge="auto">
+            acknowledge="auto"
+            concurrency="2">
+
         <jms:listener destination="ordersMobileSys"
                       ref="messageEndpoint"
                       method="onMessage" />
+
     </jms:listener-container>
 </beans>
