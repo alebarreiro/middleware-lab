@@ -131,7 +131,7 @@
     <!-- Lee del canal MobileSys y manda el mensaje a una cola nueva de MobileSys en ActiveMQ -->
     <int-jms:outbound-channel-adapter id="jmsOut"
                                       connection-factory="connectionFactory"
-                                      channel="itemsXmlChannel"
+                                      channel="itemMobileSysChannel"
                                       destination="AMQ:queue:ordersMobileSys">
     </int-jms:outbound-channel-adapter>
 
