@@ -34,7 +34,7 @@ public class ItemTransformerXml {
                 itemMessage.getItem(),
                 itemMessage.getIdCliente(),
                 itemMessage.getIdOrden(),
-                itemMessage.getFechaCreaction()
+                itemMessage.getFechaCreacion()
         );
 
         jaxbUnmarshaller.marshal(processableItem, stringWriter);
