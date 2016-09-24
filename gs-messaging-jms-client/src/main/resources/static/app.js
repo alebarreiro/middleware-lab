@@ -70,19 +70,14 @@ function listarOrder() {
     $('#order-list-container').html(rendered);
 }
 
-function resetOrder() {
-    app.order = {};
-}
-
 function calcularTotal() {
     var total = 0;
 
     app.order.items.forEach(function(item){
         total += item.precio * item.cantidad
-    })
-
+    });
     $('#precioTotal').val(total)
-    return total;
+    return parseFloat(total);
 }
 
 function confirmarOrden() {
@@ -94,12 +89,36 @@ function confirmarOrden() {
     app.order.facturacion = {
         moneda : parseInt($("#moneda").val()),
         cuotas : parseInt($("#payments").val()),
-        monto  : $('#precioTotal').val()
+        monto  : parseFloat($('#precioTotal').val())
     };
-
 
     console.log('SUBMIT ORDER', app.order);
 
+    postOrder()
+};
+
+function randomOrder() {
+    app.items.forEach(function (item) {
+        item.cantidad = 10;
+        app.order.items.push(item)
+    });
+
+    app.order.id = Date.now();
+    app.order.fechaCreacion = new Date();
+    app.order.idCliente = 1;
+    app.order.formaPago = 'E';
+    app.order.facturacion = {
+        moneda : 858,
+        cuotas : 2,
+        monto  : calcularTotal()
+    };
+
+    console.log('SUBMIT ORDER', app.order);
+
+    postOrder()
+}
+
+function postOrder() {
     $.ajax({
         url:'orden',
         type:"POST",
@@ -113,4 +132,4 @@ function confirmarOrden() {
             console.log(resposeJsonObject)
         }
     });
-};
+}
