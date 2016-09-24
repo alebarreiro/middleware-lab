@@ -17,7 +17,7 @@ public class MobileSysMessageListener implements MessageListener {
     public void onMessage(Message message) {
         try {
             TextMessage msg = (TextMessage) message;
-            LOG.info("Consumed message: " + msg.getText());
+            LOG.info("MobileSys consumed message: " + msg.getText());
         } catch (JMSException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

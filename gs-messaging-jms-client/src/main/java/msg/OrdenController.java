@@ -49,11 +49,14 @@ public class OrdenController {
     public List<Item> items () {
         List<Item> items = new ArrayList<>();
 
-
+        //(long id, long idProducto, int categoria, String descripcionProducto, int cantidad, double precio)
 
         items.add(new Item(1,1,1, "Item cat 1", 0, 10.0));
-        items.add(new Item(2,2,2, "Item cat 2", 0, 10.0));
-        items.add(new Item(3,3,3, "Item cat 3", 0, 10.0));
+        items.add(new Item(2,2,2, "Item cat 2", 0, 20.0));
+        items.add(new Item(3,3,3, "Item cat 3", 0, 30.0));
+        items.add(new Item(4,4,1, "DataSys", 0, 1.0));
+        items.add(new Item(5,5,2, "MobileSys", 0, 1.0));
+        items.add(new Item(6,6,3,"Stawberry", 0, 5.0));
 
         return items;
     }

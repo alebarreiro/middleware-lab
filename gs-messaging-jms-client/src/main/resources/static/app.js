@@ -97,7 +97,15 @@ function confirmarOrden() {
     postOrder()
 };
 
+function clearOrder () {
+    app.order = {
+        items: []
+    };
+}
+
 function randomOrder() {
+    clearOrder()
+
     app.items.forEach(function (item) {
         item.cantidad = 10;
         app.order.items.push(item)
@@ -118,6 +126,12 @@ function randomOrder() {
     postOrder()
 }
 
+function stressOrder() {
+    for (var i = 0; i < 1000; i++) {
+        randomOrder()
+    }
+}
+
 function postOrder() {
     $.ajax({
         url:'orden',
@@ -128,7 +142,6 @@ function postOrder() {
         cache: false,
         processData:false,
         success: function(resposeJsonObject){
-            alert('ORDER CREADA!');
             console.log(resposeJsonObject)
         }
     });
