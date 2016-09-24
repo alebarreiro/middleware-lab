@@ -119,6 +119,20 @@
                              xsl-resource="classpath:/META-INF/spring/integration/ms-item-template.xsl"/>
 
     <!-- Solo para testing mientras no terminemos el flujo, Borrar al usar alguno de estos canales!-->
-    <int:service-activator input-channel="itemMobileSysChannel" ref="loggerEndpoint" method="logMessage"/>
+    <!--<int:service-activator input-channel="itemMobileSysChannel" ref="loggerEndpoint" method="logMessage"/>-->
     <int:service-activator input-channel="strawberryChannel" ref="loggerEndpoint" method="logMessage"/>
+
+
+    <!-- crea la cola orders para MobileSys en activeMQ -->
+    <bean id="AMQ:queue:ordersMobileSys" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="ordersMobileSys"/>
+    </bean>
+
+    <!-- Lee del canal MobileSys y manda el mensaje a una cola nueva de MobileSys en ActiveMQ -->
+    <int-jms:outbound-channel-adapter id="jmsOut"
+                                      connection-factory="connectionFactory"
+                                      channel="itemsXmlChannel"
+                                      destination="AMQ:queue:ordersMobileSys">
+    </int-jms:outbound-channel-adapter>
+
 </beans>
