@@ -12,6 +12,8 @@
 
 - Instalar java sdk 1.8
 
+- Instalar [ActiveMQ](http://activemq.apache.org/activemq-5140-release.html) 
+
 - Instalar [sdkman](http://sdkman.io/install.html)
 
 ```{bash}
