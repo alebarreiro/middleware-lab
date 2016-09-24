@@ -12,11 +12,7 @@ import javax.jms.TextMessage;
  */
 public class MobileSysMessageListener implements MessageListener {
 
-    private static final Logger LOG = Logger.getLogger(MobileSysMsgListener.class);
-
-    public void test(Object o) {
-        LOG.debug(o);
-    }
+    private static final Logger LOG = Logger.getLogger(MobileSysMessageListener.class);
 
     public void onMessage(Message message) {
         try {
