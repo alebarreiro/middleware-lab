@@ -5,7 +5,7 @@
   <forma-pago>E</forma-pago>
 
   <facturacion>
-    <monto>305</monto>
+    <monto>425</monto>
     <moneda>858</moneda>
     <cuotas>1</cuotas>
   </facturacion>
@@ -31,6 +31,13 @@
       <descripcion-producto>Neutro</descripcion-producto>
       <cantidad>5</cantidad>
       <precio>10</precio>
+    </item>
+    <item id="11">
+      <id-producto>23</id-producto>
+      <categoria>3</categoria>
+      <descripcion-producto>Nex</descripcion-producto>
+      <cantidad>10</cantidad>
+      <precio>12</precio>
     </item>
   </items>
 </order>
