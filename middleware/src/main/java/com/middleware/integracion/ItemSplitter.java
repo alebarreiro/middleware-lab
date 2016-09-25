@@ -23,7 +23,7 @@ public class ItemSplitter {
             itemMessage.setItem(item);
             itemMessage.setIdCliente(idCliente);
             itemMessage.setIdOrden(idOrden);
-            itemMessage.setFechaCreaction(order.getFechaCreacion());
+            itemMessage.setFechaCreacion(order.getFechaCreacion());
 
             itemMessages.add(itemMessage);
         }

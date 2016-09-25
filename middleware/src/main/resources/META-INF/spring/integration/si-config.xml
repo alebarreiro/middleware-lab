@@ -5,12 +5,16 @@
        xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
        xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
        xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
         http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
         http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
-        http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd"
+        http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+        http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
+        http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream-1.0.xsd"
 >
 
     <!-- Definicion de canales -->
@@ -23,6 +27,8 @@
 
     <!-- ordenes invalidas -->
     <int:channel id="invalidOrdersChannel"/>
+
+    <int-stream:stdout-channel-adapter id="invalidOrdersChannel" append-newline="true"/>
 
     <!-- ordenes validas -->
     <int:channel id="validOrdersChannel"/>
@@ -37,8 +43,13 @@
     <int:channel id="datosChannel"/>
     <int:channel id="telefoniaChannel"/>
     <int:channel id="strawberryChannel"/>
-    
-    
+
+    <int:channel id="aggregatorStrawberryChannel"/>
+    <int:channel id="strawberryChannelResp"/>
+
+    <int-stream:stdout-channel-adapter id="strawberryChannelResp" append-newline="true"/>
+
+    <!-- canales de comunicacion externa -->
     <int:channel id="itemMobileSysChannel"/>
 
     <!-- Definicion de componentes de integracion -->
@@ -47,6 +58,7 @@
     <bean id="itemSplitter" class="com.middleware.integracion.ItemSplitter" />
     <bean id="itemToXml" class="com.middleware.integracion.ItemTransformerXml" />
     <bean id="loggerEndpoint" class="com.middleware.integracion.LoggerEndpoint" />
+    <bean id="aggregatorStrawberry" class="com.middleware.integracion.AggregatorStrawberry" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -118,9 +130,23 @@
     <int-xml:xslt-transformer input-channel="telefoniaChannel" output-channel="itemMobileSysChannel"
                              xsl-resource="classpath:/META-INF/spring/integration/ms-item-template.xsl"/>
 
-    <!-- Solo para testing mientras no terminemos el flujo, Borrar al usar alguno de estos canales!-->
-    <!--<int:service-activator input-channel="itemMobileSysChannel" ref="loggerEndpoint" method="logMessage"/>-->
-    <int:service-activator input-channel="strawberryChannel" ref="loggerEndpoint" method="logMessage"/>
+    <!-- Agregator de items, el webservice de strawberry exige una cantidad minima de items -->
+    <int:aggregator id="AggregatorStrawberry"
+                    input-channel="strawberryChannel" output-channel="aggregatorStrawberryChannel"
+                    method="aggregate" ref="aggregatorStrawberry"
+                    release-strategy="aggregatorStrawberry"
+                    release-strategy-method="shouldRelease"
+                    expire-groups-upon-completion="true"
+                    correlation-strategy-expression="1">
+    </int:aggregator>
+
+    <!-- comunicaciones a sistemas externos -->
+
+    <int-ws:outbound-gateway
+            id="strawberryGateway"
+            request-channel="aggregatorStrawberryChannel"
+            reply-channel="strawberryChannelResp"
+            uri="http://localhost:8080/WebServicesSOAP/SolicitudCompra" />
 
 
     <!-- crea la cola orders para MobileSys en activeMQ -->
@@ -134,5 +160,4 @@
                                       channel="itemMobileSysChannel"
                                       destination="AMQ:queue:ordersMobileSys">
     </int-jms:outbound-channel-adapter>
-
 </beans>

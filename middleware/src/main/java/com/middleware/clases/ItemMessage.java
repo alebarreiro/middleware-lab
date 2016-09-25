@@ -9,7 +9,7 @@ public class ItemMessage {
     private Item item;
     private long idCliente;
     private long idOrden;
-    private Date fechaCreaction;
+    private Date fechaCreacion;
 
     public Item getItem() {
         return item;
@@ -35,12 +35,12 @@ public class ItemMessage {
         this.idOrden = idOrden;
     }
 
-    public Date getFechaCreaction() {
-        return fechaCreaction;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFechaCreaction(Date fechaCreaction) {
-        this.fechaCreaction = fechaCreaction;
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ItemMessage {
                 "item=" + item +
                 ", idCliente=" + idCliente +
                 ", idOrden=" + idOrden +
-                ", fechaCreaction=" + fechaCreaction +
+                ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
 }
