@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="order">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="fecha-creacion" type="xs:dateTime"/>
+                <xs:element name="id-cliente" type="xs:long" minOccurs="0"/>
+                <xs:element name="forma-pago" type="xs:string"/>
+
+                <xs:element name="facturacion">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="monto" type="xs:double"/>
+                            <xs:element name="moneda" type="xs:integer" />
+                            <xs:element name="cuotas" type="xs:positiveInteger"/>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="items">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="item" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="id-producto" type="xs:long"/>
+                                        <xs:element name="categoria" type="xs:positiveInteger" minOccurs="0"/>
+                                        <xs:element name="descripcion-producto" type="xs:string"/>
+                                        <xs:element name="cantidad" type="xs:positiveInteger" minOccurs="0"/>
+                                        <xs:element name="precio" type="xs:double"/>
+                                    </xs:all>
+                                    <xs:attribute name="id" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
