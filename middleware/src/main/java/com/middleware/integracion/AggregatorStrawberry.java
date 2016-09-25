@@ -31,7 +31,9 @@ public class AggregatorStrawberry {
 
     public String aggregate(List<String> items) throws IOException, SAXException, ParserConfigurationException, TransformerException, ParseException {
         Document resultDoc = createDoc();
-        Element rootElement = resultDoc.createElement("NotificarCompra");
+        Element rootElement = resultDoc.createElement("mid:NotificarCompra");
+        rootElement.setAttribute("xmlns:mid", "http://middleware/");
+
         resultDoc.appendChild(rootElement);
 
         buildItemsTag(items, rootElement, resultDoc);
