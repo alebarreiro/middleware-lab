@@ -2,10 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
+    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+    http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
@@ -13,10 +15,25 @@
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
                 <property name="brokerURL" value="tcp://localhost:61616"/>
+                <!-- Configuración de politicas de Retry en caso de error -->
+                <property name="redeliveryPolicy" ref="redeliveryPolicy" />
+                <property name="nonBlockingRedelivery" value="true" />
             </bean>
         </property>
         <property name="sessionCacheSize" value="10"/>
         <property name="cacheProducers" value="false"/>
+    </bean>
+
+    <!-- Redelivery: Retry despues de 3,9,..., sec y finalmente envia a la DLQ -->
+    <bean id="redeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <!-- Tiempo de espera para retry's -->
+        <property name="backOffMultiplier" value="3" />
+        <!-- Multiplica x 2 el tiempo entre cada retry 3, 9, ... -->
+        <property name="useExponentialBackOff" value="true" />
+        <!-- Cantidad max de reintentos -->
+        <property name="maximumRedeliveries" value="5" />
+        <!-- Tiempo inicial de espera para retry -->
+        <property name="initialRedeliveryDelay" value="5000" />
     </bean>
 
     <!-- A POJO that implements the JMS message listener -->
