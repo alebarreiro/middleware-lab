@@ -44,10 +44,6 @@
         <property name="initialRedeliveryDelay" value="5000" />
     </bean>
 
-
-    <!-- A POJO that implements the JMS message listener -->
-    <bean id="messageEndpoint" class="com.mobilesys.io.MobileSysMessageListener" />
-
     <!-- Definicion de colas activemq para mobileSys y DLQ -->
     <bean id="mobileSysQueue" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="ordersMobileSys"></constructor-arg>

@@ -65,10 +65,25 @@
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
                 <property name="brokerURL" value="tcp://localhost:61616"/>
+
+                <!-- Configuración de politicas de Retry en caso de error -->
+                <property name="redeliveryPolicy" ref="redeliveryPolicy" />
             </bean>
         </property>
         <property name="sessionCacheSize" value="10"/>
         <property name="cacheProducers" value="false"/>
+    </bean>
+
+    <!-- Redelivery: Retry despues de 3,9,..., sec -->
+    <bean id="redeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <!-- Tiempo de espera para retry's -->
+        <property name="backOffMultiplier" value="3" />
+        <!-- Multiplica x 2 el tiempo entre cada retry 3, 9, ... -->
+        <property name="useExponentialBackOff" value="true" />
+        <!-- Cantidad max de reintentos -->
+        <property name="maximumRedeliveries" value="5" />
+        <!-- Tiempo inicial de espera para retry -->
+        <property name="initialRedeliveryDelay" value="5000" />
     </bean>
 
     <!-- crea la cola orders en activeMQ -->
