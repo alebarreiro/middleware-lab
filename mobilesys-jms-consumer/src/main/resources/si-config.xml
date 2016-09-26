@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jms="http://www.springframework.org/schema/jms"
-       xmlns:amq="http://activemq.apache.org/schema/core"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
        xsi:schemaLocation="
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
-    http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+    http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+    http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-4.1.xsd
+    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+    http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml-4.3.xsd
+    http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream-4.3.xsd">
 
 
-    <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
+
+<!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -24,7 +32,7 @@
         <property name="cacheProducers" value="false"/>
     </bean>
 
-    <!-- Redelivery: Retry despues de 3,9,..., sec y finalmente envia a la DLQ -->
+    <!-- Redelivery: Retry despues de 3,9,..., sec -->
     <bean id="redeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
         <!-- Tiempo de espera para retry's -->
         <property name="backOffMultiplier" value="3" />
@@ -36,19 +44,62 @@
         <property name="initialRedeliveryDelay" value="5000" />
     </bean>
 
+
     <!-- A POJO that implements the JMS message listener -->
     <bean id="messageEndpoint" class="com.mobilesys.io.MobileSysMessageListener" />
 
-    <!-- The Spring message listener container configuration -->
-    <jms:listener-container
-            container-type="default"
-            connection-factory="connectionFactory"
-            acknowledge="auto"
-            concurrency="2">
+    <!-- Definicion de colas activemq para mobileSys y DLQ -->
+    <bean id="mobileSysQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="ordersMobileSys"></constructor-arg>
+    </bean>
 
-        <jms:listener destination="ordersMobileSys"
-                      ref="messageEndpoint"
-                      method="onMessage" />
+    <bean id="deadLetterQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="deadLetterQueue"></constructor-arg>
+    </bean>
 
-    </jms:listener-container>
+    <!-- Mobile Sys Orders Xml -->
+    <int:channel id="mobileSysOrdersChannel"/>
+
+    <!-- Dead Letter Channel -->
+    <int:channel id="deadLetterChannel"/>
+
+    <int-jms:message-driven-channel-adapter channel="mobileSysOrdersChannel"
+                                            concurrent-consumers="2"
+                                            destination-name="ordersMobileSys"/>
+
+    <!-- Dos Message Driven Listeners que compiten y Dead listener-->
+    <bean id="msListener1" class="com.mobilesys.io.MobileSysMessageListener"></bean>
+    <bean id="msListener2" class="com.mobilesys.io.MobileSysMessageListener2"></bean>
+    <bean id="dlcListener" class="com.mobilesys.io.DeadLetterMessageListener"></bean>
+
+    <!--
+        Service activator para los listener beans
+        Agrega soporte para retry y recovery channel (dead letter channel)
+        Retry incial a los 3 segundos, luego exponencialmente. Al finalizar retrys va a DLC
+    -->
+    <int:service-activator input-channel="mobileSysOrdersChannel" ref="msListener1"  method="onMessage">
+        <int:request-handler-advice-chain>
+            <int:retry-advice max-attempts="3" recovery-channel="deadLetterChannel">
+                <int:exponential-back-off initial="3000" multiplier="3.0" maximum="60000" />
+            </int:retry-advice>
+        </int:request-handler-advice-chain>
+    </int:service-activator>
+
+    <int:service-activator input-channel="mobileSysOrdersChannel" ref="msListener2"  method="onMessage">
+        <int:request-handler-advice-chain>
+            <int:retry-advice max-attempts="3" recovery-channel="deadLetterChannel">
+                <int:exponential-back-off initial="3000" multiplier="3.0" maximum="60000" />
+            </int:retry-advice>
+        </int:request-handler-advice-chain>
+    </int:service-activator>
+
+    <int:service-activator input-channel="deadLetterChannel" ref="dlcListener" method="onMessage"/>
+
+    <!-- Lee del canal DeadLetterChannel y lo deposita en DeadLetterQueue -->
+    <int-jms:outbound-channel-adapter id="jmsOut"
+                                      connection-factory="connectionFactory"
+                                      channel="deadLetterChannel"
+                                      destination="deadLetterQueue">
+    </int-jms:outbound-channel-adapter>
+
 </beans>
