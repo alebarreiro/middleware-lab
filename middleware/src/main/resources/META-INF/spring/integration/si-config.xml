@@ -19,11 +19,15 @@
 
     <!-- Definicion de canales -->
 
-    <!-- ordenes xml -->
+    <!-- ordenes xml sin validar -->
     <int:channel id="rawOrdersChannel"/>
 
-    <!-- ordenes pojo -->
-    <int:channel id="newOrdersChannel"/>
+    <!--ordenes con sintaxis xml validada-->
+    <int:channel id="xmlOrdersChannel"/>
+
+    <!-- canales con mas informacion para procesamiento futuro -->
+    <int:channel id="orderExtendidoChannel"/>
+    <int:channel id="OrdersExtendidoHeaderChannel"/>
 
     <!-- ordenes invalidas -->
     <int:channel id="invalidOrdersChannel"/>
@@ -35,10 +39,7 @@
 
     <!-- items splitteados -->
     <int:channel id="itemsChannel"/>
-    
-    <!-- item xml -->
-    <int:channel id="itemsXmlChannel"/>
-    
+
     <!-- canales dependientes de la categoria del item -->
     <int:channel id="datosChannel"/>
     <int:channel id="telefoniaChannel"/>
@@ -53,11 +54,6 @@
     <int:channel id="itemMobileSysChannel"/>
 
     <!-- Definicion de componentes de integracion -->
-    <bean id="xmlToOrder" class="com.middleware.integracion.XmlTransformerOrder" />
-    <bean id="validateOrder" class="com.middleware.integracion.ValidateRouter" />
-    <bean id="itemSplitter" class="com.middleware.integracion.ItemSplitter" />
-    <bean id="itemToXml" class="com.middleware.integracion.ItemTransformerXml" />
-    <bean id="loggerEndpoint" class="com.middleware.integracion.LoggerEndpoint" />
     <bean id="aggregatorStrawberry" class="com.middleware.integracion.AggregatorStrawberry" />
 
     <!-- Crea la coneccion con activeMQ, importante que el id sea connectionFactory -->
@@ -81,30 +77,47 @@
         <int:poller fixed-rate="5000" />
     </int-jms:inbound-channel-adapter>
 
-    <!-- transforma ordenes xml a pojo -->
-    <int:transformer ref="xmlToOrder" output-channel="newOrdersChannel"
-                     input-channel="rawOrdersChannel" method="transform">
-    </int:transformer>
+    <!-- valida el xml de la orden para ver si cumple con el formato especificado en order.xsd -->
+    <int-xml:validating-filter input-channel="rawOrdersChannel"
+                               output-channel="xmlOrdersChannel"
+                               schema-location="classpath:/META-INF/spring/integration/order.xsd"
+                               schema-type="xml-schema"
+                               throw-exception-on-rejection="true"
+                               discard-channel="invalidOrdersChannel" />
 
-    <!-- Rutea a invalidOrdersChannel aquellas ordenes invalidas -->
-    <int:router input-channel="newOrdersChannel" ref="validateOrder" method="routeValid"/>
+    <!--Se agrega informacion de la orden a los items para futuro procesamiento -->
+    <int-xml:xslt-transformer input-channel="xmlOrdersChannel" output-channel="orderExtendidoChannel"
+    xsl-resource="classpath:/META-INF/spring/integration/item-with-order-info.xsl"/>
 
-    <int:splitter input-channel="validOrdersChannel" ref="itemSplitter" method="split" output-channel="itemsChannel"/>
+    <!-- Se agregan headers que permitan validar si la orden es valida o no -->
+    <int-xml:xpath-header-enricher input-channel="orderExtendidoChannel" output-channel="OrdersExtendidoHeaderChannel">
+        <int-xml:header name="MONTO_TOTAL_ITEMS" xpath-expression="sum(/order/items/item/precio-total/text())"/>
+        <int-xml:header name="MONTO_TOTAL_ORDER" xpath-expression="/order/facturacion/monto/text()"/>
+        <int-xml:header name="MONEDA_VALIDA" xpath-expression="/order/facturacion/moneda/text() = 858 or /order/facturacion/moneda/text() = 840"/>
+        <int-xml:header name="MONTO_VALIDO" xpath-expression="sum(/order/items/item/precio-total/text()) = /order/facturacion/monto/text()"/>
+    </int-xml:xpath-header-enricher>
 
-    <!-- transforma items  pojo a xmlo -->
-    <int:transformer ref="itemToXml" output-channel="itemsXmlChannel"
-                     input-channel="itemsChannel" method="transform">
-    </int:transformer>
+    <!-- Se filtran las ordenes invalidas -->
+    <int:filter input-channel="OrdersExtendidoHeaderChannel"
+                expression="headers['MONTO_VALIDO'] and headers['MONEDA_VALIDA']"
+            output-channel="validOrdersChannel" discard-channel="invalidOrdersChannel"/>
 
-    <!-- routea dependiendo de la categoria -->
-    <int-xml:xpath-router id="categoryRouter" input-channel="itemsXmlChannel">
+    <!-- Se esplittean las ordenes en items -->
+    <int-xml:xpath-splitter id="orderItemSplitter"
+                            input-channel="validOrdersChannel"
+                            output-channel="itemsChannel">
+        <int-xml:xpath-expression expression="/order/items/item"/>
+    </int-xml:xpath-splitter>
+
+    <!-- Rutea dependiendo de la categoria -->
+    <int-xml:xpath-router id="categoryRouter" input-channel="itemsChannel">
         <int-xml:xpath-expression expression="/item/categoria/text()"/>
         <int-xml:mapping value="1" channel="datosChannel"/>
         <int-xml:mapping value="2" channel="telefoniaChannel"/>
         <int-xml:mapping value="3" channel="strawberryChannel"/>
     </int-xml:xpath-router>
 
-    <!-- guarda en la base de datosChannel utillizando xpath para obtener los valores de los xml del canal datosChannel -->
+    <!-- guarda en la base de datosChannel utilizando xpath para obtener los valores de los xml del canal datosChannel -->
     <int-jdbc:outbound-channel-adapter
             query="insert into public.orders (clientId, productId, quantity, orderId, itemId)
                 values (:clientId, :productId, :quantity, :orderId, :itemId)"
