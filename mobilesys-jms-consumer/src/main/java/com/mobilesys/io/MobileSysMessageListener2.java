@@ -10,13 +10,13 @@ import javax.jms.TextMessage;
 /**
  * Created by alejandrobarreiro on 24/9/16.
  */
-public class MobileSysMessageListener {
+public class MobileSysMessageListener2  {
 
-    private static final Logger LOG = Logger.getLogger(MobileSysMessageListener.class);
+    private static final Logger LOG = Logger.getLogger(MobileSysMessageListener2.class);
 
     public void onMessage(String message) {
 
-        LOG.info("********* MOBILESYS LISTENER 1 **********: " + message);
+        LOG.info("++++++++++ MOBILESYS LISTENER 2 +++++++++++++: " + message);
 
     }
 }
