@@ -43,7 +43,6 @@ public class SolicitudCompra {
     public String NotificarCompra(@WebParam(name = "items") items[] items)   {
         
             MessageContext messageContext = webServiceContext.getMessageContext();
-
             // get request headers
             Map<?,?> requestHeaders = (Map<?,?>) messageContext.get(MessageContext.HTTP_REQUEST_HEADERS);
             List<?> usernameList = (List<?>) requestHeaders.get("username");
@@ -53,22 +52,26 @@ public class SolicitudCompra {
             String password = "";
 
             if (usernameList != null) {
-                    username = usernameList.get(0).toString();
-            }
+                   
+                username = usernameList.get(0).toString();
+                Logger.getLogger(SolicitudCompra.class.getName()).log(Level.INFO, "Usuario:{0}", username);
+
+            }else{
+                Logger.getLogger(SolicitudCompra.class.getName()).log(Level.WARNING, "Peticion sin usuario");
+            } 
 
             if (passwordList != null) {
                     password = passwordList.get(0).toString();
             }
-            String msg = "OK";
+            String msg = "Se procesaron todos los items correctamente";
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_yy_HH_mm_ss");
             String time = sdf.format(cal.getTime());
             try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("log"+time), "utf-8"))
             ) {
-                if (items.length == 999) {    
+                if (items.length == 1000) {    
                     for (items item : items) {
-                        msg = item.getid_Transaccion(); 
                         writer.write("--------------\n");
                         SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
                         String fecha = fromUser.format(item.getfecha_hora());
@@ -77,10 +80,13 @@ public class SolicitudCompra {
                         writer.write(String.format("Transaccion: %s\n", item.getid_Transaccion()));
                         writer.write(String.format("Fecha: %s\n",fecha));
                         writer.write("--------------\n");
+                        Logger.getLogger(SolicitudCompra.class.getName()).log(Level.INFO,String.format("item[Producto:%d", item.getid_Producto())+","+String.format("Cantidad:%d", item.getcantidad())+","+String.format("Transaccion:%s", item.getid_Transaccion())+","+String.format("Fecha:%s",fecha)+"]");                     
                     }
+                Logger.getLogger(SolicitudCompra.class.getName()).log(Level.INFO, "Se procesaron todos los items correctamente");              
                 }else {
                     writer.write("Error: La coleccion no tiene 1000 elementos");
                     msg = "Error: La coleccion no tiene 1000 elementos";
+                    Logger.getLogger(SolicitudCompra.class.getName()).log(Level.WARNING, msg);                    
                 } 
                 writer.close();
             } catch (IOException ex)
