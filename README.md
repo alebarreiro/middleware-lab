@@ -55,6 +55,8 @@ java -jar build/libs/{proyecto}.jar
 
 ```{bash}
 #Tener ActiveMQ activo en un terminal
+cd apache-activemq-5.14.0/bin 
+./activemq console
 
 #Iniciar Middleware
 cd middleware
@@ -64,11 +66,11 @@ gradle bootRun #Inicia middleware
 cd gs-messaging-jms-client
 gradle bootRun #Inicia tomcat en el puerto 8080
 
-#Iniciar WebService SOAP
+#Iniciar WebService SOAP, deploy en tomcat
 
 #Iniciar Cliente event driven consumer
-
-#Inciar Polling consumer
+cd mobilesys-jms-consumer
+gradle bootRun
 ```
 
 
