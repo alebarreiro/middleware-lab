@@ -146,3 +146,30 @@ function postOrder() {
         }
     });
 }
+
+function superOrderCat3() {
+    clearOrder()
+    
+    var item = findItem(3);
+    item.cantidad = 3;
+    
+    for (var i = 0; i < 1000; i++) {
+        app.order.items.push(item);
+    }
+    
+    app.order.id = Date.now()
+    app.fechaCreacion = Date.now()
+    app.order.idCliente = 1
+    app.order.formaPago = 'E'
+    
+    app.order.facturacion = {
+        monto: calcularTotal(),
+        cuotas: 2,
+        moneda: 858
+    }          
+    
+    console.log(app.order)
+    console.log(app.order.items.length)
+    
+    postOrder()
+}
