@@ -46,7 +46,7 @@ public class AggregatorStrawberry {
     }
 
     private void addFechaHoraTag(Element root, Document targetDoc) {
-        DateFormat df = new SimpleDateFormat("yyyy/mm/dd'T'HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date today = Calendar.getInstance().getTime();
         String reportDate = df.format(today);
 
