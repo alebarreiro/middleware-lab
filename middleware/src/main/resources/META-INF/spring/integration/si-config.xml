@@ -89,7 +89,7 @@
 
     <!-- lee de la cola de activeMQ y deposita en canal de ordenes raw -->
     <int-jms:inbound-channel-adapter id="newOrdersInChannelAdapter" destination="AMQ:queue:orders" channel="rawOrdersChannel">
-        <int:poller fixed-rate="5000" />
+        <int:poller fixed-rate="1000" />
     </int-jms:inbound-channel-adapter>
 
     <!-- valida el xml de la orden para ver si cumple con el formato especificado en order.xsd -->
@@ -174,7 +174,7 @@
             id="strawberryGateway"
             request-channel="aggregatorStrawberryChannel"
             reply-channel="strawberryChannelResp"
-            uri="http://localhost:8080/WebServicesSOAP/SolicitudCompra" />
+            uri="http://localhost:8081/WebServicesSOAP/SolicitudCompra" />
 
 
     <!-- crea la cola orders para MobileSys en activeMQ -->

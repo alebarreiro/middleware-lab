@@ -27,7 +27,7 @@ import java.util.List;
  * Created by acabrera on 9/24/16.
  */
 public class AggregatorStrawberry {
-    final static int PACKAGE_SIZE_REQUIRED = 1000;
+    final static int PACKAGE_SIZE_REQUIRED = 3;
 
     public String aggregate(List<String> items) throws IOException, SAXException, ParserConfigurationException, TransformerException, ParseException {
         Document resultDoc = createDoc();
