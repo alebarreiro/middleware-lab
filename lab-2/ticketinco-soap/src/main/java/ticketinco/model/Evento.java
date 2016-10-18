@@ -10,4 +10,10 @@ public class Evento {
     private Date fecha;
     private List<Funcion> funciones = new ArrayList<>();
 
+    public Evento(long id, Date fecha, List<Funcion> funciones) {
+        this.id = id;
+        this.fecha = fecha;
+        this.funciones = funciones;
+    }
+
 }

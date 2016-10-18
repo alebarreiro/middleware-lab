@@ -7,12 +7,14 @@ public class Ticket {
     private double precio;
     private int cantidad;
 
+    private Funcion funcion;
 
-    public Ticket(long id, String sector, double precio, int cantidad) {
+    public Ticket(long id, String sector, Funcion funcion, int cantidad, double precio) {
         this.id = id;
         this.sector = sector;
-        this.precio = precio;
+        this.funcion = funcion;
         this.cantidad = cantidad;
+        this.precio = precio;
     }
 
     public long getId() {

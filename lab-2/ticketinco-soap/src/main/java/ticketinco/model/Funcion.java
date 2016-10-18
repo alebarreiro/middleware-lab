@@ -7,26 +7,14 @@ import java.util.List;
 public class Funcion {
 
     private Date hora;
+
     private List<Ticket> tickets = new ArrayList<>();
+    private List<Reserva> reservas = new ArrayList<>();
 
-    public Funcion(Date hora, List<Ticket> tickets) {
+    public Funcion(Date hora, List<Ticket> tickets, List<Reserva> reservas) {
         this.hora = hora;
         this.tickets = tickets;
+        this.reservas = reservas;
     }
 
-    public Date getHora() {
-        return hora;
-    }
-
-    public void setHora(Date hora) {
-        this.hora = hora;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 }
