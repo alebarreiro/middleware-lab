@@ -7,4 +7,9 @@ public class Comprador {
 
     private Reserva reserva;
 
+    public Comprador(long id, String nombre, Reserva reserva) {
+        this.id = id;
+        this.nombre = nombre;
+        this.reserva = reserva;
+    }
 }

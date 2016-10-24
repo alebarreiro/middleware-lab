@@ -12,4 +12,11 @@ public class Disponibilidad {
 
     private List<Reserva> reservas = new ArrayList<>();
 
+    public Disponibilidad(long id, String sector, double precio, int cantidadDisponible, List<Reserva> reservas) {
+        this.id = id;
+        this.sector = sector;
+        this.precio = precio;
+        this.cantidadDisponible = cantidadDisponible;
+        this.reservas = reservas;
+    }
 }

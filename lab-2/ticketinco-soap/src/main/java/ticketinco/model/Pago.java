@@ -16,4 +16,15 @@ public class Pago {
 
     private Reserva reserva;
 
+    public Pago(long id, String nroTarjeta, Date vencimiento, int digitoVerificador, String tarjeta, Date fechaAnulacion, long idAnulacionParner, File imagen, Reserva reserva) {
+        this.id = id;
+        this.nroTarjeta = nroTarjeta;
+        this.vencimiento = vencimiento;
+        this.digitoVerificador = digitoVerificador;
+        this.tarjeta = tarjeta;
+        this.fechaAnulacion = fechaAnulacion;
+        this.idAnulacionParner = idAnulacionParner;
+        this.imagen = imagen;
+        this.reserva = reserva;
+    }
 }

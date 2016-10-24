@@ -11,4 +11,10 @@ public class Horario {
     private Evento evento;
     private List<Disponibilidad> disponibilidades = new ArrayList<>();
 
+    public Horario(Date hora, Evento evento, List<Disponibilidad> disponibilidades) {
+        this.hora = hora;
+        this.evento = evento;
+        this.disponibilidades = disponibilidades;
+    }
+
 }
