@@ -8,12 +8,12 @@ public class Evento {
 
     private long id;
     private Date fecha;
-    private List<Funcion> funciones = new ArrayList<>();
+    private List<Horario> horarios = new ArrayList<>();
 
-    public Evento(long id, Date fecha, List<Funcion> funciones) {
+    public Evento(long id, Date fecha, List<Horario> horarios) {
         this.id = id;
         this.fecha = fecha;
-        this.funciones = funciones;
+        this.horarios = horarios;
     }
 
 }
