@@ -3,7 +3,6 @@ package ticketinco.service;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 
-
 @WebService
 public class Hello {
 
