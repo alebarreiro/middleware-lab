@@ -33,7 +33,6 @@ dependencies {
             "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.8'
-    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.8'
     compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
     compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
     testCompile("org.springframework.boot:spring-boot-starter-test")

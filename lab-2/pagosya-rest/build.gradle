@@ -1,18 +1,20 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 
-jar {
+war {
     baseName = 'pagosya-rest'
     version =  '0.1.0'
 }
@@ -21,12 +23,22 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: 'com.bmuschko.tomcat'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    def tomcatVersion = '7.0.72'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.8'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
 }
 
+tomcat.httpPort = 3000
