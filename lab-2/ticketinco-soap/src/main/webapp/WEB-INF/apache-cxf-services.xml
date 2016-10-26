@@ -10,4 +10,9 @@
             id="HelloWs"
             implementor="ticketinco.service.Hello"
             address="/HelloWsx" />
+
+    <jaxws:endpoint
+            id="VentaWs"
+            implementor="ticketinco.service.VentaService"
+            address="/VentaWsx" />
 </beans>
