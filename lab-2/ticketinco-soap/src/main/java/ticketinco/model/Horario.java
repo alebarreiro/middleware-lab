@@ -17,4 +17,27 @@ public class Horario {
         this.disponibilidades = disponibilidades;
     }
 
+    public Date getHora() {
+        return hora;
+    }
+
+    public void setHora(Date hora) {
+        this.hora = hora;
+    }
+
+    public Evento getEvento() {
+        return evento;
+    }
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
+    public List<Disponibilidad> getDisponibilidades() {
+        return disponibilidades;
+    }
+
+    public void setDisponibilidades(List<Disponibilidad> disponibilidades) {
+        this.disponibilidades = disponibilidades;
+    }
 }

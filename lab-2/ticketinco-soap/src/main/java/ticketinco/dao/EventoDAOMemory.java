@@ -10,10 +10,14 @@ public class EventoDAOMemory implements IEventoDAO {
 
     private List<Evento> eventos;
 
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
     @Override
     public List<Evento> getEventos() {
         return eventos;
-    };
+    }
 
     @Override
     public Evento getEventoById (long id) {
@@ -23,7 +27,7 @@ public class EventoDAOMemory implements IEventoDAO {
             }
         }
         return null;
-    };
+    }
 
     @Override
     public Evento getEventoByIdAndDate (long id, Date fecha) {
@@ -33,5 +37,5 @@ public class EventoDAOMemory implements IEventoDAO {
             }
         }
         return null;
-    };
+    }
 }
