@@ -7,12 +7,11 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'war'
 
-jar {
+war {
     baseName = 'ticketinco-soap'
     version =  '0.1.0'
 }
@@ -25,10 +24,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-ws")
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.8'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.8'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile("wsdl4j:wsdl4j:1.6.1")
-//    jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
-//    compile(files(genJaxb.classesDir).builtBy(genJaxb))
 }
-
