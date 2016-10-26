@@ -1,17 +1,31 @@
 package ticketinco.model;
 
-import ticketinco.datatype.enumeration.TipoEstado;
+import javax.persistence.*;
+import ticketinco.datatype.enumeration.TipoEstadoReserva;
 
+@Entity
+@Table(name = "reserva")
 public class Reserva {
 
+    @Id
+    @SequenceGenerator(name="reserva_id_seq", sequenceName="reserva_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="reserva_id_seq")
     private long id;
-    private TipoEstado estado;
+
+    @Enumerated(EnumType.STRING)
+    private TipoEstadoReserva estado;
+
     private double precioFinal;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name="disponibilidad_id", nullable = false)
     private Disponibilidad disponibilidad;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name="comprador_id", nullable = false)
     private Comprador comprador;
 
-    public Reserva(long id, TipoEstado estado, double precioFinal, Disponibilidad disponibilidad, Comprador comprador) {
+    public Reserva(long id, TipoEstadoReserva estado, double precioFinal, Disponibilidad disponibilidad, Comprador comprador) {
         this.id = id;
         this.estado = estado;
         this.precioFinal = precioFinal;

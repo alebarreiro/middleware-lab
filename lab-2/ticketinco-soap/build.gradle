@@ -35,7 +35,13 @@ dependencies {
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.8'
     compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
     compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    // JPA
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.6.Final'
+
+    compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+
     compile("wsdl4j:wsdl4j:1.6.1")
 }
 

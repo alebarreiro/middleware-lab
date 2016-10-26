@@ -1,7 +1,6 @@
 package ticketinco.datatype.enumeration;
 
-
-public enum TipoEstado {
+public enum TipoEstadoReserva {
     CANCELADO,
     PENDIENTE,
     CONFIRMADO

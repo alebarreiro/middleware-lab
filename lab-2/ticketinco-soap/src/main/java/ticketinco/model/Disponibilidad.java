@@ -2,14 +2,32 @@ package ticketinco.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+@Entity
+@Table(name = "disponibilidad")
 public class Disponibilidad {
 
+    @Id
+    @SequenceGenerator(name="disponibilidad_id_seq", sequenceName="disponibilidad_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="disponibilidad_id_seq")
     private long id;
+
     private String sector;
     private double precio;
+
+    @Column(name = "cantidad_disponible")
     private int cantidadDisponible;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name="horario_id", nullable = false)
+    private Horario horario;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "disponibilidad")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Reserva> reservas = new ArrayList<>();
 
     public Disponibilidad(){}
