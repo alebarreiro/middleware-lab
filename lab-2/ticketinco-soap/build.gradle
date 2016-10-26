@@ -1,15 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
     }
 }
 
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 
 war {
     baseName = 'ticketinco-soap'
@@ -24,6 +27,11 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    def tomcatVersion = '7.0.72'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.8'
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.8'
     compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
@@ -31,3 +39,5 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile("wsdl4j:wsdl4j:1.6.1")
 }
+
+tomcat.httpPort = 3000
