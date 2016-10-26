@@ -14,4 +14,12 @@ public class DataDisponibilidad {
         this.horario = horario;
         this.disponibilidad = disponibilidad;
     }
+
+    public Date getHorario() {
+        return horario;
+    }
+
+    public List<Disponibilidad> getDisponibilidad() {
+        return disponibilidad;
+    }
 }

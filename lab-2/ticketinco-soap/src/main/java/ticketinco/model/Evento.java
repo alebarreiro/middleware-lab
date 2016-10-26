@@ -10,6 +10,8 @@ public class Evento {
     private Date fecha;
     private List<Horario> horarios = new ArrayList<>();
 
+    public Evento(){}
+
     public Evento(long id, Date fecha, List<Horario> horarios) {
         this.id = id;
         this.fecha = fecha;

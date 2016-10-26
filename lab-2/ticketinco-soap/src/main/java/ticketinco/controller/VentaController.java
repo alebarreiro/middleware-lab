@@ -1,6 +1,7 @@
 package ticketinco.controller;
 
 import ticketinco.dao.EventoDAOMemory;
+import ticketinco.dao.IEventoDAO;
 import ticketinco.datatype.DataDisponibilidad;
 import ticketinco.model.Disponibilidad;
 import ticketinco.model.Evento;
@@ -13,12 +14,13 @@ import java.util.Map;
 
 public class VentaController {
 
-    private EventoDAOMemory eventoDAO;
+    private IEventoDAO eventoDAO = EventoDAOMemory.getInstancia();
 
     public VentaController(){
     }
 
     public List<DataDisponibilidad> getDisponibilidadParaEvento (long eventoId, Date fechaEvento) {
+
         List<DataDisponibilidad> resultado = new ArrayList<>();
 
         Evento evento = eventoDAO.getEventoByIdAndDate(eventoId, fechaEvento);

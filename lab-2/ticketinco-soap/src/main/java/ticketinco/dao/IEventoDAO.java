@@ -6,6 +6,8 @@ import java.util.Date;
 
 public interface IEventoDAO {
 
+    public void setEventos(List<Evento> eventos);
+
     public  List<Evento> getEventos();
 
     public Evento getEventoById (long id);

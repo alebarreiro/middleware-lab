@@ -7,9 +7,19 @@ import java.util.List;
 
 public class EventoDAOMemory implements IEventoDAO {
 
-
+    private static EventoDAOMemory instancia = null;
     private List<Evento> eventos;
 
+    private EventoDAOMemory() {}
+
+    public static EventoDAOMemory getInstancia() {
+        if (instancia == null) {
+            instancia = new EventoDAOMemory();
+        }
+        return instancia;
+    }
+
+    @Override
     public void setEventos(List<Evento> eventos) {
         this.eventos = eventos;
     }
