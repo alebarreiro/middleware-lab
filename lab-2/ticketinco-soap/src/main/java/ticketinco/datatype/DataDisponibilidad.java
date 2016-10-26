@@ -8,11 +8,11 @@ import java.util.List;
 public class DataDisponibilidad {
 
     public Date horario;
-    public List<Disponibilidad> disponibilidad;
+    public List<Disponibilidad> disponibilidades;
 
-    public DataDisponibilidad(Date horario, List<Disponibilidad> disponibilidad) {
+    public DataDisponibilidad(Date horario, List<Disponibilidad> disponibilidades) {
         this.horario = horario;
-        this.disponibilidad = disponibilidad;
+        this.disponibilidades = disponibilidades;
     }
 
     public Date getHorario() {
@@ -20,6 +20,14 @@ public class DataDisponibilidad {
     }
 
     public List<Disponibilidad> getDisponibilidad() {
-        return disponibilidad;
+        return disponibilidades;
+    }
+
+    @Override
+    public String toString() {
+        return "DataDisponibilidad{" +
+                    "horario=" + horario +
+                    ", disponibilidad=" + disponibilidades.toString() +
+                '}';
     }
 }

@@ -41,4 +41,13 @@ public class Evento {
     public void setHorarios(List<Horario> horarios) {
         this.horarios = horarios;
     }
+
+    @Override
+    public String toString() {
+        return "Evento{" +
+                    "id=" + id +
+                    ", fecha=" + fecha +
+                    ", horarios=" + horarios.toString() +
+                '}';
+    }
 }

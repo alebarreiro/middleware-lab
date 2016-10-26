@@ -20,10 +20,10 @@ public class VentaController {
     }
 
     public List<DataDisponibilidad> getDisponibilidadParaEvento (long eventoId, Date fechaEvento) {
-
         List<DataDisponibilidad> resultado = new ArrayList<>();
 
         Evento evento = eventoDAO.getEventoByIdAndDate(eventoId, fechaEvento);
+
         List<Horario> horarios = evento.getHorarios();
 
         for (Horario horario : horarios) {

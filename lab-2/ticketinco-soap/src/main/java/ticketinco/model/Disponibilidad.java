@@ -61,4 +61,14 @@ public class Disponibilidad {
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
     }
+
+    @Override
+    public String toString() {
+        return "Disponibilidad{" +
+                "id=" + id +
+                    ", sector=" + sector +
+                    ", precio=" + precio +
+                    ", cantidadDisponible=" + cantidadDisponible +
+                '}';
+    }
 }

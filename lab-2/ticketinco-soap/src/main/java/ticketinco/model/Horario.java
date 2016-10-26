@@ -40,4 +40,11 @@ public class Horario {
     public void setDisponibilidades(List<Disponibilidad> disponibilidades) {
         this.disponibilidades = disponibilidades;
     }
+
+    @Override
+    public String toString() {
+        return "Horario{" +
+                  "hora=" + hora +
+                '}';
+    }
 }
