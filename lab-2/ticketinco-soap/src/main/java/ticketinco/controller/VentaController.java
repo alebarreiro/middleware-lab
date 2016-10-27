@@ -44,7 +44,10 @@ public class VentaController {
 
     public int getEstadoReserva (long idReserva) {
         Reserva reserva = reservaDAO.getReserva(idReserva);
-        return reserva.getEstado().ordinal();
+        if (reserva != null) {
+            return reserva.getEstado().ordinal();
+        }
+        return -1;
     }
 
 }

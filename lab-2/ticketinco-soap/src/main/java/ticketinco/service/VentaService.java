@@ -2,6 +2,7 @@ package ticketinco.service;
 
 import ticketinco.controller.VentaController;
 import ticketinco.datatype.DataDisponibilidad;
+import ticketinco.exception.BusinessException;
 
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -19,9 +20,13 @@ public class VentaService {
     }
 
     @WebMethod
-    public int estadoReserva(long idReserva) {
+    public int estadoReserva(long idReserva) throws BusinessException {
         VentaController vc = new VentaController();
-        return vc.getEstadoReserva(idReserva);
+        int estado = vc.getEstadoReserva(idReserva);
+        if (estado == -1) {
+           throw new BusinessException("NOT_FOUND", 404, "No existe reserva con dicho id");
+        }
+        return estado;
     }
 
 }
