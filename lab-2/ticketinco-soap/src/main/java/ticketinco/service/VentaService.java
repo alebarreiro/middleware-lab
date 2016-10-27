@@ -18,4 +18,10 @@ public class VentaService {
         return vc.getDisponibilidadParaEvento(id,fecha);
     }
 
+    @WebMethod
+    public int estadoReserva(long idReserva) {
+        VentaController vc = new VentaController();
+        return vc.getEstadoReserva(idReserva);
+    }
+
 }

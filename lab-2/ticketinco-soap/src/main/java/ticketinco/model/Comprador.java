@@ -21,6 +21,8 @@ public class Comprador {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Reserva> reservas;
 
+    public Comprador() {}
+
     public Comprador(String nombre, List<Reserva> reservas) {
         this.nombre = nombre;
         this.reservas = reservas;

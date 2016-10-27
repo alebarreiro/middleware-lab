@@ -1,12 +1,11 @@
 package ticketinco.controller;
 
-import ticketinco.dao.EventoDAOJpa;
-import ticketinco.dao.EventoDAOMemory;
-import ticketinco.dao.IEventoDAO;
+import ticketinco.dao.*;
 import ticketinco.datatype.DataDisponibilidad;
 import ticketinco.model.Disponibilidad;
 import ticketinco.model.Evento;
 import ticketinco.model.Horario;
+import ticketinco.model.Reserva;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +16,7 @@ import javax.persistence.*;
 public class VentaController {
 
     private IEventoDAO eventoDAO;
+    private IReservaDAO reservaDAO;
     private EntityManagerFactory emf;
     private EntityManager em;
 
@@ -24,6 +24,7 @@ public class VentaController {
         emf = Persistence.createEntityManagerFactory("postgresds");
         em = emf.createEntityManager();
         eventoDAO = new EventoDAOJpa(em, Evento.class);
+        reservaDAO = new ReservaDAOJpa(em, Reserva.class);
     }
 
     public List<DataDisponibilidad> getDisponibilidadParaEvento (long eventoId, Date fechaEvento) {
@@ -39,6 +40,11 @@ public class VentaController {
         }
 
         return resultado;
+    }
+
+    public int getEstadoReserva (long idReserva) {
+        Reserva reserva = reservaDAO.getReserva(idReserva);
+        return reserva.getEstado().ordinal();
     }
 
 }
