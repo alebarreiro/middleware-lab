@@ -48,4 +48,15 @@ public class DataVenta {
     public void setDigitoVerificador(String digitoVerificador) {
         this.digitoVerificador = digitoVerificador;
     }
+
+    @Override
+    public String toString() {
+        return "DataVenta{" +
+                    "nroTarjeta=" + nroTarjeta +
+                    ", tarjeta=" + tarjeta +
+                    ", monto=" + monto +
+                    ", digitoVerificador=" + digitoVerificador +
+                '}';
+    }
+
 }

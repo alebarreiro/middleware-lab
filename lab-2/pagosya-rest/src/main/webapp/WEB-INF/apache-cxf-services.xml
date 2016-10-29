@@ -6,10 +6,19 @@
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <bean id="helloBean" class="pagosya.service.Hello"/>
+    <bean id="Venta" class="pagosya.service.Venta"/>
 
     <jaxrs:server id="hello" address="/hello">
         <jaxrs:serviceBeans>
             <ref bean="helloBean" />
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+
+    <bean id="ventaBean" class="pagosya.service.Venta"/>
+
+    <jaxrs:server id="venta" address="/venta">
+        <jaxrs:serviceBeans>
+            <ref bean="Venta" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 </beans>
