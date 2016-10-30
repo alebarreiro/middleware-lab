@@ -30,7 +30,7 @@ public class EventoDAOMemory implements IEventoDAO {
     }
 
     @Override
-    public Evento getEventoById (long id) {
+    public Evento getEventoById (int id) {
         for (Evento e : eventos) {
             if (e.getId() == id) {
                 return e;
@@ -40,7 +40,7 @@ public class EventoDAOMemory implements IEventoDAO {
     }
 
     @Override
-    public Evento getEventoByIdAndDate (long id, Date fecha) {
+    public Evento getEventoByIdAndDate (int id, Date fecha) {
         for (Evento e : eventos) {
             if (e.getId() == id && e.getFecha().equals(fecha) ) {
                 return e;

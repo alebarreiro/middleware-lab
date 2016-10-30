@@ -19,6 +19,9 @@ public class Disponibilidad {
     private String sector;
     private double precio;
 
+    @Column(name = "cantidad_inicial")
+    private int cantidadInicial;
+
     @Column(name = "cantidad_disponible")
     private int cantidadDisponible;
 
@@ -26,17 +29,18 @@ public class Disponibilidad {
     @JoinColumn(name="horario_id", nullable = false)
     private Horario horario;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "disponibilidad")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "disponibilidades")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Reserva> reservas = new ArrayList<>();
 
     public Disponibilidad(){}
 
-    public Disponibilidad(long id, String sector, double precio, int cantidadDisponible, List<Reserva> reservas) {
+    public Disponibilidad(long id, String sector, double precio, int cantidadInicial, List<Reserva> reservas) {
         this.id = id;
         this.sector = sector;
         this.precio = precio;
-        this.cantidadDisponible = cantidadDisponible;
+        this.cantidadInicial = cantidadInicial;
+        this.cantidadDisponible = cantidadInicial;
         this.reservas = reservas;
     }
 
@@ -64,12 +68,28 @@ public class Disponibilidad {
         this.precio = precio;
     }
 
+    public int getCantidadInicial() {
+        return cantidadInicial;
+    }
+
+    public void setCantidadInicial(int cantidadInicial) {
+        this.cantidadInicial = cantidadInicial;
+    }
+
     public int getCantidadDisponible() {
         return cantidadDisponible;
     }
 
     public void setCantidadDisponible(int cantidadDisponible) {
         this.cantidadDisponible = cantidadDisponible;
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
     public List<Reserva> getReservas() {

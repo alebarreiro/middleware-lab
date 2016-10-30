@@ -18,11 +18,11 @@ public class EventoDAOJpa<T> extends GenericJpaDAO<T, Serializable> implements I
 
     public  List<Evento> getEventos() {return null;}
 
-    public Evento getEventoById (long id) {
+    public Evento getEventoById (int id) {
         return (Evento) this.read(id);
     }
 
-    public Evento getEventoByIdAndDate (long id, Date fecha) {
+    public Evento getEventoByIdAndDate (int id, Date fecha) {
         return (Evento) this.read(id);
     }
 }
