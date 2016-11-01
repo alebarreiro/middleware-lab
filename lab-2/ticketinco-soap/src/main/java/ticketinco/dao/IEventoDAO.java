@@ -10,8 +10,8 @@ public interface IEventoDAO {
 
     public  List<Evento> getEventos();
 
-    public Evento getEventoById (long id);
+    public Evento getEventoById (int id);
 
-    public Evento getEventoByIdAndDate (long id, Date fecha);
+    public Evento getEventoByIdAndDate (int id, Date fecha);
 
 }

@@ -1,9 +1,7 @@
 package ticketinco.util;
 
-import ticketinco.controller.VentaController;
 import ticketinco.dao.EventoDAOMemory;
 import ticketinco.dao.IEventoDAO;
-import ticketinco.datatype.DataDisponibilidad;
 import ticketinco.model.Disponibilidad;
 import ticketinco.model.Evento;
 import ticketinco.model.Horario;

@@ -2,6 +2,7 @@ package ticketinco.controller;
 
 import ticketinco.dao.*;
 import ticketinco.datatype.DataDisponibilidad;
+import ticketinco.datatype.DataHorario;
 import ticketinco.model.Disponibilidad;
 import ticketinco.model.Evento;
 import ticketinco.model.Horario;
@@ -10,7 +11,6 @@ import ticketinco.model.Reserva;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.*;
 
 public class VentaController {
@@ -27,15 +27,21 @@ public class VentaController {
         reservaDAO = new ReservaDAOJpa(em, Reserva.class);
     }
 
-    public List<DataDisponibilidad> getDisponibilidadParaEvento (long eventoId, Date fechaEvento) {
-        List<DataDisponibilidad> resultado = new ArrayList<>();
+    public List<DataHorario> getDisponibilidadParaEvento (int eventoId, Date fechaEvento) {
+        List<DataHorario> resultado = new ArrayList<>();
 
         Evento evento = eventoDAO.getEventoByIdAndDate(eventoId, fechaEvento);
 
         List<Horario> horarios = evento.getHorarios();
 
         for (Horario horario : horarios) {
-            DataDisponibilidad dataD = new DataDisponibilidad(horario.getHora(), horario.getDisponibilidades());
+            List<Disponibilidad> disponibilidades = horario.getDisponibilidades();
+
+            DataHorario dataD = new DataHorario(
+                    horario.getHora(),
+                    DataDisponibilidad.getDataDisponibilidades(disponibilidades)
+            );
+
             resultado.add(dataD);
         }
 

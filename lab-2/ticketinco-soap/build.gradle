@@ -42,6 +42,8 @@ dependencies {
 
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
 
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.2.1'
+
     compile("wsdl4j:wsdl4j:1.6.1")
 }
 

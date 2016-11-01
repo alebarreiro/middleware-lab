@@ -3,6 +3,9 @@ package ticketinco.model;
 import javax.persistence.*;
 import ticketinco.datatype.enumeration.TipoEstadoReserva;
 
+import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "reserva")
 public class Reserva {
@@ -17,22 +20,49 @@ public class Reserva {
 
     private double precioFinal;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="disponibilidad_id", nullable = false)
-    private Disponibilidad disponibilidad;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="comprador_id", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false)
+    private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        Date now = new Date();
+
+        if (this.createdAt == null) {
+            this.updatedAt = now;
+        }
+
+        this.createdAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name="reserva_disponibilidad",
+            joinColumns={ @JoinColumn(name="reserva_id") },
+            inverseJoinColumns={ @JoinColumn(name="disponibilidad_id") }
+    )
+    private List<Disponibilidad> disponibilidades;
+
+    @ManyToOne()
+    @JoinColumn(name="comprador_id")
     private Comprador comprador;
 
     public Reserva() {}
 
-    public Reserva(long id, TipoEstadoReserva estado, double precioFinal, Disponibilidad disponibilidad, Comprador comprador) {
-        this.id = id;
+    public Reserva(TipoEstadoReserva estado, double precioFinal, List<Disponibilidad> disponibilidades) {
         this.estado = estado;
         this.precioFinal = precioFinal;
-        this.disponibilidad = disponibilidad;
-        this.comprador = comprador;
+        this.disponibilidades = disponibilidades;
+        //this.comprador = comprador;
     }
 
     public long getId() {
@@ -59,12 +89,12 @@ public class Reserva {
         this.estado = estado;
     }
 
-    public Disponibilidad getDisponibilidad() {
-        return disponibilidad;
+    public List<Disponibilidad> getDisponibilidades() {
+        return disponibilidades;
     }
 
-    public void setDisponibilidad(Disponibilidad disponibilidad) {
-        this.disponibilidad = disponibilidad;
+    public void setDisponibilidades(List<Disponibilidad> disponibilidades) {
+        this.disponibilidades = disponibilidades;
     }
 
     public Comprador getComprador() {
@@ -73,5 +103,21 @@ public class Reserva {
 
     public void setComprador(Comprador comprador) {
         this.comprador = comprador;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

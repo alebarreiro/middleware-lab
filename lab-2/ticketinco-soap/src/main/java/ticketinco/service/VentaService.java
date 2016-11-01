@@ -1,9 +1,12 @@
 package ticketinco.service;
 
+import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
-import ticketinco.datatype.DataDisponibilidad;
+import ticketinco.datatype.DataConfirmacionReserva;
+import ticketinco.datatype.DataHorario;
 import ticketinco.exception.BusinessException;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import java.util.Date;
@@ -14,9 +17,9 @@ import java.util.List;
 public class VentaService {
 
     @WebMethod
-    public List<DataDisponibilidad> obtenerDisponibilidad(long id, Date fecha) {
+    public List<DataHorario> obtenerDisponibilidad(int id, Date fecha) {
         VentaController vc = new VentaController();
-        return vc.getDisponibilidadParaEvento(id,fecha);
+        return vc.getDisponibilidadParaEvento(id, fecha);
     }
 
     @WebMethod
@@ -29,4 +32,10 @@ public class VentaService {
         return estado;
     }
 
+    @WebMethod
+    public long reservarEntrada(@WebParam(name = "confirmacion") DataConfirmacionReserva dataConfirmacionReserva) throws Exception {
+        ReservaController vc = new ReservaController();
+
+        return vc.reservarEntrada(dataConfirmacionReserva);
+    }
 }

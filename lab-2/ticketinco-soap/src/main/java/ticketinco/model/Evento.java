@@ -16,7 +16,7 @@ public class Evento {
     @Id
     @SequenceGenerator(name="evento_id_seq", sequenceName="evento_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="evento_id_seq")
-    private long id;
+    private int id;
 
     @Temporal(TemporalType.DATE)
     private Date fecha;
@@ -29,18 +29,18 @@ public class Evento {
 
     public Evento(){}
 
-    public Evento(long id, Date fecha, String nombre, List<Horario> horarios) {
+    public Evento(int id, Date fecha, String nombre, List<Horario> horarios) {
         this.id = id;
         this.fecha = fecha;
         this.nombre = nombre;
         this.horarios = horarios;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

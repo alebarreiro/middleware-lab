@@ -7,11 +7,6 @@
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <jaxws:endpoint
-            id="HelloWs"
-            implementor="ticketinco.service.Hello"
-            address="/HelloWsx" />
-
-    <jaxws:endpoint
             id="VentaWs"
             implementor="ticketinco.service.VentaService"
             address="/VentaWsx" />
