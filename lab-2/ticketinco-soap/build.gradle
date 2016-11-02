@@ -48,7 +48,6 @@ dependencies {
 
     //ActiveMQ
     compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.4.2'
-    compile("com.fasterxml.jackson.core:jackson-databind")
 }
 
 tomcat.httpPort = 3000

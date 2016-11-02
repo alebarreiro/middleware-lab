@@ -1,15 +1,17 @@
 package ticketinco.datatype;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="pago")
 public class DataPagoLocal {
 
     public String nroTarjeta;
     public String tarjeta;
     public String digitoVerificador;
     public String monto;
+
+    public DataPagoLocal () {}
 
     public DataPagoLocal(String nroTarjeta, String tarjeta, String monto, String digitoVerificador) {
         this.nroTarjeta = nroTarjeta;
@@ -22,7 +24,7 @@ public class DataPagoLocal {
         return nroTarjeta;
     }
 
-    @XmlAttribute(name = "nro-tarjeta")
+    @XmlElement(name="nro-tarjeta")
     public void setNroTarjeta(String nroTarjeta) {
         this.nroTarjeta = nroTarjeta;
     }
@@ -31,7 +33,7 @@ public class DataPagoLocal {
         return tarjeta;
     }
 
-    @XmlAttribute(name = "tarjeta")
+    @XmlElement(name="tarjeta")
     public void setTarjeta(String tarjeta) {
         this.tarjeta = tarjeta;
     }
@@ -40,7 +42,7 @@ public class DataPagoLocal {
         return monto;
     }
 
-    @XmlAttribute(name = "monto")
+    @XmlElement(name="monto")
     public void setMonto(String monto) {
         this.monto = monto;
     }
@@ -49,7 +51,7 @@ public class DataPagoLocal {
         return digitoVerificador;
     }
 
-    @XmlAttribute(name = "digito-verificador")
+    @XmlElement(name="digito-verificador")
     public void setDigitoVerificador(String digitoVerificador) {
         this.digitoVerificador = digitoVerificador;
     }
