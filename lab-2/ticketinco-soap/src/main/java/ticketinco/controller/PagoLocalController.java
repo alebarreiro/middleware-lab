@@ -17,17 +17,23 @@ public class PagoLocalController {
     public PagoLocalController () {}
 
     public String parsePagoDataToXmlString (DataPagoLocal dataPago) {
-        try {
-            System.out.println(dataPago.toString());
-            StringWriter sw = new StringWriter();
-            JAXBContext jaxbContext = JaxbContext.newInstance();
-            Marshaller jaxbUnmarshaller = jaxbContext.createMarshaller();
-            jaxbUnmarshaller.marshal(dataPago, sw);
-            return sw.toString();
-        } catch (JAXBException e) {
-            System.out.println("Error al parsear el item a xml: " + e.getMessage());
-            return "Error";
-        }
+//        try {
+//            System.out.println(dataPago.toString());
+//            StringWriter sw = new StringWriter();
+//            JAXBContext jaxbContext = JaxbContext.newInstance();
+//            Marshaller jaxbUnmarshaller = jaxbContext.createMarshaller();
+//            jaxbUnmarshaller.marshal(dataPago, sw);
+//            return sw.toString();
+//        } catch (JAXBException e) {
+//            System.out.println("Error al parsear el item a xml: " + e.getMessage());
+//            return "Error";
+//        }
+        return "<pago>"+
+                    "<nro-tarjeta>" + dataPago.getNroTarjeta() + "</nro-tarjeta>"+
+                    "<tarjeta>" + dataPago.getTarjeta() + "</tarjeta>"+
+                    "<monto>" + dataPago.getMonto() + "</monto>"+
+                    "<digito-verificador>" + dataPago.getDigitoVerificador() + "</digito-verificador>"+
+                "</pago>";
     }
 
     public void enviarPagoLocal (String pagoXml) {
