@@ -1,9 +1,11 @@
 package ticketinco.service;
 
+import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
 import ticketinco.datatype.DataConfirmacionReserva;
 import ticketinco.datatype.DataHorario;
+import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
 
 import javax.jws.WebParam;
@@ -37,5 +39,14 @@ public class VentaService {
         ReservaController vc = new ReservaController();
 
         return vc.reservarEntrada(dataConfirmacionReserva);
+    }
+
+
+    @WebMethod
+    public void testPagoLocal() {
+        PagoLocalController plc = new PagoLocalController();
+        DataPagoLocal dpl = new DataPagoLocal("1242-1231-1231-1231", "OCA", "1", "123");
+        String xml = plc.parsePagoDataToXmlString(dpl);
+        plc.enviarPagoLocal(xml);
     }
 }

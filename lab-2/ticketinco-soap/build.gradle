@@ -45,6 +45,9 @@ dependencies {
     compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.2.1'
 
     compile("wsdl4j:wsdl4j:1.6.1")
+
+    //ActiveMQ
+    compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.4.2'
 }
 
 tomcat.httpPort = 3000
