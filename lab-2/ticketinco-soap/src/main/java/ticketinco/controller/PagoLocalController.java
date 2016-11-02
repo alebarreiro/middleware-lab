@@ -5,8 +5,27 @@ import ticketinco.datatype.DataPagoLocal;
 
 import javax.jms.*;
 
+import java.io.StringWriter;
+import ticketinco.util.JaxbContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 
 public class PagoLocalController {
+
+    public String parsePagoDataToXmlString (DataPagoLocal dataPago) {
+        try {
+            StringWriter sw = new StringWriter();
+            JAXBContext jaxbContext = JaxbContext.newInstance();
+            Marshaller jaxbUnmarshaller = jaxbContext.createMarshaller();
+            jaxbUnmarshaller.marshal(dataPago, sw);
+            return sw.toString();
+        } catch (JAXBException e) {
+            System.out.println("Error al parsear el item a xml:" + e.getMessage());
+            return "Error";
+        }
+    }
 
     public void enviarPagoLocal (String pagoXml) {
 
