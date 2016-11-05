@@ -34,9 +34,11 @@ dependencies {
             "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
             "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 
-    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.8'
-    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
-    compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '2.2.1.GA'
+//    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version: '3.1.0.CR2'
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
 }
