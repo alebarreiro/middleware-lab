@@ -26,4 +26,19 @@
     <servlet-name>resteasy-servlet</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Confirmacion y Cancelacion de Pagos</web-resource-name>
+      <url-pattern>/api/pago/*</url-pattern>
+    </web-resource-collection>
+
+    <auth-constraint>
+      <role-name>tomcat</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>BASIC</auth-method>
+  </login-config>
 </web-app>

@@ -7,6 +7,8 @@ import com.pagosya.datatype.DataVenta;
 import com.pagosya.util.ManejadorPagos;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.NoSuchElementException;
@@ -29,9 +31,7 @@ public class PagoService {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response confirmar(DataVenta venta) {
-
-        System.out.println(venta.toString());
+    public Response confirmar(DataVenta venta, @Context HttpHeaders headers) {
 
         DataConfirmacion confirmacion = new DataConfirmacion(ManejadorPagos.confirmarPago(venta));
 

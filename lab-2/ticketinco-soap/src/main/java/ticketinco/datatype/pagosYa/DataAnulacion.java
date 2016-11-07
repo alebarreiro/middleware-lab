@@ -1,4 +1,5 @@
-package com.pagosya.datatype;
+package ticketinco.datatype.pagosYa;
+
 
 public class DataAnulacion {
     private long idAnulacion;
@@ -19,4 +20,3 @@ public class DataAnulacion {
         this.idAnulacion = idAnulacion;
     }
 }
-

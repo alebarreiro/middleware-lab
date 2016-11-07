@@ -7,6 +7,7 @@ import ticketinco.datatype.DataConfirmacionReserva;
 import ticketinco.datatype.DataHorario;
 import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
+import ticketinco.util.PagosYaClientRest;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -48,5 +49,19 @@ public class VentaService {
         DataPagoLocal dpl = new DataPagoLocal("1242-1231-1231-1231", "OCA", "1", "123");
         String xml = plc.parsePagoDataToXmlString(dpl);
         plc.enviarPagoLocal(xml);
+    }
+
+    @WebMethod
+    public long testConfirmacionExterno() throws Exception {
+        PagosYaClientRest clientRest = new PagosYaClientRest();
+
+        return clientRest.confirmarPago(null);
+    }
+
+    @WebMethod
+    public long testAnulacionExterno(@WebParam(name = "idPago") long idPago) throws Exception {
+        PagosYaClientRest clientRest = new PagosYaClientRest();
+
+        return clientRest.anularPago(idPago);
     }
 }

@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
     }
 }
 
@@ -13,6 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'com.bmuschko.tomcat'
+apply plugin: 'com.bmuschko.cargo'
 
 war {
     baseName = 'pagosya-rest'
@@ -22,8 +24,6 @@ war {
 repositories {
     mavenCentral()
 }
-
-apply plugin: 'com.bmuschko.tomcat'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -43,4 +43,18 @@ dependencies {
     testCompile('com.jayway.jsonpath:json-path')
 }
 
-tomcat.httpPort = 3000
+tomcat {
+    httpPort = 3000
+}
+
+cargo {
+    containerId = 'tomcat8x'
+
+    port = 8081;
+
+    remote {
+        hostname = 'localhost'
+        username = 'manager'
+        password = 'manager'
+    }
+}
