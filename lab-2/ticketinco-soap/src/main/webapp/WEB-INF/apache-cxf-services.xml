@@ -9,5 +9,5 @@
     <jaxws:endpoint
             id="VentaWs"
             implementor="ticketinco.service.VentaService"
-            address="/VentaWsx" />
+            address="/VentaWs" />
 </beans>

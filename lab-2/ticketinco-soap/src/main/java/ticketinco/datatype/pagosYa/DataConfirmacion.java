@@ -1,8 +1,10 @@
-package com.pagosya.datatype;
+package ticketinco.datatype.pagosYa;
 
 /**
  * Created by acabrera on 11/5/16.
  */
+
+//@JsonIgnoreProperties(ignoreUnknown=true)
 public class DataConfirmacion {
     private long idConfirmacion;
 
