@@ -36,3 +36,7 @@ overridedb.*
 .factorypath
 dump.rdb
 transaction-logs
+
+# generated proxy java from wsdl
+src/main/java/ws
+src/main/resources/wsdl
