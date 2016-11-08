@@ -7,6 +7,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
         classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
+        classpath 'no.nils:wsdl2java:0.10'
     }
 }
 
@@ -15,6 +16,7 @@ apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'com.bmuschko.tomcat'
 apply plugin: 'com.bmuschko.cargo'
+apply plugin :'no.nils.wsdl2java'
 
 war {
     baseName = 'ticketinco-soap'
@@ -71,4 +73,14 @@ cargo {
         username = 'manager'
         password = 'manager'
     }
+}
+
+cargoDeployRemote.dependsOn build
+cargoRedeployRemote.dependsOn build
+
+wsdl2java{
+    wsdlsToGenerate = [
+            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagoWs/?wsdl"]
+    ]
+    generatedWsdlDir = file("$projectDir/src/main/java")
 }

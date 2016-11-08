@@ -1,5 +1,6 @@
 package ticketinco.service;
 
+import ws.com.ticketinco.esb.DataVenta;
 import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
@@ -7,7 +8,7 @@ import ticketinco.datatype.DataConfirmacionReserva;
 import ticketinco.datatype.DataHorario;
 import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
-import ticketinco.util.PagosYaClientRest;
+import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -42,7 +43,6 @@ public class VentaService {
         return vc.reservarEntrada(dataConfirmacionReserva);
     }
 
-
     @WebMethod
     public void testPagoLocal() {
         PagoLocalController plc = new PagoLocalController();
@@ -52,16 +52,23 @@ public class VentaService {
     }
 
     @WebMethod
-    public long testConfirmacionExterno() throws Exception {
-        PagosYaClientRest clientRest = new PagosYaClientRest();
+    public long testConfirmacionExterno() {
+        DataVenta dv = new DataVenta();
+        dv.setMonto(12);
+        dv.setDigitoVerificador(7);
+        dv.setNroTarjeta(213123);
+        dv.setFechaVencimiento("2016-11-19T23:00:00");
 
-        return clientRest.confirmarPago(null);
+        WsPagosYaService wsPagosYa = new WsPagosYaService();
+
+        return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
     }
 
     @WebMethod
-    public long testAnulacionExterno(@WebParam(name = "idPago") long idPago) throws Exception {
-        PagosYaClientRest clientRest = new PagosYaClientRest();
+    public long testAnulacionExterno() {
 
-        return clientRest.anularPago(idPago);
+        WsPagosYaService wsPagosYa = new WsPagosYaService();
+
+        return wsPagosYa.getWsPagosYaPort().anularPago(1).getIdAnulacion();
     }
 }

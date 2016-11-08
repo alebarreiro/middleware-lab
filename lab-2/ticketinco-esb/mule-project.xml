@@ -2,4 +2,5 @@
 <mule-project xmlns="http://www.mulesoft.com/tooling/project" runtimeId="org.mule.tooling.server.3.8.2.ee" schemaVersion="5.3.0.0">
     <name>ticketinco-esb</name>
     <description></description>
+    <muleExtension name="APIkit SOAP" qualifier="org.mule.tooling.soapkit.contribution"/>
 </mule-project>
