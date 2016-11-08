@@ -1,5 +1,6 @@
 package ticketinco.service;
 
+import org.apache.log4j.Logger;
 import ws.com.ticketinco.esb.DataVenta;
 import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @WebService
 public class VentaService {
+    final static Logger logger = Logger.getLogger(PagoService.class);
 
     @WebMethod
     public List<DataHorario> obtenerDisponibilidad(int id, Date fecha) {
