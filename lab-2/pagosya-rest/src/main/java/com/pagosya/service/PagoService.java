@@ -12,14 +12,19 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.NoSuchElementException;
+import org.apache.log4j.Logger;
+
 
 @Path("/pago")
 @Produces(MediaType.APPLICATION_JSON)
 public class PagoService {
+    final static Logger logger = Logger.getLogger(PagoService.class);
 
     @DELETE
     @Path("/{idPago : \\d+}")
     public Response anularPago(@PathParam("idPago") long idPago) {
+        logger.info("anularPago: " + idPago);
+
         try {
             long idAnulacion = ManejadorPagos.anularPago(idPago);
             return Response.ok(new DataAnulacion(idAnulacion)).build();
@@ -31,7 +36,9 @@ public class PagoService {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response confirmar(DataVenta venta, @Context HttpHeaders headers) {
+    public Response confirmarPago(DataVenta venta, @Context HttpHeaders headers) {
+
+        logger.info("confirmarPago: " + venta.toString());
 
         DataConfirmacion confirmacion = new DataConfirmacion(ManejadorPagos.confirmarPago(venta));
 
