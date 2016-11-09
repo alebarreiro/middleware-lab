@@ -20,7 +20,7 @@ import java.util.List;
 
 @WebService
 public class VentaService {
-    final static Logger logger = Logger.getLogger(PagoService.class);
+    final static Logger logger = Logger.getLogger(VentaService.class);
 
     @WebMethod
     public List<DataHorario> obtenerDisponibilidad(int id, Date fecha) {
