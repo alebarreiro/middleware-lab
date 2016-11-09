@@ -1,7 +1,7 @@
 package ticketinco.controller;
 
 import ticketinco.dao.*;
-import ticketinco.datatype.DataConfirmacionReserva;
+import ticketinco.datatype.DataReservaPendiente;
 import ticketinco.datatype.DataHorario;
 import ticketinco.datatype.enumeration.TipoEstadoReserva;
 import ticketinco.model.*;
@@ -36,8 +36,8 @@ public class ReservaController {
         horarioDAO = new HorarioDAO(em, Horario.class);
     }
 
-    public long reservarEntrada(DataConfirmacionReserva dataConfirmacionReserva) throws Exception {
-        List<Disponibilidad> disponibilidades = this.getDisponibilidadesAReservar(dataConfirmacionReserva);
+    public long reservarEntrada(DataReservaPendiente dataReservaPendiente) throws Exception {
+        List<Disponibilidad> disponibilidades = this.getDisponibilidadesAReservar(dataReservaPendiente);
 
         em.getTransaction().begin();
         Reserva reserva = new Reserva(
@@ -56,14 +56,14 @@ public class ReservaController {
     }
 
     // TODO: move this to its controller
-    private List<Disponibilidad> getDisponibilidadesAReservar(DataConfirmacionReserva dataConfirmacionReserva) {
+    private List<Disponibilidad> getDisponibilidadesAReservar(DataReservaPendiente dataReservaPendiente) {
         List<Disponibilidad> res = new ArrayList<>();
 
         System.out.println("iterando horarios");
-        for (DataHorario horario: dataConfirmacionReserva.getHorarios()) {
+        for (DataHorario horario: dataReservaPendiente.getHorarios()) {
             System.out.println("current horario: " + horario.toString());
             List<Disponibilidad> disponibilidades = horarioDAO
-                    .getDisponibilidadesDeHorarioPorEvento(dataConfirmacionReserva.getIdEvento(), horario.getHorario(), horario.getDisponibilidades());
+                    .getDisponibilidadesDeHorarioPorEvento(dataReservaPendiente.getIdEvento(), horario.getHorario(), horario.getDisponibilidades());
 
             res.addAll(disponibilidades);
         }
@@ -100,4 +100,7 @@ public class ReservaController {
 
         em.close();
     }
+
+
+
 }

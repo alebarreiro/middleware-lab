@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class DataConfirmacionReserva implements Serializable {
+public class DataReservaPendiente implements Serializable {
 
     private int idEvento;
     private Date fechaEvento;
     List<DataHorario> horarios;
 
-    public DataConfirmacionReserva() {}
+    public DataReservaPendiente() {}
 
-    public DataConfirmacionReserva(int idEvento, Date fechaEvento, List<DataHorario> horarios) {
+    public DataReservaPendiente(int idEvento, Date fechaEvento, List<DataHorario> horarios) {
         this.idEvento = idEvento;
         this.fechaEvento = fechaEvento;
         this.horarios = horarios;
@@ -44,7 +44,7 @@ public class DataConfirmacionReserva implements Serializable {
 
     @Override
     public String toString() {
-        return "DataConfirmacionReserva{" +
+        return "DataReservaPendiente{" +
                 "idEvento=" + idEvento +
                 ", fechaEvento=" + fechaEvento +
                 ", horarios=" + horarios +

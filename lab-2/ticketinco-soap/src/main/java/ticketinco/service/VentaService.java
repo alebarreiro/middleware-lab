@@ -1,11 +1,11 @@
 package ticketinco.service;
 
 import org.apache.log4j.Logger;
+import ticketinco.datatype.DataReservaPendiente;
 import ws.com.ticketinco.esb.DataVenta;
 import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
-import ticketinco.datatype.DataConfirmacionReserva;
 import ticketinco.datatype.DataHorario;
 import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
@@ -39,10 +39,10 @@ public class VentaService {
     }
 
     @WebMethod
-    public long reservarEntrada(@WebParam(name = "confirmacion") DataConfirmacionReserva dataConfirmacionReserva) throws Exception {
+    public long reservarEntrada(@WebParam(name = "confirmacion") DataReservaPendiente dataReservaPendiente) throws Exception {
         ReservaController vc = new ReservaController();
 
-        return vc.reservarEntrada(dataConfirmacionReserva);
+        return vc.reservarEntrada(dataReservaPendiente);
     }
 
     @WebMethod
