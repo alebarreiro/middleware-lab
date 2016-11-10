@@ -8,7 +8,7 @@
 
     <bean id="passwordCallback" class="ticketinco.service.PasswordCallbackHandler" />
 
-    <bean id="decryptInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+    <bean id="decryptInterceptor"  class="ticketinco.service.interceptor.DecryptInterceptor">
         <constructor-arg>
             <map>
                 <entry key="encryptionUser" value="middleware-lab2-wsse"/>
@@ -18,16 +18,18 @@
                 <entry key="passwordCallbackRef">
                     <ref bean="passwordCallback"/>
                 </entry>
+                <entry key="methods" value="confirmarReservaEntrada" />
             </map>
         </constructor-arg>
     </bean>
 
-    <bean id="signVerifInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+    <bean id="signVerifInterceptor"  class="ticketinco.service.interceptor.SignVerifInterceptor">
         <constructor-arg>
             <map>
                 <entry key="signatureUser" value="client-middleware-lab2-wsse"/>
                 <entry key="action" value="Signature"/>
                 <entry key="signaturePropFile" value="wsse/server_sign_verif.properties"/>
+                <entry key="methods" value="reservarEntrada" />
             </map>
         </constructor-arg>
     </bean>
@@ -38,6 +40,7 @@
             address="/VentaWs">
         <jaxws:inInterceptors>
             <ref bean="signVerifInterceptor" />
+            <ref bean="decryptInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 </beans>
