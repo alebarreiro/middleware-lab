@@ -6,8 +6,30 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
+    <bean id="wSS4JOutInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="signatureUser" value="middleware-lab2-wsse"/>
+                <entry key="encryptionUser" value="client-middleware-lab2-wsse"/>
+                <entry key="action" value="Signature Encrypt"/>
+                <entry key="signaturePropFile" value="wsse/server_sign.properties"/>
+                <entry key="encryptionPropFile" value="wsse/server_encrypt.properties"/>
+                <entry key="passwordType" value="PasswordText" />
+                <entry key="passwordCallbackRef">
+                    <ref bean="passwordCallback"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="passwordCallback" class="ticketinco.service.PasswordCallbackHandler" />
+
     <jaxws:endpoint
             id="VentaWs"
             implementor="ticketinco.service.VentaService"
-            address="/VentaWs" />
+            address="/VentaWs">
+        <jaxws:outInterceptors>
+            <ref bean="wSS4JOutInterceptor" />
+        </jaxws:outInterceptors>
+    </jaxws:endpoint>
 </beans>
