@@ -1,6 +1,7 @@
 package ticketinco.service;
 
 import org.apache.log4j.Logger;
+import ticketinco.datatype.DataReservaConfirmada;
 import ticketinco.datatype.DataReservaPendiente;
 import ws.com.ticketinco.esb.DataVenta;
 import ticketinco.controller.PagoLocalController;
@@ -43,6 +44,13 @@ public class VentaService {
         ReservaController vc = new ReservaController();
 
         return vc.reservarEntrada(dataReservaPendiente);
+    }
+
+    @WebMethod
+    public long confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+        ReservaController vc = new ReservaController();
+
+        return vc.confirmarReserva(dataReservaConfirmada);
     }
 
     @WebMethod

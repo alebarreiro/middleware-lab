@@ -1,9 +1,11 @@
 package ticketinco.controller;
 
 import ticketinco.dao.*;
+import ticketinco.datatype.DataReservaConfirmada;
 import ticketinco.datatype.DataReservaPendiente;
 import ticketinco.datatype.DataHorario;
 import ticketinco.datatype.enumeration.TipoEstadoReserva;
+import ticketinco.exception.BusinessException;
 import ticketinco.model.*;
 import ticketinco.util.DateUtil;
 import ticketinco.util.EmfUtil;
@@ -12,6 +14,7 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class ReservaController {
@@ -101,6 +104,31 @@ public class ReservaController {
         em.close();
     }
 
+    public void confirmarReserva (DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+        //todo: Log información encriptada?
 
+        long idReserva = dataReservaConfirmada.getIdReserva();
+        Reserva reserva;
+
+        try {
+            reserva = reservaDAOJpa.getReserva(idReserva);
+        } catch (Exception e) {
+            throw new BusinessException("NOT_FOUND", 404, "No existe reserva con id: " +  idReserva);
+        }
+
+        if (reserva.getEstado() != TipoEstadoReserva.PENDIENTE) {
+            throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "La reserva " + idReserva + "  no se encuentra en estado pendiente: " +  reserva.getEstado());
+        }
+
+        switch ((int)dataReservaConfirmada.getIdMedioPago()) {
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" +  dataReservaConfirmada.getIdMedioPago());
+        }
+
+    }
 
 }
