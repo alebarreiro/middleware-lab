@@ -7,17 +7,16 @@ import org.quartz.Job;
 import org.quartz.JobKey;
 import org.quartz.JobDataMap;
 import ticketinco.controller.ReservaController;
-
-import java.util.List;
-import java.util.Date;
+import org.apache.log4j.Logger;
 
 public class AnulacionReservaJob implements Job {
+    final static Logger logger = Logger.getLogger(AnulacionReservaJob.class);
 
     @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
 
-        System.out.println("Anulando reservaaaas");
+        logger.debug("AnulacionReservaJob: call -> expirarReservas()");
 
         new ReservaController().expirarReservas();
     }

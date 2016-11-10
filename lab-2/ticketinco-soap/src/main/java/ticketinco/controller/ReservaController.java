@@ -7,6 +7,7 @@ import ticketinco.datatype.enumeration.TipoEstadoReserva;
 import ticketinco.model.*;
 import ticketinco.util.DateUtil;
 import ticketinco.util.EmfUtil;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 
 public class ReservaController {
+    final static Logger logger = Logger.getLogger(ReservaController.class);
 
     private EntityManager em;
     private ReservaDAOJpa reservaDAOJpa;
@@ -90,13 +92,11 @@ public class ReservaController {
     public void expirarReservas() {
         Date fechaLimiteExpiracion = DateUtil.addSeconds(new Date(), -60);
 
-        System.out.println("fecha limite + " + fechaLimiteExpiracion.toString());
+        logger.debug("expirarReservas - fecha limite: " + fechaLimiteExpiracion);
 
         em.getTransaction().begin();
         reservaDAOJpa.expirarReservas(fechaLimiteExpiracion);
         em.getTransaction().commit();
-
-        // TODO: falta actualizar la cantidad disponible
 
         em.close();
     }
