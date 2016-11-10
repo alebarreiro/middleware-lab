@@ -22,13 +22,13 @@ import java.util.List;
 public class VentaService {
     final static Logger logger = Logger.getLogger(VentaService.class);
 
-    @WebMethod
+    @WebMethod(action = "obtenerDisponibilidad")
     public List<DataHorario> obtenerDisponibilidad(int id, Date fecha) {
         VentaController vc = new VentaController();
         return vc.getDisponibilidadParaEvento(id, fecha);
     }
 
-    @WebMethod
+    @WebMethod(action = "estadoReserva")
     public int estadoReserva(long idReserva) throws BusinessException {
         VentaController vc = new VentaController();
         int estado = vc.getEstadoReserva(idReserva);
@@ -38,14 +38,14 @@ public class VentaService {
         return estado;
     }
 
-    @WebMethod
+    @WebMethod(action = "reservarEntrada")
     public long reservarEntrada(@WebParam(name = "confirmacion") DataReservaPendiente dataReservaPendiente) throws Exception {
         ReservaController vc = new ReservaController();
 
         return vc.reservarEntrada(dataReservaPendiente);
     }
 
-    @WebMethod
+    @WebMethod(action = "testPagoLocal")
     public void testPagoLocal() {
         PagoLocalController plc = new PagoLocalController();
         DataPagoLocal dpl = new DataPagoLocal("1242-1231-1231-1231", "OCA", "1", "123");
@@ -53,7 +53,7 @@ public class VentaService {
         plc.enviarPagoLocal(xml);
     }
 
-    @WebMethod
+    @WebMethod(action = "testConfirmacionExterno")
     public long testConfirmacionExterno() {
         DataVenta dv = new DataVenta();
         dv.setMonto(12);
@@ -66,7 +66,7 @@ public class VentaService {
         return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
     }
 
-    @WebMethod
+    @WebMethod(action = "testAnulacionExterno")
     public long testAnulacionExterno() {
 
         WsPagosYaService wsPagosYa = new WsPagosYaService();
