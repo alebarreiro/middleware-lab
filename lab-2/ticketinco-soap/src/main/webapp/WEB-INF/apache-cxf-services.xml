@@ -6,14 +6,14 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <bean id="wSS4JOutInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+    <bean id="passwordCallback" class="ticketinco.service.PasswordCallbackHandler" />
+
+    <bean id="decryptInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
         <constructor-arg>
             <map>
-                <entry key="signatureUser" value="middleware-lab2-wsse"/>
-                <entry key="encryptionUser" value="client-middleware-lab2-wsse"/>
-                <entry key="action" value="Signature Encrypt"/>
-                <entry key="signaturePropFile" value="wsse/server_sign.properties"/>
-                <entry key="encryptionPropFile" value="wsse/server_encrypt.properties"/>
+                <entry key="encryptionUser" value="middleware-lab2-wsse"/>
+                <entry key="action" value="Encrypt"/>
+                <entry key="decryptionPropFile" value="wsse/server_decrypt.properties"/>
                 <entry key="passwordType" value="PasswordText" />
                 <entry key="passwordCallbackRef">
                     <ref bean="passwordCallback"/>
@@ -22,14 +22,22 @@
         </constructor-arg>
     </bean>
 
-    <bean id="passwordCallback" class="ticketinco.service.PasswordCallbackHandler" />
+    <bean id="signVerifInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="signatureUser" value="client-middleware-lab2-wsse"/>
+                <entry key="action" value="Signature"/>
+                <entry key="signaturePropFile" value="wsse/server_sign_verif.properties"/>
+            </map>
+        </constructor-arg>
+    </bean>
 
     <jaxws:endpoint
             id="VentaWs"
             implementor="ticketinco.service.VentaService"
             address="/VentaWs">
-        <jaxws:outInterceptors>
-            <ref bean="wSS4JOutInterceptor" />
-        </jaxws:outInterceptors>
+        <jaxws:inInterceptors>
+            <ref bean="signVerifInterceptor" />
+        </jaxws:inInterceptors>
     </jaxws:endpoint>
 </beans>
