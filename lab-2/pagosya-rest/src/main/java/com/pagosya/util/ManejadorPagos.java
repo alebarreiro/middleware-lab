@@ -1,8 +1,10 @@
 package com.pagosya.util;
 
 import com.pagosya.datatype.DataVenta;
+import com.pagosya.datatype.exception.VencimientoInvalidoException;
 import com.pagosya.model.Pago;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -29,7 +31,13 @@ public class ManejadorPagos {
         return ManejadorPagos.pagos.get(idPago);
     }
 
-    public static long confirmarPago(DataVenta venta) {
+    public static long confirmarPago(DataVenta venta) throws VencimientoInvalidoException {
+        Date fechaVencimiento = venta.getFechaVencimiento();
+
+        if (fechaVencimiento == null || fechaVencimiento.before(new Date())) {
+            throw new VencimientoInvalidoException("El vencimiento de la tarjeta no es valido");
+        }
+
         long pagoId = id++;
         Pago pago = new Pago(pagoId, venta);
 

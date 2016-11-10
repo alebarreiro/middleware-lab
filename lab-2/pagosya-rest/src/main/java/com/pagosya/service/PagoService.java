@@ -4,6 +4,7 @@ import com.pagosya.datatype.DataAnulacion;
 import com.pagosya.datatype.DataConfirmacion;
 import com.pagosya.datatype.DataError;
 import com.pagosya.datatype.DataVenta;
+import com.pagosya.datatype.exception.VencimientoInvalidoException;
 import com.pagosya.util.ManejadorPagos;
 
 import javax.ws.rs.*;
@@ -38,10 +39,19 @@ public class PagoService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response confirmarPago(DataVenta venta, @Context HttpHeaders headers) {
 
-        logger.info("confirmarPago: " + venta.toString());
+        logger.info("confirmarPago: venta: " + venta.toString());
 
-        DataConfirmacion confirmacion = new DataConfirmacion(ManejadorPagos.confirmarPago(venta));
+        try {
+            DataConfirmacion confirmacion = new DataConfirmacion(ManejadorPagos.confirmarPago(venta));
 
-        return Response.ok(confirmacion).build();
+            logger.info("confirmarPago: confirmacion: " + confirmacion.toString());
+
+            return Response.ok(confirmacion).build();
+
+        } catch (VencimientoInvalidoException error) {
+            logger.warn("confirmarPago: vencimiento invalido");
+
+            return Response.status(422).entity(new DataError(error.getMessage())).type(MediaType.APPLICATION_JSON).build();
+        }
     }
 }
