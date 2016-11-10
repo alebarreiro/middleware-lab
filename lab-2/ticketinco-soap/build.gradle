@@ -75,6 +75,10 @@ cargo {
         username = 'manager'
         password = 'manager'
     }
+
+    deployable {
+        context = 'ticketinco-soap'
+    }
 }
 
 cargoDeployRemote.dependsOn build
