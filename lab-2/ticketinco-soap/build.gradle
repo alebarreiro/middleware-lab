@@ -37,7 +37,8 @@ dependencies {
 
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.8'
     compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.8'
-    
+    compile group: 'org.apache.cxf', name: 'cxf-rt-ws-security', version: '3.1.8'
+
     compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
 
     // JPA
@@ -74,6 +75,10 @@ cargo {
         username = 'manager'
         password = 'manager'
     }
+
+    deployable {
+        context = 'ticketinco-soap'
+    }
 }
 
 cargoDeployRemote.dependsOn build
@@ -81,7 +86,8 @@ cargoRedeployRemote.dependsOn build
 
 wsdl2java{
     wsdlsToGenerate = [
-            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagoWs/?wsdl"]
+            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagosYaWs/?wsdl"],
+            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagosLocalWs/?wsdl"]
     ]
     generatedWsdlDir = file("$projectDir/src/main/java")
 }

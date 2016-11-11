@@ -4,12 +4,11 @@ import org.apache.log4j.Logger;
 import ticketinco.datatype.DataReservaConfirmada;
 import ticketinco.datatype.DataReservaPendiente;
 import ws.com.ticketinco.esb.DataVenta;
-import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
 import ticketinco.datatype.DataHorario;
-import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
+import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.jws.WebParam;
@@ -23,13 +22,13 @@ import java.util.List;
 public class VentaService {
     final static Logger logger = Logger.getLogger(VentaService.class);
 
-    @WebMethod
+    @WebMethod(action = "obtenerDisponibilidad")
     public List<DataHorario> obtenerDisponibilidad(int id, Date fecha) {
         VentaController vc = new VentaController();
         return vc.getDisponibilidadParaEvento(id, fecha);
     }
 
-    @WebMethod
+    @WebMethod(action = "estadoReserva")
     public int estadoReserva(long idReserva) throws BusinessException {
         VentaController vc = new VentaController();
         int estado = vc.getEstadoReserva(idReserva);
@@ -39,7 +38,7 @@ public class VentaService {
         return estado;
     }
 
-    @WebMethod
+    @WebMethod(action = "reservarEntrada")
     public long reservarEntrada(@WebParam(name = "confirmacion") DataReservaPendiente dataReservaPendiente) throws Exception {
         ReservaController vc = new ReservaController();
 
@@ -53,15 +52,26 @@ public class VentaService {
         return vc.confirmarReserva(dataReservaConfirmada);
     }
 
-    @WebMethod
-    public void testPagoLocal() {
-        PagoLocalController plc = new PagoLocalController();
-        DataPagoLocal dpl = new DataPagoLocal("1242-1231-1231-1231", "OCA", "1", "123");
-        String xml = plc.parsePagoDataToXmlString(dpl);
-        plc.enviarPagoLocal(xml);
+    @WebMethod(action = "testConfirmacionLocal")
+    public long testConfirmacionLocal() {
+        DataVenta dv = new DataVenta();
+        dv.setMonto(12);
+        dv.setDigitoVerificador(7);
+        dv.setNroTarjeta(213123);
+        dv.setFechaVencimiento("2016-11-19T23:00:00");
+
+        WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+        return wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
     }
 
-    @WebMethod
+    @WebMethod(action = "testAnulacionLocal")
+    public long testAnulacionLocal() {
+        WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+
+        return wsPagosLocal.getWsPagosLocalPort().anularPago(1).getIdAnulacion();
+    }
+
+    @WebMethod(action = "testConfirmacionExterno")
     public long testConfirmacionExterno() {
         DataVenta dv = new DataVenta();
         dv.setMonto(12);
@@ -74,9 +84,8 @@ public class VentaService {
         return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
     }
 
-    @WebMethod
+    @WebMethod(action = "testAnulacionExterno")
     public long testAnulacionExterno() {
-
         WsPagosYaService wsPagosYa = new WsPagosYaService();
 
         return wsPagosYa.getWsPagosYaPort().anularPago(1).getIdAnulacion();
