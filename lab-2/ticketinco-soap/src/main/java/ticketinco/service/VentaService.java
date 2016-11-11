@@ -49,7 +49,10 @@ public class VentaService {
     public long confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
         ReservaController vc = new ReservaController();
 
-        return vc.confirmarReserva(dataReservaConfirmada);
+        vc.confirmarReserva(dataReservaConfirmada);
+
+        // TODO: Ale fix this
+        return 10;
     }
 
     @WebMethod(action = "testConfirmacionLocal")

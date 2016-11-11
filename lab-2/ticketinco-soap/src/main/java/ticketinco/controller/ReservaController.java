@@ -15,8 +15,6 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
-
 
 public class ReservaController {
     final static Logger logger = Logger.getLogger(ReservaController.class);
