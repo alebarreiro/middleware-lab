@@ -1,6 +1,9 @@
-package com.ticketinco.esb;
+package com.ticketinco.esb.datatype;
 
-public class DataVenta {
+import javax.xml.bind.annotation.XmlRootElement;
+
+public class DataVentaLocal {
+	private Long idConfirmacion;
 	private long nroTarjeta;
 	
     private String fechaVencimiento;
@@ -8,9 +11,19 @@ public class DataVenta {
     private double monto;
     private int digitoVerificador;
     
-    DataVenta() {}
+    DataVentaLocal() {}
 
-    public long getNroTarjeta() {
+    public DataVentaLocal(Long idConfirmacion, long nroTarjeta, String fechaVencimiento, double monto,
+			int digitoVerificador) {
+		super();
+		this.idConfirmacion = idConfirmacion;
+		this.nroTarjeta = nroTarjeta;
+		this.fechaVencimiento = fechaVencimiento;
+		this.monto = monto;
+		this.digitoVerificador = digitoVerificador;
+	}
+
+	public long getNroTarjeta() {
         return nroTarjeta;
     }
 
@@ -41,6 +54,15 @@ public class DataVenta {
     public void setDigitoVerificador(int digitoVerificador) {
         this.digitoVerificador = digitoVerificador;
     }
+   
+
+	public Long getIdConfirmacion() {
+		return idConfirmacion;
+	}
+
+	public void setIdConfirmacion(Long idConfirmacion) {
+		this.idConfirmacion = idConfirmacion;
+	}
 
 	@Override
 	public String toString() {

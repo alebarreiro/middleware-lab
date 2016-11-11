@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wmq="http://www.mulesoft.org/schema/mule/ee/wmq" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/ee/wmq/current/mule-wmq-ee.xsd">
+    <http:listener-config name="listener-config" host="localhost" port="63081" doc:name="HTTP Listener Configuration"/>
+    <jms:activemq-connector name="Active_MQ" brokerURL="tcp://localhost:61616" validateConnections="true" persistentDelivery="true" doc:name="Active MQ"/>
+    
+    <http:request-config name="HTTPS_Request_Configuration" host="${pagosya_host}" port="${pagosya_port}" basePath="${pagosya_base_path}" doc:name="HTTP Request Configuration" protocol="HTTPS">
+        <http:basic-authentication username="${pagosya_username}" password="${pagosya_password}"/>
+        <tls:context>
+            <tls:trust-store insecure="true"/>
+            <tls:key-store type="jks"
+                path="${ssl_path}" alias="${ssl_alias}"
+                keyPassword="${ssl_password}" password="${ssl_password}" />
+        </tls:context>
+    </http:request-config>
+    <context:property-placeholder location="dev.properties"/>
+	<flow name="PagosYaService">
+		<http:listener config-ref="listener-config" path="PagosYaWs" doc:name="HTTP"/>
+        <cxf:jaxws-service serviceClass="com.ticketinco.esb.service.WsPagosYa" doc:name="Pagos SOAP"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <choice doc:name="Choice"> 
+        	<when expression="#[flowVars.cxf_operation.localPart == 'confirmarPago']">
+                <http:request config-ref="HTTPS_Request_Configuration" path="/pago" method="POST" doc:name="Confirmar Pago REST">
+                    <http:request-builder>
+                        <http:header headerName="Content-Type" value="application/json"/>
+                    </http:request-builder>
+                </http:request>
+                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataConfirmacion" doc:name="JSON to Object"/>
+ 		 	</when>
+ 		 	<when expression="#[flowVars.cxf_operation.localPart == 'anularPago']">
+                <http:request config-ref="HTTPS_Request_Configuration" path="#['pago/' + payload]" method="DELETE" doc:name="Anular Pago REST">
+                    <http:request-builder>
+                        <http:header headerName="Content-Type" value="application/json"/>
+                    </http:request-builder>
+                </http:request>
+                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="Copy_of_JSON to Object"/>
+ 		 	</when>
+        </choice>
+       
+	</flow>
+		
+	<flow name="PagosLocalService">	
+        <http:listener config-ref="listener-config" path="PagosLocalWs" doc:name="HTTP" />
+        <cxf:jaxws-service serviceClass="com.ticketinco.esb.service.WsPagosLocal" doc:name="Pagos Local SOAP"/>
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.cxf_operation.localPart == 'confirmarPago']">
+                <custom-transformer class="com.ticketinco.esb.util.ConfirmacionTransformer" doc:name="ConfirmarPago"/>
+                <set-variable variableName="idConfirmacion" value="#[payload.idConfirmacion]" doc:name="Variable"/>
+                <json:object-to-json-transformer doc:name="Object to JSON"/>
+                <jms:outbound-endpoint queue="pagos" connector-ref="Active_MQ" doc:name="JMS"/>
+                <expression-transformer expression="#[['idConfirmacion':flowVars.idConfirmacion]]" doc:name="Expression"/>
+                <json:object-to-json-transformer doc:name="Object to JSON"/>
+                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataConfirmacion" doc:name="JSON to Object"/>
+            </when>
+            <when expression="#[flowVars.cxf_operation.localPart == 'anularPago']">
+                <custom-transformer class="com.ticketinco.esb.util.AnulacionTransformer" doc:name="AnularPago"/>
+                <set-variable variableName="idAnulacion" value="#[payload.idAnulacion]" doc:name="Variable"/>
+                <json:object-to-json-transformer doc:name="Object to JSON"/>
+                <jms:outbound-endpoint queue="pagos" connector-ref="Active_MQ" doc:name="JMS"/>
+                <expression-transformer expression="#[['idAnulacion':flowVars.idAnulacion]]" doc:name="Expression"/>
+                <json:object-to-json-transformer doc:name="Object to JSON"/>
+                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="JSON to Object"/>
+            </when>
+        </choice>
+    </flow>
+</mule>
