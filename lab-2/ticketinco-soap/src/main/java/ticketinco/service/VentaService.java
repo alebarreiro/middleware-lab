@@ -3,12 +3,11 @@ package ticketinco.service;
 import org.apache.log4j.Logger;
 import ticketinco.datatype.DataReservaPendiente;
 import ws.com.ticketinco.esb.DataVenta;
-import ticketinco.controller.PagoLocalController;
 import ticketinco.controller.ReservaController;
 import ticketinco.controller.VentaController;
 import ticketinco.datatype.DataHorario;
-import ticketinco.datatype.DataPagoLocal;
 import ticketinco.exception.BusinessException;
+import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.jws.WebParam;
@@ -45,12 +44,23 @@ public class VentaService {
         return vc.reservarEntrada(dataReservaPendiente);
     }
 
-    @WebMethod(action = "testPagoLocal")
-    public void testPagoLocal() {
-        PagoLocalController plc = new PagoLocalController();
-        DataPagoLocal dpl = new DataPagoLocal("1242-1231-1231-1231", "OCA", "1", "123");
-        String xml = plc.parsePagoDataToXmlString(dpl);
-        plc.enviarPagoLocal(xml);
+    @WebMethod(action = "testConfirmacionLocal")
+    public long testConfirmacionLocal() {
+        DataVenta dv = new DataVenta();
+        dv.setMonto(12);
+        dv.setDigitoVerificador(7);
+        dv.setNroTarjeta(213123);
+        dv.setFechaVencimiento("2016-11-19T23:00:00");
+
+        WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+        return wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
+    }
+
+    @WebMethod(action = "testAnulacionLocal")
+    public long testAnulacionLocal() {
+        WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+
+        return wsPagosLocal.getWsPagosLocalPort().anularPago(1).getIdAnulacion();
     }
 
     @WebMethod(action = "testConfirmacionExterno")
@@ -68,7 +78,6 @@ public class VentaService {
 
     @WebMethod(action = "testAnulacionExterno")
     public long testAnulacionExterno() {
-
         WsPagosYaService wsPagosYa = new WsPagosYaService();
 
         return wsPagosYa.getWsPagosYaPort().anularPago(1).getIdAnulacion();

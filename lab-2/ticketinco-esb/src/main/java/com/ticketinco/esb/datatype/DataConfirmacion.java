@@ -1,4 +1,4 @@
-package com.ticketinco.esb;
+package com.ticketinco.esb.datatype;
 
 public class DataConfirmacion {
 	private long idConfirmacion;

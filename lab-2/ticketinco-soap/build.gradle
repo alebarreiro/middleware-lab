@@ -86,7 +86,8 @@ cargoRedeployRemote.dependsOn build
 
 wsdl2java{
     wsdlsToGenerate = [
-            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagoWs/?wsdl"]
+            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagosYaWs/?wsdl"],
+            ['-p', 'ws.com.ticketinco.esb', '-autoNameResolution', "http://localhost:63081/PagosLocalWs/?wsdl"]
     ]
     generatedWsdlDir = file("$projectDir/src/main/java")
 }
