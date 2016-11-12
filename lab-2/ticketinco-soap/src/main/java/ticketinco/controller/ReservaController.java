@@ -10,6 +10,9 @@ import ticketinco.model.*;
 import ticketinco.util.DateUtil;
 import ticketinco.util.EmfUtil;
 import org.apache.log4j.Logger;
+import ws.com.ticketinco.esb.DataVenta;
+import ws.com.ticketinco.esb.WsPagosLocalService;
+import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -102,8 +105,8 @@ public class ReservaController {
         em.close();
     }
 
-    public void confirmarReserva (DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
-        //todo: Log información encriptada?
+    public long confirmarReserva (DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+        logger.debug("REQUEST confrirmarReserva: " + dataReservaConfirmada.toString());
 
         long idReserva = dataReservaConfirmada.getIdReserva();
         Reserva reserva;
@@ -118,10 +121,22 @@ public class ReservaController {
             throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "La reserva " + idReserva + "  no se encuentra en estado pendiente: " +  reserva.getEstado());
         }
 
+        DataVenta dv = new DataVenta();
+        dv.setMonto(1); //todo: Ver monto del evento
+        dv.setDigitoVerificador(dataReservaConfirmada.getDigitoVerificador());
+        dv.setNroTarjeta(Long.parseLong(dataReservaConfirmada.getNroTarjeta(), 10));
+        dv.setFechaVencimiento(dataReservaConfirmada.getFechaVencimiento().toString());
+
         switch ((int)dataReservaConfirmada.getIdMedioPago()) {
             case 1:
+                //PagosYa REST
+                WsPagosYaService wsPagosYa = new WsPagosYaService();
+                return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
                 break;
             case 2:
+                //Pago Local JMS
+                WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+                return wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
                 break;
             default:
                 throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" +  dataReservaConfirmada.getIdMedioPago());
