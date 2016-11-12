@@ -18,7 +18,7 @@
                 <entry key="passwordCallbackRef">
                     <ref bean="passwordCallback"/>
                 </entry>
-                <entry key="methods" value="confirmarReservaEntrada" />
+                <entry key="methods" value="confirmarReserva" />
             </map>
         </constructor-arg>
     </bean>

@@ -45,7 +45,7 @@ public class VentaService {
         return vc.reservarEntrada(dataReservaPendiente);
     }
 
-    @WebMethod
+    @WebMethod(action = "confirmarReserva")
     public long confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
         ReservaController vc = new ReservaController();
 
