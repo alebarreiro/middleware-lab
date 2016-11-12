@@ -122,7 +122,7 @@ public class ReservaController {
         }
 
         DataVenta dv = new DataVenta();
-        dv.setMonto(1); //todo: Ver monto del evento
+        dv.setMonto(reserva.getPrecioFinal());
         dv.setDigitoVerificador(dataReservaConfirmada.getDigitoVerificador());
         dv.setNroTarjeta(Long.parseLong(dataReservaConfirmada.getNroTarjeta(), 10));
         dv.setFechaVencimiento(dataReservaConfirmada.getFechaVencimiento().toString());
@@ -132,12 +132,10 @@ public class ReservaController {
                 //PagosYa REST
                 WsPagosYaService wsPagosYa = new WsPagosYaService();
                 return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
-                break;
             case 2:
                 //Pago Local JMS
                 WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
                 return wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
-                break;
             default:
                 throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" +  dataReservaConfirmada.getIdMedioPago());
         }
