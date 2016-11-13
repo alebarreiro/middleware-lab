@@ -196,9 +196,16 @@ public class ReservaController {
                 tickets.add(ticketTemplate);
             }
 
+            //Marcamos la reserva como confirmada
+            em.getTransaction().begin();
+            reserva.setEstado(TipoEstadoReserva.CONFIRMADO);
+            em.getTransaction().commit();
+            em.close();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             logger.info("ERROR GENERANDO TICKET: " + e.getMessage());
+            throw new BusinessException("INTERNAL_ERROR", 500, e.getMessage());
         }
         return new DataNotificacionReserva(idConfirmacion, tickets);
     }
