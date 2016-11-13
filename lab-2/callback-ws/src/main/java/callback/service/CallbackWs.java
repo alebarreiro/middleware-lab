@@ -20,4 +20,13 @@ public class CallbackWs {
         return notificacion;
     }
 
+    @WebMethod(action = "saySomething")
+    public String saySomething(String msg) {
+        return null;
+    }
+
+    @WebMethod(action = "saySomethingResponse")
+    public void saySomethingResponse() {
+        System.out.println("Target!!");
+    }
 }

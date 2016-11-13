@@ -7,7 +7,6 @@ import ticketinco.exception.BusinessException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.soap.Addressing;
 import javax.xml.ws.soap.MTOM;
@@ -23,4 +22,10 @@ public class ConfirmacionService {
         return vc.confirmarReserva(dataReservaConfirmada);
     }
 
+    @WebMethod(action = "saySomething")
+    public String saySomething(String msg) {
+        System.out.println("Source");
+
+        return "Hello " + msg;
+    }
 }
