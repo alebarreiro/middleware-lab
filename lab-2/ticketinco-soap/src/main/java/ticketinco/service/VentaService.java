@@ -16,6 +16,7 @@ import javax.jws.Oneway;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
+import javax.xml.ws.soap.MTOM;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class VentaService {
         return vc.reservarEntrada(dataReservaPendiente);
     }
 
+    @MTOM(enabled=true)
     @WebMethod(action = "confirmarReserva")
     public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
         ReservaController vc = new ReservaController();
