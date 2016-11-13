@@ -34,6 +34,7 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
 	<flow name="PagosYaService">
 		<http:listener config-ref="listener-config" path="PagosYaWs" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="com.ticketinco.esb.service.WsPagosYa" doc:name="Pagos SOAP"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
         <choice doc:name="Choice"> 
         	<when expression="#[flowVars.cxf_operation.localPart == 'confirmarPago']">
@@ -53,12 +54,14 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
                 <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="Copy_of_JSON to Object"/>
  		 	</when>
         </choice>
+        <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
        
 	</flow>
 		
 	<flow name="PagosLocalService">	
         <http:listener config-ref="listener-config" path="PagosLocalWs" doc:name="HTTP" />
         <cxf:jaxws-service serviceClass="com.ticketinco.esb.service.WsPagosLocal" doc:name="Pagos Local SOAP"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <choice doc:name="Choice">
             <when expression="#[flowVars.cxf_operation.localPart == 'confirmarPago']">
                 <custom-transformer class="com.ticketinco.esb.util.ConfirmacionTransformer" doc:name="ConfirmarPago"/>
@@ -79,5 +82,6 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
                 <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="JSON to Object"/>
             </when>
         </choice>
+        <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
     </flow>
 </mule>

@@ -66,7 +66,7 @@ public class DataVentaLocal {
 
 	@Override
 	public String toString() {
-		return "DataVenta [nroTarjeta=" + nroTarjeta + ", fechaVencimiento=" + fechaVencimiento + ", monto=" + monto
-				+ ", digitoVerificador=" + digitoVerificador + "]";
+		return "DataVentaLocal [idConfirmacion=" + idConfirmacion + ", nroTarjeta=" + nroTarjeta + ", fechaVencimiento="
+				+ fechaVencimiento + ", monto=" + monto + ", digitoVerificador=" + digitoVerificador + "]";
 	}
 }

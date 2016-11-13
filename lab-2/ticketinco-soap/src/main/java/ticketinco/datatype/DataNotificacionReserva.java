@@ -33,5 +33,12 @@ public class DataNotificacionReserva {
         this.imagenes = imagenes;
     }
 
+    @Override
+    public String toString() {
+        return "DataNotificacionReserva{" +
+                "idConfirmacionReserva=" + idConfirmacionReserva +
+                ", imagenes=" + imagenes +
+                '}';
+    }
 }
 

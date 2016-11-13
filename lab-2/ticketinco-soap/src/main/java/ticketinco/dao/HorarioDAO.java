@@ -33,10 +33,6 @@ public class HorarioDAO<T> extends GenericJpaDAO<T, Serializable> {
             sectores.add(disponibilidad.getSector());
         }
 
-        System.out.println(eventoId);
-        System.out.println(hora.toString());
-        System.out.println(sectores.toString());
-
         query.setParameter("eventoId", eventoId);
         query.setParameter("hora", hora);
         query.setParameter("sectores", sectores);
