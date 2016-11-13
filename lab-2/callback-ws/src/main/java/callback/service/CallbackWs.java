@@ -9,15 +9,15 @@ import javax.xml.ws.soap.MTOM;
 import org.apache.log4j.Logger;
 
 @MTOM(enabled = true)
-@WebService(name="ConfirmarReservaCallback")
+@WebService(name = "ConfirmarReserva", targetNamespace = "http://service.ticketinco/")
 public class CallbackWs {
 
     final static Logger logger = Logger.getLogger(CallbackWs.class);
 
-    @WebMethod(action="confirmarReserva")
-    public DataNotificacionReserva confirmarReserva(@WebParam(name="dataConfirmacion") DataNotificacionReserva notif) {
-        logger.info("Confirmar reserva callback: " + notif.getIdConfirmacionReserva());
-        return notif;
+    @WebMethod(operationName = "confirmarReserva", action = "confirmarReserva")
+    public DataNotificacionReserva confirmarReserva(@WebParam(name="notificacion") DataNotificacionReserva notificacion) {
+        logger.info("Confirmar reserva callback: " + notificacion.getIdConfirmacionReserva());
+        return notificacion;
     }
 
 }

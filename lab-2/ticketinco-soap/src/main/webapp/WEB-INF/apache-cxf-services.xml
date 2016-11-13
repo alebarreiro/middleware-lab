@@ -43,4 +43,15 @@
             <ref bean="decryptInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
+
+    <jaxws:endpoint id="ConfirmarReserva" implementor="ticketinco.service.ConfirmacionService" address="/ConfirmarReserva">
+        <jaxws:features>
+            <wsa:addressing xmlns:wsa="http://cxf.apache.org/ws/addressing" />
+        </jaxws:features>
+
+        <jaxws:properties>
+            <entry key="mtom-enabled" value="true" />
+        </jaxws:properties>
+    </jaxws:endpoint>
+
 </beans>
