@@ -38,6 +38,8 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile("wsdl4j:wsdl4j:1.6.1")
+
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
 }
 
 tomcat.httpPort = 3001

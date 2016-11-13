@@ -7,7 +7,11 @@
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <jaxws:endpoint
-            id="HelloWs"
+            id="CallbackWs"
             implementor="callback.service.CallbackWs"
-            address="/HelloWsx" />
+            address="/CallbackWsx" >
+        <jaxws:properties>
+            <entry key="mtom-enabled" value="true" />
+        </jaxws:properties>
+    </jaxws:endpoint>
 </beans>

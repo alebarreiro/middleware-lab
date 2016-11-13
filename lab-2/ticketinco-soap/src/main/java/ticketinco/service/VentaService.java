@@ -67,6 +67,7 @@ public class VentaService {
         }
         return estado;
     }
+
     @MTOM(enabled=true)
     @WebMethod(action = "confirmarReserva")
     public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
