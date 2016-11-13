@@ -15,7 +15,12 @@ import ws.com.ticketinco.esb.DataVenta;
 import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -130,6 +135,7 @@ public class ReservaController {
 
         long idConfirmacion;
 
+        //Obtenemos id confirmacion pago
         switch ((int)dataReservaConfirmada.getIdMedioPago()) {
             case 1:
                 //PagosYa REST
@@ -145,8 +151,39 @@ public class ReservaController {
                 throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" +  dataReservaConfirmada.getIdMedioPago());
         }
 
-        return new DataNotificacionReserva();
+        List<Disponibilidad> disponibilidades = reserva.getDisponibilidades();
+        java.util.List<Image> tickets = new ArrayList<Image>();
 
+        //Generamos tickets
+        for (Disponibilidad d: disponibilidades) {
+            logger.debug("GENERANDO TICKET PARA DISPONIBILIDAD " + d.toString());
+            try {
+                BufferedImage ticketTemplate = ImageIO.read(new File("src/main/resources/images/ticket.png"));
+                Graphics g = ticketTemplate.getGraphics();
+                g.setFont(g.getFont().deriveFont(30f));
+                g.setColor(Color.black);
+
+                if (dataReservaConfirmada.getIdMedioPago() == 1) {
+                    g.drawString("Pagado por PagosYA - Reserva #" + idReserva, 70, 60);
+                } else {
+                    g.drawString("Pagado por TicketInco - Reserva #" + idReserva, 70, 60);
+                }
+
+                g.drawString("Horario: " +  d.getHorario(), 70, 90);
+                g.drawString("Sector: " + d.getSector(), 70, 120);
+                g.drawString("Precio: " + d.getPrecio(), 70, 150);
+                g.drawString("Número de confirmación: " + idConfirmacion, 150, 190);
+                g.dispose();
+
+                tickets.add(ticketTemplate);
+
+                ImageIO.write(ticketTemplate, "png", new File("ticket-" + d.getId() + "+.png"));
+            } catch (java.io.IOException ex) {
+                System.out.println(ex.getMessage());
+                logger.debug("ERROR GENERANDO TICKET", ex.getMessage());
+            }
+        }
+        return new DataNotificacionReserva(idConfirmacion, tickets);
     }
 
     public int getEstadoReserva (long idReserva) {
