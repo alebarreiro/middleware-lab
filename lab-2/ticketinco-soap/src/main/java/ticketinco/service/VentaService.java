@@ -1,6 +1,8 @@
 package ticketinco.service;
 
 import org.apache.log4j.Logger;
+import ticketinco.datatype.DataNotificacionReserva;
+import ticketinco.datatype.DataReservaConfirmada;
 import ticketinco.datatype.DataReservaPendiente;
 import ws.com.ticketinco.esb.DataVenta;
 import ticketinco.controller.ReservaController;
@@ -10,9 +12,11 @@ import ticketinco.exception.BusinessException;
 import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
+import javax.jws.Oneway;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
+import javax.xml.ws.soap.MTOM;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +33,8 @@ public class VentaService {
 
     @WebMethod(action = "estadoReserva")
     public int estadoReserva(long idReserva) throws BusinessException {
-        VentaController vc = new VentaController();
-        int estado = vc.getEstadoReserva(idReserva);
+        ReservaController rc = new ReservaController();
+        int estado = rc.getEstadoReserva(idReserva);
         if (estado == -1) {
            throw new BusinessException("NOT_FOUND", 404, "No existe reserva con dicho id");
         }
@@ -63,6 +67,13 @@ public class VentaService {
         }
         return estado;
     }
+    @MTOM(enabled=true)
+    @WebMethod(action = "confirmarReserva")
+    public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+        ReservaController vc = new ReservaController();
+        return vc.confirmarReserva(dataReservaConfirmada);
+    }
+
     @WebMethod(action = "testConfirmacionLocal")
     public long testConfirmacionLocal() {
         DataVenta dv = new DataVenta();
