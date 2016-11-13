@@ -178,7 +178,7 @@ public class ReservaController {
             for (Disponibilidad d : disponibilidades) {
                 logger.info("GENERANDO TICKET PARA DISPONIBILIDAD " + d.toString());
 
-                BufferedImage ticketTemplate = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage ticketTemplate = new BufferedImage(800, 200, BufferedImage.TYPE_INT_ARGB);
                 Graphics g = ticketTemplate.getGraphics();
                 g.setFont(g.getFont().deriveFont(30f));
                 g.setColor(Color.black);
