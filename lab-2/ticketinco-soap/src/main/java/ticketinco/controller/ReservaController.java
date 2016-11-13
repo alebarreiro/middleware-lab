@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import ticketinco.model.Disponibilidad;
 
 public class ReservaController {
     final static Logger logger = Logger.getLogger(ReservaController.class);
@@ -50,7 +51,12 @@ public class ReservaController {
 
     public long reservarEntrada(DataReservaPendiente dataReservaPendiente) throws Exception {
         List<Disponibilidad> disponibilidades = this.getDisponibilidadesAReservar(dataReservaPendiente);
-
+        
+/*        for (Disponibilidad disponibilidad: disponibilidades) {
+            if (disponibilidad.getCantidadDisponible() == 0) {
+                throw new BusinessException("Sin_disponibilidad", 404, "No hay entradas disponibles para"+disponibilidad.getSector());
+            }
+        }*/
         em.getTransaction().begin();
         Reserva reserva = new Reserva(
                 TipoEstadoReserva.PENDIENTE,
