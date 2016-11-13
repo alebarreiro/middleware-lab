@@ -56,7 +56,21 @@ public class ReservaController {
 
         return reserva.getId();
     }
+    public int cancelarReserva(long idReserva) throws Exception {
+        em.getTransaction().begin();
+        Reserva reserva = reservaDAOJpa.getReserva(idReserva);
+        int resultado;
+        if (reserva != null){
+            reserva.setEstado(TipoEstadoReserva.CANCELADO);
+            resultado = 1;
+        }else{
+            resultado = -1;
+        }
 
+        em.getTransaction().commit();
+        em.close();
+        return resultado;
+    }
     // TODO: move this to its controller
     private List<Disponibilidad> getDisponibilidadesAReservar(DataReservaPendiente dataReservaPendiente) {
         List<Disponibilidad> res = new ArrayList<>();

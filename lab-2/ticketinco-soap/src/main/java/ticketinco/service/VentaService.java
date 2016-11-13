@@ -44,6 +44,25 @@ public class VentaService {
         return vc.reservarEntrada(dataReservaPendiente);
     }
 
+    @WebMethod(action = "cancelarVenta")
+    public long cancelarVenta(@WebParam(name = "idConfirmacion")long idConfirmacion,@WebParam(name = "idPago") long idPago)  throws Exception {
+        long resultado;
+        WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
+        WsPagosYaService wsPagosYa = new WsPagosYaService();
+
+        if (idPago==1){
+           resultado = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
+
+        }else {
+            resultado = wsPagosYa.getWsPagosYaPort().anularPago(idConfirmacion).getIdAnulacion();
+        }
+        ReservaController vc = new ReservaController();
+        int estado = vc.cancelarReserva(idConfirmacion);
+        if (estado == -1) {
+           throw new BusinessException("NOT_FOUND", 404, "No existe reserva con dicho id");
+        }
+        return estado;
+    }
     @WebMethod(action = "testConfirmacionLocal")
     public long testConfirmacionLocal() {
         DataVenta dv = new DataVenta();
