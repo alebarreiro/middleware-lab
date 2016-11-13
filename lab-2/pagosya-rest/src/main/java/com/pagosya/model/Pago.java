@@ -48,4 +48,13 @@ public class Pago {
     public void setVenta(Venta venta) {
         this.venta = venta;
     }
+
+    @Override
+    public String toString() {
+        return "Pago{" +
+                "id=" + id +
+                ", idAnulacion=" + idAnulacion +
+                ", venta=" + venta +
+                '}';
+    }
 }

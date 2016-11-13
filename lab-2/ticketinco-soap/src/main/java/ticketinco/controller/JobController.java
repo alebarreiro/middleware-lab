@@ -11,11 +11,14 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.JobKey;
 import org.quartz.TriggerKey;
 import org.quartz.CronScheduleBuilder;
-
+import org.apache.log4j.Logger;
 
 import ticketinco.util.AnulacionReservaJob;
 
+import java.util.Date;
+
 public class JobController {
+    final static Logger logger = Logger.getLogger(JobController.class);
     private static boolean runningJob = false;
 
     static {
@@ -52,7 +55,7 @@ public class JobController {
 
         scheduler.scheduleJob(job, trigger);
 
-        System.out.println("RUNNING JOB");
+        logger.info("startJob: Started job at " + new Date());
 
         JobController.runningJob = true;
     }

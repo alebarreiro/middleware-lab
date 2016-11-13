@@ -21,24 +21,10 @@ import org.apache.log4j.Logger;
 public class PagoService {
     final static Logger logger = Logger.getLogger(PagoService.class);
 
-    @DELETE
-    @Path("/{idPago : \\d+}")
-    public Response anularPago(@PathParam("idPago") long idPago) {
-        logger.info("anularPago: " + idPago);
-
-        try {
-            long idAnulacion = ManejadorPagos.anularPago(idPago);
-            return Response.ok(new DataAnulacion(idAnulacion)).build();
-        } catch (NoSuchElementException error) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new DataError(error.getMessage())).type(MediaType.APPLICATION_JSON).build();
-        }
-    }
-
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response confirmarPago(DataVenta venta, @Context HttpHeaders headers) {
-
+    public Response confirmarPago(DataVenta venta) {
         logger.info("confirmarPago: venta: " + venta.toString());
 
         try {
@@ -52,6 +38,26 @@ public class PagoService {
             logger.warn("confirmarPago: vencimiento invalido");
 
             return Response.status(422).entity(new DataError(error.getMessage())).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{idPago : \\d+}")
+    public Response anularPago(@PathParam("idPago") long idPago) {
+        logger.info("anularPago: " + idPago);
+
+        try {
+            long idAnulacion = ManejadorPagos.anularPago(idPago);
+
+            DataAnulacion anulacion = new DataAnulacion(idAnulacion);
+
+            logger.info("anularPago: anulacion: " + anulacion.toString());
+
+            return Response.ok(anulacion).build();
+        } catch (NoSuchElementException error) {
+            logger.warn("anularPago: No se encontro el pago");
+
+            return Response.status(Response.Status.NOT_FOUND).entity(new DataError(error.getMessage())).type(MediaType.APPLICATION_JSON).build();
         }
     }
 }
