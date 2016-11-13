@@ -20,18 +20,6 @@ public class CallbackWs {
 
     final static Logger logger = Logger.getLogger(CallbackWs.class);
 
-//    @WebMethod(action = "confirmarReserva")
-//    public DataNotificacionReserva confirmarReserva(@WebParam(name="reserva") DataNotificacionReserva reserva) {
-//        logger.info("Confirmar reserva callback: " + reserva);
-//        return reserva;
-//    }
-//
-//    @WebMethod(action = "confirmarReservaResponse")
-//    public void confirmarReservaResponse(@WebParam(name="reserva") DataNotificacionReserva reserva) {
-//        System.out.println("Target!!");
-//        logger.info("CONFIRMAR RESERVA LLAMADO!!! >>" + reserva.toString());
-//    }
-
     @WebResult(name="reserva")
     @WebMethod(action = "confirmarReserva")
     public DataNotificacionReserva confirmarReserva(@WebParam(name="reserva") DataNotificacionReserva reserva) {

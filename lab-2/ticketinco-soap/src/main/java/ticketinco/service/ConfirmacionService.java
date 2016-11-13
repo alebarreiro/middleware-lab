@@ -21,17 +21,6 @@ public class ConfirmacionService {
 
     final static Logger logger = Logger.getLogger(ConfirmacionService.class);
 
-//    @WebResult(name="reserva")
-//    @WebMethod(action = "confirmarReserva")
-//    public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
-//        ReservaController vc = new ReservaController();
-//        DataNotificacionReserva dnr = vc.confirmarReserva(dataReservaConfirmada);
-//
-//        logger.info("confirmarReserva SUCCESS: " + dnr.toString());
-//
-//        return dnr;
-//    }
-
     @WebResult(name="reserva")
     @WebMethod(action = "confirmarReserva")
     public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) {
