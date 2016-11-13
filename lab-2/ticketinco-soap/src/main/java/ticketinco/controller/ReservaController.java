@@ -127,7 +127,7 @@ public class ReservaController {
         em.close();
     }
 
-    public DataNotificacionReserva confirmarReserva(DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+    public DataNotificacionReserva confirmarReserva(DataReservaConfirmada dataReservaConfirmada) {
         logger.info("REQUEST confrirmarReserva: " + dataReservaConfirmada.toString());
 
         long idReserva = dataReservaConfirmada.getIdReserva();
@@ -136,11 +136,11 @@ public class ReservaController {
         try {
             reserva = reservaDAOJpa.getReserva(idReserva);
         } catch (Exception e) {
-            throw new BusinessException("NOT_FOUND", 404, "No existe reserva con id: " + idReserva);
+            return new DataNotificacionReserva(0, null, true, "No existe reserva con id: " + idReserva);
         }
 
         if (reserva.getEstado() != TipoEstadoReserva.PENDIENTE) {
-            throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "La reserva " + idReserva + "  no se encuentra en estado pendiente: " + reserva.getEstado());
+            return new DataNotificacionReserva(0, null, true, "La reserva " + idReserva + "  no se encuentra en estado pendiente");
         }
 
         DataVenta dv = new DataVenta();
@@ -164,7 +164,7 @@ public class ReservaController {
                 idConfirmacion = wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
                 break;
             default:
-                throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" + dataReservaConfirmada.getIdMedioPago());
+                return new DataNotificacionReserva(0, null, true, "Id de medio de pago desconocido");
         }
 
         java.util.List<Image> tickets = new ArrayList<Image>();
@@ -207,8 +207,11 @@ public class ReservaController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             logger.info("ERROR GENERANDO TICKET: " + e.getMessage());
-            throw new BusinessException("INTERNAL_ERROR", 500, e.getMessage());
+            return new DataNotificacionReserva(0, null, true, e.getMessage());
+            //throw new BusinessException("INTERNAL_ERROR", 500, e.getMessage());
         }
+
+        logger.info("FIN GENERAR RESERVA : " + idConfirmacion );
         return new DataNotificacionReserva(idConfirmacion, tickets);
     }
 
