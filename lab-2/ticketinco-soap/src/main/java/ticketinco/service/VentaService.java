@@ -16,11 +16,14 @@ import javax.jws.Oneway;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
+import javax.xml.ws.Action;
+import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import javax.xml.ws.soap.MTOM;
 import java.util.Date;
 import java.util.List;
 
-
+@MTOM(enabled=true)
 @WebService
 public class VentaService {
     final static Logger logger = Logger.getLogger(VentaService.class);
@@ -68,7 +71,9 @@ public class VentaService {
         return estado;
     }
 
-    @MTOM(enabled=true)
+    @ResponseWrapper(targetNamespace="https://localhost:8443/callback-ws-0.1.0/CallbackWsx",localName="confirmarReserva")
+    @Action(
+            output="https://localhost:8443/callback-ws-0.1.0/CallbackWsx/confirmarReserva")
     @WebMethod(action = "confirmarReserva")
     public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
         ReservaController vc = new ReservaController();
