@@ -18,5 +18,12 @@ public class DataAnulacion {
     public void setIdAnulacion(long idAnulacion) {
         this.idAnulacion = idAnulacion;
     }
+
+    @Override
+    public String toString() {
+        return "DataAnulacion{" +
+                "idAnulacion=" + idAnulacion +
+                '}';
+    }
 }
 

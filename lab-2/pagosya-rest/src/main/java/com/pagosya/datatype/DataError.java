@@ -23,4 +23,11 @@ public class DataError  implements Serializable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    @Override
+    public String toString() {
+        return "DataError{" +
+                "mensaje='" + mensaje + '\'' +
+                '}';
+    }
 }

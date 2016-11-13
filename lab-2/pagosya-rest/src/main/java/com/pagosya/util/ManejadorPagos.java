@@ -3,6 +3,7 @@ package com.pagosya.util;
 import com.pagosya.datatype.DataVenta;
 import com.pagosya.datatype.exception.VencimientoInvalidoException;
 import com.pagosya.model.Pago;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.NoSuchElementException;
 
 
 public class ManejadorPagos {
+    final static Logger logger = Logger.getLogger(ManejadorPagos.class);
     private static ManejadorPagos instance = new ManejadorPagos();
     private static Map<Long, Pago> pagos = new HashMap<>();
     private static long id = 1;
@@ -42,6 +44,8 @@ public class ManejadorPagos {
         Pago pago = new Pago(pagoId, venta);
 
         ManejadorPagos.pagos.put(pagoId, pago);
+
+        logger.info("confirmarPago: Pago confirmado, nueva lista: " + pagos);
 
         return pago.getId();
     }

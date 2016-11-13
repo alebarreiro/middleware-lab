@@ -26,6 +26,9 @@ public class DataAnulacionPago {
 	public void setIdConfirmacion(long idConfirmacion) {
 		this.idConfirmacion = idConfirmacion;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "DataAnulacionPago [idAnulacion=" + idAnulacion + ", idConfirmacion=" + idConfirmacion + "]";
+	}
 }

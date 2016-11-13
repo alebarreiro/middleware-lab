@@ -51,7 +51,7 @@ public class ReservaController {
 
     public long reservarEntrada(DataReservaPendiente dataReservaPendiente) throws Exception {
         List<Disponibilidad> disponibilidades = this.getDisponibilidadesAReservar(dataReservaPendiente);
-        
+
 /*        for (Disponibilidad disponibilidad: disponibilidades) {
             if (disponibilidad.getCantidadDisponible() == 0) {
                 throw new BusinessException("Sin_disponibilidad", 404, "No hay entradas disponibles para"+disponibilidad.getSector());
@@ -87,20 +87,16 @@ public class ReservaController {
         em.close();
         return resultado;
     }
-    // TODO: move this to its controller
+
     private List<Disponibilidad> getDisponibilidadesAReservar(DataReservaPendiente dataReservaPendiente) {
         List<Disponibilidad> res = new ArrayList<>();
 
-        System.out.println("iterando horarios");
         for (DataHorario horario: dataReservaPendiente.getHorarios()) {
-            System.out.println("current horario: " + horario.toString());
             List<Disponibilidad> disponibilidades = horarioDAO
                     .getDisponibilidadesDeHorarioPorEvento(dataReservaPendiente.getIdEvento(), horario.getHorario(), horario.getDisponibilidades());
 
             res.addAll(disponibilidades);
         }
-
-        System.out.println("disponibilidades obtenidas" + res.toString());
 
         return res;
     }
