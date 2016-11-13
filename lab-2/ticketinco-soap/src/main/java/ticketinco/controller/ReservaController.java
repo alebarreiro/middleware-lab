@@ -180,7 +180,7 @@ public class ReservaController {
                 ImageIO.write(ticketTemplate, "png", new File("ticket-" + d.getId() + "+.png"));
             } catch (java.io.IOException ex) {
                 System.out.println(ex.getMessage());
-                logger.debug("ERROR GENERANDO TICKET", ex.getMessage());
+                logger.debug("ERROR GENERANDO TICKET: " + ex.getMessage());
             }
         }
         return new DataNotificacionReserva(idConfirmacion, tickets);
