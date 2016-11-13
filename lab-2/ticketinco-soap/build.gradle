@@ -71,6 +71,9 @@ cargo {
     port = 8081;
 
     remote {
+        // add this to tomcat-users.xml
+        // <user username="manager" password="manager" roles="manager-script"/>
+
         hostname = 'localhost'
         username = 'manager'
         password = 'manager'

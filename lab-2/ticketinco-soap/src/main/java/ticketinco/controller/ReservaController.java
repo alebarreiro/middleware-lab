@@ -52,11 +52,12 @@ public class ReservaController {
     public long reservarEntrada(DataReservaPendiente dataReservaPendiente) throws Exception {
         List<Disponibilidad> disponibilidades = this.getDisponibilidadesAReservar(dataReservaPendiente);
 
-/*        for (Disponibilidad disponibilidad: disponibilidades) {
+        for (Disponibilidad disponibilidad: disponibilidades) {
             if (disponibilidad.getCantidadDisponible() == 0) {
-                throw new BusinessException("Sin_disponibilidad", 404, "No hay entradas disponibles para"+disponibilidad.getSector());
+                throw new BusinessException("Sin Disponibilidad", 422, "No hay entradas disponibles para el sector" + disponibilidad.getSector());
             }
-        }*/
+        }
+
         em.getTransaction().begin();
         Reserva reserva = new Reserva(
                 TipoEstadoReserva.PENDIENTE,
