@@ -21,24 +21,24 @@ public class ConfirmacionService {
 
     final static Logger logger = Logger.getLogger(ConfirmacionService.class);
 
+//    @WebResult(name="reserva")
+//    @WebMethod(action = "confirmarReserva")
+//    public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+//        ReservaController vc = new ReservaController();
+//        DataNotificacionReserva dnr = vc.confirmarReserva(dataReservaConfirmada);
+//
+//        logger.info("confirmarReserva SUCCESS: " + dnr.toString());
+//
+//        return dnr;
+//    }
+
     @WebResult(name="reserva")
     @WebMethod(action = "confirmarReserva")
-    public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+    public DataNotificacionReserva confirmarReserva(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) {
         ReservaController vc = new ReservaController();
         DataNotificacionReserva dnr = vc.confirmarReserva(dataReservaConfirmada);
 
-        logger.info("confirmarReserva SUCCESS: " + dnr.toString());
-
-        return dnr;
-    }
-
-    @WebResult(name="reserva")
-    @WebMethod(action = "saySomething")
-    public DataNotificacionReserva saySomething(@WebParam(name = "reserva") DataReservaConfirmada dataReservaConfirmada) {
-        ReservaController vc = new ReservaController();
-        DataNotificacionReserva dnr = vc.confirmarReserva(dataReservaConfirmada);
-
-        logger.info("saySomething.confirmarReserva SUCCESS: " + dnr.toString());
+        logger.info("confirmarReserva.confirmarReserva SUCCESS: " + dnr.toString());
 
         return dnr;
     }

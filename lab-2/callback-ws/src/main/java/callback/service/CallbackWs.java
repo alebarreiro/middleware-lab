@@ -33,14 +33,14 @@ public class CallbackWs {
 //    }
 
     @WebResult(name="reserva")
-    @WebMethod(action = "saySomething")
-    public DataNotificacionReserva saySomething(@WebParam(name="reserva") DataNotificacionReserva reserva) {
+    @WebMethod(action = "confirmarReserva")
+    public DataNotificacionReserva confirmarReserva(@WebParam(name="reserva") DataNotificacionReserva reserva) {
         logger.info("CALLBACK LLAMADO SAY!!!");
         return reserva;
     }
 
-    @WebMethod(action = "saySomethingResponse")
-    public void saySomethingResponse(@WebParam(name="reserva") DataNotificacionReserva reserva) {
+    @WebMethod(action = "confirmarReservaResponse")
+    public void confirmarReservaResponse(@WebParam(name="reserva") DataNotificacionReserva reserva) {
         logger.info("CALLBACK INVOCADO: DATOS DE LA RESERVA >>" + reserva.toString());
 
         if (reserva.isError()) {
