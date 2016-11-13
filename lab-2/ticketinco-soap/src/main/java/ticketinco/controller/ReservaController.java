@@ -1,6 +1,7 @@
 package ticketinco.controller;
 
 import ticketinco.dao.*;
+import ticketinco.datatype.DataNotificacionReserva;
 import ticketinco.datatype.DataReservaConfirmada;
 import ticketinco.datatype.DataReservaPendiente;
 import ticketinco.datatype.DataHorario;
@@ -105,7 +106,7 @@ public class ReservaController {
         em.close();
     }
 
-    public long confirmarReserva (DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
+    public DataNotificacionReserva confirmarReserva (DataReservaConfirmada dataReservaConfirmada) throws BusinessException {
         logger.debug("REQUEST confrirmarReserva: " + dataReservaConfirmada.toString());
 
         long idReserva = dataReservaConfirmada.getIdReserva();
@@ -127,19 +128,33 @@ public class ReservaController {
         dv.setNroTarjeta(Long.parseLong(dataReservaConfirmada.getNroTarjeta(), 10));
         dv.setFechaVencimiento(dataReservaConfirmada.getFechaVencimiento().toString());
 
+        long idConfirmacion;
+
         switch ((int)dataReservaConfirmada.getIdMedioPago()) {
             case 1:
                 //PagosYa REST
                 WsPagosYaService wsPagosYa = new WsPagosYaService();
-                return wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
+                idConfirmacion = wsPagosYa.getWsPagosYaPort().confirmarPago(dv).getIdConfirmacion();
+                break;
             case 2:
                 //Pago Local JMS
                 WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
-                return wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
+                idConfirmacion = wsPagosLocal.getWsPagosLocalPort().confirmarPago(dv).getIdConfirmacion();
+                break;
             default:
                 throw new BusinessException("UNPROCESSABLE_ENTITY", 422, "Id de medio de pago desconocido" +  dataReservaConfirmada.getIdMedioPago());
         }
 
+        return new DataNotificacionReserva();
+
+    }
+
+    public int getEstadoReserva (long idReserva) {
+        Reserva reserva = reservaDAOJpa.getReserva(idReserva);
+        if (reserva != null) {
+            return reserva.getEstado().ordinal();
+        }
+        return -1;
     }
 
 }
