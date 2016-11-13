@@ -27,7 +27,7 @@ public class ConfirmacionService {
         ReservaController vc = new ReservaController();
         DataNotificacionReserva dnr = vc.confirmarReserva(dataReservaConfirmada);
 
-        logger.info("confirmarReserva.confirmarReserva SUCCESS: " + dnr.toString());
+        logger.info("ticketinco.confirmarReserva SUCCESS: " + dnr.toString());
 
         return dnr;
     }
