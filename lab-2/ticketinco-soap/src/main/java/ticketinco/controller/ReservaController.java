@@ -21,9 +21,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
 import ticketinco.model.Disponibilidad;
 
 public class ReservaController {
@@ -148,7 +152,12 @@ public class ReservaController {
         dv.setMonto(reserva.getPrecioFinal());
         dv.setDigitoVerificador(dataReservaConfirmada.getDigitoVerificador());
         dv.setNroTarjeta(Long.parseLong(dataReservaConfirmada.getNroTarjeta(), 10));
-        dv.setFechaVencimiento(dataReservaConfirmada.getFechaVencimiento().toString());
+
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        df.setTimeZone(tz);
+        String dateAsISO = df.format(dataReservaConfirmada.getFechaVencimiento());
+        dv.setFechaVencimiento(dateAsISO);
 
         long idConfirmacion;
 
