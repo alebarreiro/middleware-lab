@@ -56,7 +56,7 @@ public class Reserva {
     @JoinColumn(name="comprador_id")
     private Comprador comprador;
 
-    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
     private Pago pago;
 
     public Reserva() {}

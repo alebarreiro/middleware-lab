@@ -15,6 +15,7 @@ import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.jws.*;
+import javax.persistence.NoResultException;
 import javax.xml.ws.Action;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
@@ -73,11 +74,16 @@ public class VentaService {
         }
 
         ReservaController vc = new ReservaController();
-        int estado = vc.cancelarReserva(idConfirmacion, idPago, idAnulacion);
-        if (estado == -1) {
-           throw new BusinessException("NOT_FOUND", 404, "No existe pago con dicho id");
+
+        try {
+            int estado = vc.cancelarReserva(idConfirmacion, idPago, idAnulacion);
+            if (estado == -1) {
+                throw new BusinessException("NOT_FOUND", 404, "No existe pago con dicho id");
+            }
+            return estado;
+        } catch (NoResultException e) {
+            throw new BusinessException("NOT_FOUND", 404, "No existe el pago para el medio de pago");
         }
-        return estado;
     }
 
     @WebMethod(action = "confirmarReserva", operationName = "confirmarReserva")

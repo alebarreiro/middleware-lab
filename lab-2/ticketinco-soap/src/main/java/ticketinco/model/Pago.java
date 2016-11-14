@@ -35,8 +35,8 @@ public class Pago {
 
     private byte[] imagen;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
-    @JoinColumn(name = "reserva_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reserva_id")
     private Reserva reserva;
 
     public Pago() {
