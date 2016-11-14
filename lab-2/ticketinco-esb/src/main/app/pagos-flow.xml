@@ -51,7 +51,7 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
                         <http:header headerName="Content-Type" value="application/json"/>
                     </http:request-builder>
                 </http:request>
-                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="Copy_of_JSON to Object"/>
+                <json:json-to-object-transformer returnClass="com.ticketinco.esb.datatype.DataAnulacion" doc:name="JSON to Object"/>
  		 	</when>
         </choice>
         <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>

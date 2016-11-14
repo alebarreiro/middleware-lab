@@ -15,6 +15,7 @@ import ws.com.ticketinco.esb.WsPagosLocalService;
 import ws.com.ticketinco.esb.WsPagosYaService;
 
 import javax.jws.*;
+import javax.persistence.NoResultException;
 import javax.xml.ws.Action;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
@@ -61,22 +62,28 @@ public class VentaService {
     public long cancelarVenta(@WebParam(name = "idConfirmacion")long idConfirmacion,@WebParam(name = "idPago") long idPago)  throws Exception {
         logger.info("cancelarVenta: idConfirmacion: " + idConfirmacion + "medioDePago: " + idPago);
 
-        long resultado;
+        long idAnulacion;
         WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
         WsPagosYaService wsPagosYa = new WsPagosYaService();
 
-        if (idPago==1){
-           resultado = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
+        if (idPago == 2){
+            idAnulacion = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
 
-        }else {
-            resultado = wsPagosYa.getWsPagosYaPort().anularPago(idConfirmacion).getIdAnulacion();
+        } else {
+            idAnulacion = wsPagosYa.getWsPagosYaPort().anularPago(idConfirmacion).getIdAnulacion();
         }
+
         ReservaController vc = new ReservaController();
-        int estado = vc.cancelarReserva(idConfirmacion);
-        if (estado == -1) {
-           throw new BusinessException("NOT_FOUND", 404, "No existe reserva con dicho id");
+
+        try {
+            int estado = vc.cancelarReserva(idConfirmacion, idPago, idAnulacion);
+            if (estado == -1) {
+                throw new BusinessException("NOT_FOUND", 404, "No existe pago con dicho id");
+            }
+            return estado;
+        } catch (NoResultException e) {
+            throw new BusinessException("NOT_FOUND", 404, "No existe el pago para el medio de pago");
         }
-        return estado;
     }
 
     @WebMethod(action = "confirmarReserva", operationName = "confirmarReserva")

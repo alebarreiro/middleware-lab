@@ -1,30 +1,125 @@
 package ticketinco.model;
 
-import java.io.File;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "pago")
 public class Pago {
 
+    @Id
+    @SequenceGenerator(name="pago_id_seq", sequenceName="pago_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="pago_id_seq")
     private long id;
-    private String nroTarjeta;
-    private Date vencimiento;
-    private int digitoVerificador;
-    private String tarjeta;
-    private Date fechaAnulacion;
-    private long idAnulacionParner;
-    private File imagen;
 
+    @Column(name = "id_medio_pago")
+    private long idMedioPago;
+
+    @Column(name = "fecha_vencimiento")
+    private Date fechaVencimiento;
+
+    @Column(name = "digito_verificador")
+    private int digitoVerificador;
+
+    @Column(name = "tarjeta")
+    private String tarjeta;
+
+    @Column(name = "fecha_anulacion")
+    private Date fechaAnulacion;
+
+    @Column(name = "id_confirmacion_partner")
+    private long idConfirmacionPartner;
+
+    @Column(name = "id_anulacion_partner")
+    private long idAnulacionParner;
+
+    private byte[] imagen;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reserva_id")
     private Reserva reserva;
 
-    public Pago(long id, String nroTarjeta, Date vencimiento, int digitoVerificador, String tarjeta, Date fechaAnulacion, long idAnulacionParner, File imagen, Reserva reserva) {
+    public Pago() {
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
         this.id = id;
-        this.nroTarjeta = nroTarjeta;
-        this.vencimiento = vencimiento;
+    }
+
+    public long getIdMedioPago() {
+        return idMedioPago;
+    }
+
+    public void setIdMedioPago(long idMedioPago) {
+        this.idMedioPago = idMedioPago;
+    }
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public int getDigitoVerificador() {
+        return digitoVerificador;
+    }
+
+    public void setDigitoVerificador(int digitoVerificador) {
         this.digitoVerificador = digitoVerificador;
+    }
+
+    public String getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(String tarjeta) {
         this.tarjeta = tarjeta;
+    }
+
+    public Date getFechaAnulacion() {
+        return fechaAnulacion;
+    }
+
+    public void setFechaAnulacion(Date fechaAnulacion) {
         this.fechaAnulacion = fechaAnulacion;
+    }
+
+    public long getIdConfirmacionPartner() {
+        return idConfirmacionPartner;
+    }
+
+    public void setIdConfirmacionPartner(long idConfirmacionPartner) {
+        this.idConfirmacionPartner = idConfirmacionPartner;
+    }
+
+    public long getIdAnulacionParner() {
+        return idAnulacionParner;
+    }
+
+    public void setIdAnulacionParner(long idAnulacionParner) {
         this.idAnulacionParner = idAnulacionParner;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
+    }
+
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
         this.reserva = reserva;
     }
 }
