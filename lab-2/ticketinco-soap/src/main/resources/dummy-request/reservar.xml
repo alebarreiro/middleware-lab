@@ -1,0 +1,114 @@
+<!-- PILSEN ROCK -->
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+    <Body>
+        <reservarEntrada xmlns="http://service.ticketinco/">
+            <!-- Optional -->
+            <confirmacion xmlns="">
+                <fechaEvento>2016-12-19</fechaEvento>
+                <horarios>
+                    <disponibilidades>
+                        <sector>Unico</sector>
+                    </disponibilidades>
+                    <horario>2016-12-19T10:00:00</horario>
+                </horarios>
+                <idEvento>1</idEvento>
+            </confirmacion>
+        </reservarEntrada>
+    </Body>
+</Envelope>
+
+<!-- CLASICO URUGUAYO -->
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+    <Body>
+        <reservarEntrada xmlns="http://service.ticketinco/">
+            <!-- Optional -->
+            <confirmacion xmlns="">
+                <fechaEvento>2016-11-15</fechaEvento>
+                <horarios>
+                    <disponibilidades>
+                        <sector>Amsterdam</sector>
+                    </disponibilidades>
+                    <disponibilidades>
+                        <sector>Olimpica</sector>
+                    </disponibilidades>
+                    <!--<disponibilidades>-->
+                        <!--<sector>America</sector>-->
+                    <!--</disponibilidades>-->
+                    <!--<disponibilidades>-->
+                        <!--<sector>Colombes</sector>-->
+                    <!--</disponibilidades>-->
+                    <horario>2016-11-15T16:00:00</horario>
+                </horarios>
+                <idEvento>2</idEvento>
+            </confirmacion>
+        </reservarEntrada>
+    </Body>
+</Envelope>
+
+<!-- CONCIERTO ROMBAI -->
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+<Body>
+    <reservarEntrada xmlns="http://service.ticketinco/">
+        <!-- Optional -->
+        <confirmacion xmlns="">
+            <fechaEvento>2030-03-24</fechaEvento>
+            <horarios>
+                <disponibilidades>
+                    <sector>A</sector>
+                </disponibilidades>
+                <horario>2030-03-24T12:00:00</horario>
+            </horarios>
+            <horarios>
+                <disponibilidades>
+                    <sector>B</sector>
+                </disponibilidades>
+                <horario>2030-03-24T14:00:00</horario>
+            </horarios>
+            <!--<horarios>-->
+                <!--<disponibilidades>-->
+                    <!--<sector>C</sector>-->
+                <!--</disponibilidades>-->
+                <!--<horario>2030-03-24T14:00:00</horario>-->
+            <!--</horarios>-->
+            <idEvento>3</idEvento>
+        </confirmacion>
+    </reservarEntrada>
+</Body>
+</Envelope>
+
+<!-- FILM - NO RESPIRES -->
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+<Body>
+    <reservarEntrada xmlns="http://service.ticketinco/">
+        <!-- Optional -->
+        <confirmacion xmlns="">
+            <fechaEvento>2017-07-08</fechaEvento>
+            <horarios>
+                <disponibilidades>
+                    <sector>Butaca</sector>
+                </disponibilidades>
+                <horario>2017-07-08T18:00:00</horario>
+            </horarios>
+            <horarios>
+                <disponibilidades>
+                    <sector>Butaca</sector>
+                </disponibilidades>
+                <horario>2017-07-08T21:00:00</horario>
+            </horarios>
+            <!--<horarios>-->
+                <!--<disponibilidades>-->
+                    <!--<sector>Butaca</sector>-->
+                <!--</disponibilidades>-->
+                <!--<horario>2017-07-08T23:00:00</horario>-->
+            <!--</horarios>-->
+            <horarios>
+                <disponibilidades>
+                    <sector>ButacaNochera</sector>
+                </disponibilidades>
+                <horario>2017-07-08T02:00:00</horario>
+            </horarios>
+            <idEvento>4</idEvento>
+        </confirmacion>
+    </reservarEntrada>
+</Body>
+</Envelope>

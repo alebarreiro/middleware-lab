@@ -230,6 +230,8 @@ public class ReservaController {
             pago.setReserva(reserva);
             pago.setTarjeta(dataReservaConfirmada.getNroTarjeta());
 
+            pagoDAO.create(pago);
+
             reserva.setEstado(TipoEstadoReserva.CONFIRMADO);
             em.getTransaction().commit();
             em.close();

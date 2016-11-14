@@ -1,0 +1,14 @@
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+    <Body>
+        <confirmarReserva xmlns="http://service.ticketinco/">
+            <!-- Optional -->
+            <reserva xmlns="">
+                <digitoVerificador>8</digitoVerificador>
+                <fechaVencimiento>2018-12-19T10:00:00</fechaVencimiento>
+                <idMedioPago>5</idMedioPago>
+                <idReserva>90</idReserva>
+                <nroTarjeta>4576324</nroTarjeta>
+            </reserva>
+        </confirmarReserva>
+    </Body>
+</Envelope>

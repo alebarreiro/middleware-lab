@@ -18,9 +18,6 @@ public class Pago {
     @Column(name = "fecha_vencimiento")
     private Date fechaVencimiento;
 
-    @Column(name = "nro_tarjeta")
-    private String nroTarjeta;
-
     @Column(name = "digito_verificador")
     private int digitoVerificador;
 
@@ -38,7 +35,8 @@ public class Pago {
 
     private byte[] imagen;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "pago", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
+    @JoinColumn(name = "reserva_id", nullable = false)
     private Reserva reserva;
 
     public Pago() {
@@ -67,14 +65,6 @@ public class Pago {
 
     public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
-    }
-
-    public String getNroTarjeta() {
-        return nroTarjeta;
-    }
-
-    public void setNroTarjeta(String nroTarjeta) {
-        this.nroTarjeta = nroTarjeta;
     }
 
     public int getDigitoVerificador() {

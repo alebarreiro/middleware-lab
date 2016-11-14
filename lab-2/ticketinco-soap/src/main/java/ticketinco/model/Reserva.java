@@ -56,8 +56,7 @@ public class Reserva {
     @JoinColumn(name="comprador_id")
     private Comprador comprador;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, optional = false)
     private Pago pago;
 
     public Reserva() {}
