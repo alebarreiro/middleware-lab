@@ -65,7 +65,7 @@ public class VentaService {
         WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
         WsPagosYaService wsPagosYa = new WsPagosYaService();
 
-        if (idPago == 1){
+        if (idPago == 2){
             idAnulacion = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
 
         } else {
