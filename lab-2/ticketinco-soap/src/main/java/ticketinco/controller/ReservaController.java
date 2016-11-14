@@ -37,6 +37,7 @@ public class ReservaController {
     private ReservaDAOJpa reservaDAOJpa;
     private DisponibilidadDAO disponibilidadDAO;
     private HorarioDAO horarioDAO;
+    private PagoDAOJpa pagoDAO;
 
     static {
         try {
@@ -51,6 +52,7 @@ public class ReservaController {
         reservaDAOJpa = new ReservaDAOJpa(em, Reserva.class);
         disponibilidadDAO = new DisponibilidadDAO(em, Reserva.class);
         horarioDAO = new HorarioDAO(em, Horario.class);
+        pagoDAO = new PagoDAOJpa(em, Pago.class);
     }
 
     public long reservarEntrada(DataReservaPendiente dataReservaPendiente) throws Exception {
@@ -77,19 +79,29 @@ public class ReservaController {
 
         return reserva.getId();
     }
-    public int cancelarReserva(long idReserva) throws Exception {
+    public int cancelarReserva(long idPago, long idMedioPago, long idAnulacion) throws Exception {
+        int resultado = 1;
+
         em.getTransaction().begin();
-        Reserva reserva = reservaDAOJpa.getReserva(idReserva);
-        int resultado;
-        if (reserva != null){
-            reserva.setEstado(TipoEstadoReserva.CANCELADO);
-            resultado = 1;
-        }else{
+
+        Pago pago = pagoDAO.obtenerPago(idPago, idMedioPago);
+
+        if (pago != null) {
+            pago.setIdAnulacionParner(idAnulacion);
+            pago.setFechaAnulacion(new Date());
+
+            Reserva reserva = pago.getReserva();
+
+            if (reserva != null) {
+                reserva.setEstado(TipoEstadoReserva.CANCELADO);
+            }
+        } else {
             resultado = -1;
         }
 
         em.getTransaction().commit();
         em.close();
+
         return resultado;
     }
 
@@ -208,8 +220,16 @@ public class ReservaController {
                 tickets.add(ticketTemplate);
             }
 
-            //Marcamos la reserva como confirmada
             em.getTransaction().begin();
+
+            Pago pago = new Pago();
+            pago.setDigitoVerificador(dataReservaConfirmada.getDigitoVerificador());
+            pago.setFechaVencimiento(dataReservaConfirmada.getFechaVencimiento());
+            pago.setIdConfirmacionPartner(idConfirmacion);
+            pago.setIdMedioPago(dataReservaConfirmada.getIdMedioPago());
+            pago.setReserva(reserva);
+            pago.setTarjeta(dataReservaConfirmada.getNroTarjeta());
+
             reserva.setEstado(TipoEstadoReserva.CONFIRMADO);
             em.getTransaction().commit();
             em.close();

@@ -56,13 +56,16 @@ public class Reserva {
     @JoinColumn(name="comprador_id")
     private Comprador comprador;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn
+    private Pago pago;
+
     public Reserva() {}
 
     public Reserva(TipoEstadoReserva estado, double precioFinal, List<Disponibilidad> disponibilidades) {
         this.estado = estado;
         this.precioFinal = precioFinal;
         this.disponibilidades = disponibilidades;
-        //this.comprador = comprador;
     }
 
     public long getId() {
@@ -119,5 +122,27 @@ public class Reserva {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Pago getPago() {
+        return pago;
+    }
+
+    public void setPago(Pago pago) {
+        this.pago = pago;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "id=" + id +
+                ", estado=" + estado +
+                ", precioFinal=" + precioFinal +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", disponibilidades=" + disponibilidades +
+                ", comprador=" + comprador +
+                ", pago=" + pago +
+                '}';
     }
 }

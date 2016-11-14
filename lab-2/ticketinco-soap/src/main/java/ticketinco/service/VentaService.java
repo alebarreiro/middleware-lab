@@ -61,20 +61,21 @@ public class VentaService {
     public long cancelarVenta(@WebParam(name = "idConfirmacion")long idConfirmacion,@WebParam(name = "idPago") long idPago)  throws Exception {
         logger.info("cancelarVenta: idConfirmacion: " + idConfirmacion + "medioDePago: " + idPago);
 
-        long resultado;
+        long idAnulacion;
         WsPagosLocalService wsPagosLocal = new WsPagosLocalService();
         WsPagosYaService wsPagosYa = new WsPagosYaService();
 
-        if (idPago==1){
-           resultado = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
+        if (idPago == 1){
+            idAnulacion = wsPagosLocal.getWsPagosLocalPort().anularPago(idConfirmacion).getIdAnulacion();
 
-        }else {
-            resultado = wsPagosYa.getWsPagosYaPort().anularPago(idConfirmacion).getIdAnulacion();
+        } else {
+            idAnulacion = wsPagosYa.getWsPagosYaPort().anularPago(idConfirmacion).getIdAnulacion();
         }
+
         ReservaController vc = new ReservaController();
-        int estado = vc.cancelarReserva(idConfirmacion);
+        int estado = vc.cancelarReserva(idConfirmacion, idPago, idAnulacion);
         if (estado == -1) {
-           throw new BusinessException("NOT_FOUND", 404, "No existe reserva con dicho id");
+           throw new BusinessException("NOT_FOUND", 404, "No existe pago con dicho id");
         }
         return estado;
     }
