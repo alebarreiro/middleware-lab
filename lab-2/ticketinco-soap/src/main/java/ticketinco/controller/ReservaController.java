@@ -117,7 +117,7 @@ public class ReservaController {
     }
 
     public void expirarReservas() {
-        Date fechaLimiteExpiracion = DateUtil.addSeconds(new Date(), -60);
+        Date fechaLimiteExpiracion = DateUtil.addSeconds(new Date(), -60 * 3);
 
         logger.debug("expirarReservas - fecha limite: " + fechaLimiteExpiracion);
 
